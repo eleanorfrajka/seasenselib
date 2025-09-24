@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ctd_tools.writers.netcdf_writer &mdash; ctd_tools v0.0.0 documentation</title>
+  <title>seasenselib.writers.netcdf_writer &mdash; seasenselib v0.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=20758594" />
@@ -18,6 +18,7 @@
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -31,7 +32,7 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            ctd_tools
+            seasenselib
               <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
@@ -42,20 +43,19 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Overview</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">CTD Tools overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Help and reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference external" href="http://github.com/ifmeo-hamburg/ctd-tools">GitHub Repo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../ctdtools.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">CTD</span> <span class="pre">Tools</span> <span class="pre">API</span></code></a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Indices and tables</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../py-modindex.html">Module Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../search.html">Search Page</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://github.com/ocean-uhh/seasenselib">GitHub Repo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ctdtools.html">API Reference</a></li>
 </ul>
 
         </div>
@@ -64,7 +64,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">ctd_tools</a>
+          <a href="../../../index.html">seasenselib</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -73,7 +73,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">ctd_tools.writers.netcdf_writer</li>
+      <li class="breadcrumb-item active">seasenselib.writers.netcdf_writer</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -82,15 +82,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for ctd_tools.writers.netcdf_writer</h1><div class="highlight"><pre>
+  <h1>Source code for seasenselib.writers.netcdf_writer</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for writing sensor data to netCDF files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">ctd_tools.writers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractWriter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.writers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractWriter</span>
 
 <div class="viewcode-block" id="NetCdfWriter">
-<a class="viewcode-back" href="../../../ctdtools.html#ctd_tools.writers.NetCdfWriter">[docs]</a>
+<a class="viewcode-back" href="../../../ctdtools.html#seasenselib.writers.NetCdfWriter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NetCdfWriter</span><span class="p">(</span><span class="n">AbstractWriter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Writes sensor data from a xarray Dataset to a netCDF file. </span>
 <span class="sd">    </span>
@@ -118,7 +118,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NetCdfWriter.write">
-<a class="viewcode-back" href="../../../ctdtools.html#ctd_tools.writers.NetCdfWriter.write">[docs]</a>
+<a class="viewcode-back" href="../../../ctdtools.html#seasenselib.writers.NetCdfWriter.write">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Writes the xarray Dataset to a netCDF file with the specified file name.</span>
 
@@ -131,7 +131,7 @@
 
 
 <div class="viewcode-block" id="NetCdfWriter.file_extension">
-<a class="viewcode-back" href="../../../ctdtools.html#ctd_tools.writers.NetCdfWriter.file_extension">[docs]</a>
+<a class="viewcode-back" href="../../../ctdtools.html#seasenselib.writers.NetCdfWriter.file_extension">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_extension</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the default file extension for this writer.</span>
