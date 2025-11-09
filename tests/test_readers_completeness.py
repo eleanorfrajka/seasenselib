@@ -6,9 +6,9 @@ This test ensures that:
 2. All items in __all__ are actually importable
 3. No reader files are missing from __all__
 4. The abstract base class is properly handled
-5. The registry is complete and consistent with actual reader classes
-6. Registry metadata matches what classes actually return
-7. Developers maintain the registry when adding new readers
+5. Autodiscovery finds all reader classes correctly
+6. Format metadata matches what classes actually return
+7. Developers add proper format metadata when adding new readers
 """
 
 import unittest
@@ -20,18 +20,19 @@ import re
 from pathlib import Path
 from seasenselib import readers
 from seasenselib.readers.base import AbstractReader
-from seasenselib.readers.registry import READER_REGISTRY, ReaderMetadata
+from seasenselib.core.autodiscovery import ReaderDiscovery
 
 
 class TestReadersCompleteness(unittest.TestCase):
-    """Test suite to verify the completeness of the readers module and registry consistency."""
+    """Test suite to verify the completeness of the readers module and autodiscovery consistency."""
 
     def setUp(self):
         """Set up test fixtures."""
         self.readers_module = readers
         self.readers_dir = Path(readers.__file__).parent
         self.all_list = readers.__all__
-        self.registry = READER_REGISTRY
+        self.discovery = ReaderDiscovery()
+        self.format_info = self.discovery.get_format_info()
 
     def test_all_list_exists(self):
         """Test that __all__ list exists and is not empty."""
@@ -356,94 +357,93 @@ class TestReadersCompleteness(unittest.TestCase):
         self.assertGreater(len(key_to_class), 0, 
                           "At least one reader class should have a format key")
 
-    # Registry-specific tests
-    def test_registry_exists_and_not_empty(self):
-        """Test that the reader registry exists and contains entries."""
-        self.assertIsInstance(self.registry, list)
-        self.assertGreater(len(self.registry), 0, "Registry should not be empty")
+    # Autodiscovery-specific tests
+    def test_autodiscovery_finds_readers(self):
+        """Test that autodiscovery finds reader classes and returns format info."""
+        self.assertIsInstance(self.format_info, list)
+        self.assertGreater(len(self.format_info), 0, "Format info should not be empty")
 
-    def test_registry_entries_are_valid_metadata(self):
-        """Test that all registry entries are valid ReaderMetadata instances."""
-        for i, entry in enumerate(self.registry):
+    def test_format_info_entries_are_valid_dicts(self):
+        """Test that all format info entries are valid dictionaries with required keys."""
+        required_keys = {'key', 'format', 'class_name'}
+        
+        for i, entry in enumerate(self.format_info):
             with self.subTest(entry_index=i):
-                self.assertIsInstance(entry, ReaderMetadata,
-                                    f"Registry entry {i} should be ReaderMetadata instance")
+                self.assertIsInstance(entry, dict,
+                                    f"Format info entry {i} should be a dict")
+                
+                # Check all required keys exist
+                for key in required_keys:
+                    self.assertIn(key, entry,
+                                f"Format info entry {i} missing required key '{key}'")
                 
                 # Check required fields are not empty
-                self.assertTrue(entry.class_name.strip(),
+                self.assertTrue(entry['key'].strip() if entry['key'] else False,
+                              f"format key should not be empty in entry {i}")
+                self.assertTrue(entry['format'].strip() if entry['format'] else False,
+                              f"format name should not be empty in entry {i}")
+                self.assertTrue(entry['class_name'].strip() if entry['class_name'] else False,
                               f"class_name should not be empty in entry {i}")
-                self.assertTrue(entry.module_name.strip(),
-                              f"module_name should not be empty in entry {i}")
-                self.assertTrue(entry.format_name.strip(),
-                              f"format_name should not be empty in entry {i}")
-                self.assertTrue(entry.format_key.strip(),
-                              f"format_key should not be empty in entry {i}")
 
-    def test_registry_class_names_are_unique(self):
-        """Test that class names in registry are unique."""
-        class_names = [entry.class_name for entry in self.registry]
-        duplicates = [name for name in set(class_names) if class_names.count(name) > 1]
-        self.assertEqual([], duplicates, f"Duplicate class names in registry: {duplicates}")
-
-    def test_registry_format_keys_are_unique(self):
-        """Test that format keys in registry are unique."""
-        format_keys = [entry.format_key for entry in self.registry]
+    def test_format_keys_are_unique(self):
+        """Test that format keys in autodiscovery are unique."""
+        format_keys = [entry['key'] for entry in self.format_info]
         duplicates = [key for key in set(format_keys) if format_keys.count(key) > 1]
-        self.assertEqual([], duplicates, f"Duplicate format keys in registry: {duplicates}")
+        self.assertEqual([], duplicates, f"Duplicate format keys: {duplicates}")
 
-    def test_registry_format_keys_follow_kebab_case(self):
-        """Test that all format keys in registry follow kebab-case convention."""
+    def test_format_keys_follow_kebab_case(self):
+        """Test that all format keys follow kebab-case convention."""
         kebab_case_pattern = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
         
-        for entry in self.registry:
-            with self.subTest(class_name=entry.class_name):
-                self.assertTrue(kebab_case_pattern.match(entry.format_key),
-                              f"format_key '{entry.format_key}' for {entry.class_name} "
+        for entry in self.format_info:
+            with self.subTest(format_key=entry['key']):
+                self.assertTrue(kebab_case_pattern.match(entry['key']),
+                              f"format_key '{entry['key']}' for {entry['format']} "
                               f"must be in kebab-case format")
 
-    def test_registry_file_extensions_are_unique_when_present(self):
-        """Test that file extensions in registry are unique (when not None)."""
-        extensions = [entry.file_extension for entry in self.registry if entry.file_extension]
-        normalized_extensions = [ext.lower() for ext in extensions]
+    def test_file_extensions_are_unique_when_present(self):
+        """Test that file extensions are unique (when not None)."""
+        extensions = [entry.get('extension') for entry in self.format_info if entry.get('extension')]
+        normalized_extensions = [ext.lower() for ext in extensions if ext]
         duplicates = [ext for ext in set(normalized_extensions) if normalized_extensions.count(ext) > 1]
-        self.assertEqual([], duplicates, f"Duplicate file extensions in registry: {duplicates}")
+        self.assertEqual([], duplicates, f"Duplicate file extensions: {duplicates}")
 
-    def test_all_registry_classes_exist_as_files(self):
-        """Test that every class in registry has a corresponding file."""
-        for entry in self.registry:
-            with self.subTest(class_name=entry.class_name):
-                # Convert module name to file path
-                module_file = entry.module_name.lstrip('.') + '.py'
+    def test_all_discovered_classes_exist_as_files(self):
+        """Test that every discovered reader class has a corresponding file."""
+        for entry in self.format_info:
+            class_name = entry['class_name']
+            with self.subTest(class_name=class_name):
+                # Get reader class from module
+                reader_class = getattr(self.readers_module, class_name)
+                module_path = reader_class.__module__.replace('seasenselib.readers.', '')
+                module_file = module_path + '.py'
                 file_path = self.readers_dir / module_file
                 
                 self.assertTrue(file_path.exists(),
-                              f"Module file {module_file} for {entry.class_name} does not exist")
+                              f"Module file {module_file} for {class_name} does not exist")
 
-    def test_all_registry_classes_are_importable(self):
-        """Test that every class in registry can be imported."""
-        for entry in self.registry:
-            with self.subTest(class_name=entry.class_name):
-                try:
-                    module = importlib.import_module(f"seasenselib.readers{entry.module_name}")
-                    reader_class = getattr(module, entry.class_name)
-                    self.assertTrue(inspect.isclass(reader_class),
-                                  f"{entry.class_name} should be a class")
-                    self.assertTrue(issubclass(reader_class, AbstractReader),
-                                  f"{entry.class_name} should inherit from AbstractReader")
-                except (ImportError, AttributeError) as e:
-                    self.fail(f"Could not import {entry.class_name} from {entry.module_name}: {e}")
+    def test_all_discovered_classes_are_importable(self):
+        """Test that every discovered class can be imported and is a valid reader."""
+        for entry in self.format_info:
+            class_name = entry['class_name']
+            with self.subTest(class_name=class_name):
+                # Get reader class from module
+                reader_class = getattr(self.readers_module, class_name)
+                self.assertTrue(inspect.isclass(reader_class),
+                              f"{class_name} should be a class")
+                self.assertTrue(issubclass(reader_class, AbstractReader),
+                              f"{class_name} should inherit from AbstractReader")
 
-    def test_registry_completeness_vs_actual_files(self):
-        """Test that registry includes all reader classes found in actual files."""
+    def test_autodiscovery_completeness_vs_actual_files(self):
+        """Test that autodiscovery includes all reader classes found in actual files."""
         # Get all Python reader files in the readers directory
         reader_files = glob.glob(str(self.readers_dir / "*_reader.py"))
         
-        # Collect classes from registry
-        registry_classes = {entry.class_name for entry in self.registry}
+        # Collect classes from autodiscovery
+        discovered_classes = {entry['class_name'] for entry in self.format_info}
         
         # Find all reader classes in actual files
-        actual_classes = set()
-        missing_from_registry = []
+        missing_from_discovery = []
 
         for file_path in reader_files:
             file_name = Path(file_path).stem
@@ -459,77 +459,72 @@ class TestReadersCompleteness(unittest.TestCase):
                         attr is not AbstractReader and
                         attr.__module__ == module_name):
                         
-                        actual_classes.add(attr_name)
-                        
-                        if attr_name not in registry_classes:
-                            missing_from_registry.append(f"{attr_name} from {file_name}.py")
+                        if attr_name not in discovered_classes:
+                            missing_from_discovery.append(f"{attr_name} from {file_name}.py")
 
             except ImportError as e:
                 self.fail(f"Could not import {module_name}: {e}")
 
-        if missing_from_registry:
-            self.fail(f"Reader classes found in files but missing from registry: "
-                     f"{', '.join(missing_from_registry)}")
+        if missing_from_discovery:
+            self.fail(f"Reader classes found in files but missing from autodiscovery: "
+                     f"{', '.join(missing_from_discovery)}")
 
-    def test_registry_consistency_with_class_methods(self):
-        """Test that registry metadata matches what classes actually return."""
-        for entry in self.registry:
-            with self.subTest(class_name=entry.class_name):
-                try:
-                    # Import and get the class
-                    module = importlib.import_module(f"seasenselib.readers{entry.module_name}")
-                    reader_class = getattr(module, entry.class_name)
-                    
-                    # Test format_key consistency
-                    if hasattr(reader_class, 'format_key'):
-                        actual_format_key = reader_class.format_key()
-                        self.assertEqual(entry.format_key, actual_format_key,
-                                       f"Registry format_key '{entry.format_key}' doesn't match "
-                                       f"class method result '{actual_format_key}' for {entry.class_name}")
-                    
-                    # Test format_name consistency
-                    if hasattr(reader_class, 'format_name'):
-                        actual_format_name = reader_class.format_name()
-                        self.assertEqual(entry.format_name, actual_format_name,
-                                       f"Registry format_name '{entry.format_name}' doesn't match "
-                                       f"class method result '{actual_format_name}' for {entry.class_name}")
-                    
-                    # Test file_extension consistency
-                    if hasattr(reader_class, 'file_extension'):
-                        actual_extension = reader_class.file_extension()
-                        self.assertEqual(entry.file_extension, actual_extension,
-                                       f"Registry file_extension '{entry.file_extension}' doesn't match "
-                                       f"class method result '{actual_extension}' for {entry.class_name}")
-                        
-                except (ImportError, AttributeError) as e:
-                    self.fail(f"Error testing consistency for {entry.class_name}: {e}")
+    def test_format_info_consistency_with_class_methods(self):
+        """Test that format info matches what classes actually return."""
+        for entry in self.format_info:
+            class_name = entry['class_name']
+            with self.subTest(class_name=class_name):
+                # Get reader class from module
+                reader_class = getattr(self.readers_module, class_name)
+                
+                # Test format_key consistency
+                if hasattr(reader_class, 'format_key'):
+                    actual_format_key = reader_class.format_key()
+                    self.assertEqual(entry['key'], actual_format_key,
+                                   f"Format info key '{entry['key']}' doesn't match "
+                                   f"class method result '{actual_format_key}' for {class_name}")
+                
+                # Test format_name consistency
+                if hasattr(reader_class, 'format_name'):
+                    actual_format_name = reader_class.format_name()
+                    self.assertEqual(entry['format'], actual_format_name,
+                                   f"Format info name '{entry['format']}' doesn't match "
+                                   f"class method result '{actual_format_name}' for {class_name}")
+                
+                # Test file_extension consistency
+                if hasattr(reader_class, 'file_extension'):
+                    actual_extension = reader_class.file_extension()
+                    expected_extension = entry.get('extension')
+                    self.assertEqual(expected_extension, actual_extension,
+                                   f"Format info extension '{expected_extension}' doesn't match "
+                                   f"class method result '{actual_extension}' for {class_name}")
 
-    def test_all_list_matches_registry(self):
-        """Test that __all__ list exactly matches registry class names plus AbstractReader."""
-        registry_classes = {entry.class_name for entry in self.registry}
-        expected_all = sorted(['AbstractReader'] + list(registry_classes))
+    def test_all_list_matches_autodiscovery(self):
+        """Test that __all__ list matches autodiscovered class names plus AbstractReader."""
+        discovered_classes = sorted([entry['class_name'] for entry in self.format_info])
+        expected_all = sorted(['AbstractReader'] + discovered_classes)
         actual_all = sorted(self.all_list)
         
         self.assertEqual(expected_all, actual_all,
-                        f"__all__ list doesn't match registry.\n"
+                        f"__all__ list doesn't match autodiscovery.\n"
                         f"Expected: {expected_all}\n"
                         f"Actual: {actual_all}")
 
     def test_no_orphaned_classes_in_all(self):
-        """Test that no classes in __all__ are missing from registry (except AbstractReader)."""
-        registry_classes = {entry.class_name for entry in self.registry}
-        registry_classes.add('AbstractReader')  # AbstractReader is expected
+        """Test that no classes in __all__ are missing from autodiscovery (except AbstractReader)."""
+        discovered_classes = {entry['class_name'] for entry in self.format_info}
+        discovered_classes.add('AbstractReader')  # AbstractReader is expected
         
-        orphaned_classes = [cls for cls in self.all_list if cls not in registry_classes]
+        orphaned_classes = [cls for cls in self.all_list if cls not in discovered_classes]
         self.assertEqual([], orphaned_classes,
-                        f"Classes in __all__ but not in registry: {orphaned_classes}")
+                        f"Classes in __all__ but not discovered by autodiscovery: {orphaned_classes}")
 
-    def test_no_unused_registry_entries(self):
-        """Test that all registry entries correspond to classes in __all__."""
-        unused_entries = [entry.class_name for entry in self.registry 
-                         if entry.class_name not in self.all_list]
+    def test_no_unused_discovery_entries(self):
+        """Test that all discovered classes are in __all__."""
+        unused_entries = [entry['class_name'] for entry in self.format_info
+                         if entry['class_name'] not in self.all_list]
         self.assertEqual([], unused_entries,
-                        f"Registry entries not used in __all__: {unused_entries}")
+                        f"Discovered classes not used in __all__: {unused_entries}")
 
 if __name__ == '__main__':
     unittest.main()
