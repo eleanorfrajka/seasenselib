@@ -11,6 +11,7 @@ A tool for reading, converting, and plotting sensor data from different oceanogr
   - [Converting a CNV file to netCDF](#converting-a-cnv-file-to-netcdf)
   - [Showing the summary of a netCDF](#showing-the-summary-of-a-netcdf)
   - [Plotting a T-S diagram, vertical profile and time series](#plotting-a-t-s-diagram-vertical-profile-and-time-series)
+- [Extending SeaSenseLib with Plugins](#extending-seasenselib-with-plugins)
 - [Development](#development)
 
 ## Installation
@@ -93,7 +94,7 @@ plotter.plot(parameter_name='temperature')
 
 ## CLI Usage
 
-You can use the tool for reading, converting, and plotting CTD data based on Seabird CNV files.
+You can use the library for reading, converting, and plotting data based on different sensor files.
 This chapter describes how to run the program from CLI. 
 
 After installing as a Python package, you can run it via CLI by just using the package name: 
@@ -101,7 +102,7 @@ After installing as a Python package, you can run it via CLI by just using the p
 ```bash
 seasenselib
 ```
-The various features of the tool can be executed by using different commands. To invoke a command, simply append 
+The various features of the library can be executed by using different commands. To invoke a command, simply append 
 it as an argument to the program call via CLI (see following example section for some examples). The 
 following table gives a short overview of the available commands.
 
@@ -187,6 +188,84 @@ Also for this command, format detection works via file extension (`.nc` for netC
 
 To save the plots into a file instead showing on screen, just add the parameter `--output` (or `-o`) followed by the path of the output file. 
 The file extension determines in which format the plot is saved. Use `.png` for PNG, `.pdf` for PDF, and `.svg` for SVG.
+
+## Extending SeaSenseLib with Plugins
+
+SeaSenseLib supports a plugin system that allows you to add support for additional data formats without modifying the core library. Plugins use Python entry points for automatic discovery.
+
+### Quick Start
+
+**1. Install the example plugin:**
+
+```bash
+pip install examples/example-plugin
+```
+
+**2. Use it immediately:**
+
+```bash
+# Plugin formats appear automatically (here: example-json)
+seasenselib formats
+
+# Use like any built-in format
+seasenselib convert -i examples/example-plugin/data.json -o output.nc
+```
+
+### Creating Your Own Plugin
+
+**1. Create a reader class:**
+
+```python
+# my_plugin/my_reader.py
+from seasenselib.readers.base import AbstractReader
+import xarray as xr
+
+class MyFormatReader(AbstractReader):
+    def __init__(self, input_file: str):
+        self.input_file = input_file
+    
+    @staticmethod
+    def format_key() -> str:
+        return "my-format"
+    
+    @staticmethod
+    def format_name() -> str:
+        return "My Custom Format"
+    
+    @staticmethod
+    def file_extension() -> str:
+        return ".myf"
+    
+    def get_data(self) -> xr.Dataset:
+        # Your reading logic here
+        return xr.Dataset(...)
+```
+
+**2. Register via entry points in `pyproject.toml`:**
+
+```toml
+[project.entry-points."seasenselib.readers"]
+my_format = "my_plugin.my_reader:MyFormatReader"
+```
+
+**3. Install and use:**
+
+```bash
+pip install -e .
+seasenselib convert -i data.myf -o output.nc 
+```
+
+### Plugin Requirements
+
+Your plugin must:
+- Inherit from `AbstractReader`, `AbstractWriter`, or `AbstractPlotter`
+- Implement `format_key()` and `format_name()` static methods
+- Implement required instance methods (`get_data()` or `write()`)
+
+### Resources
+
+- **[Example Plugin](examples/example-plugin/)** - Working reference implementation (JSON reader/writer)
+- **Entry Point Groups**: `seasenselib.readers`, `seasenselib.writers`, `seasenselib.plotters`
 
 ## Development
 

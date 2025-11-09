@@ -3,7 +3,7 @@ Autodiscovery module for readers, writers, and plotters.
 
 This module provides functionality to automatically discover and register
 reader, writer, and plotter classes without requiring manual registry maintenance.
-It also includes format detection utilities.
+It also includes format detection utilities and plugin loading via entry points.
 """
 
 import importlib
@@ -14,6 +14,12 @@ from pathlib import Path
 from typing import Dict, List, Type, Set, Optional
 from abc import ABC
 from .exceptions import FormatDetectionError
+
+# Import entry_points with fallback for older Python versions
+try:
+    from importlib.metadata import entry_points
+except ImportError:
+    from importlib_metadata import entry_points  # Python < 3.8
 
 
 def _convert_class_name_to_module_name(class_name: str) -> str:
@@ -45,9 +51,9 @@ def _get_expected_module_name(class_name: str, base_class_name: str) -> str:
 
 
 class BaseDiscovery:
-    """Base class for autodiscovery functionality."""
+    """Base class for autodiscovery functionality with plugin support."""
 
-    def __init__(self, package_name: str, base_class: Type[ABC]):
+    def __init__(self, package_name: str, base_class: Type[ABC], entry_point_group: Optional[str] = None):
         """
         Initialize the discovery system.
         
@@ -57,23 +63,26 @@ class BaseDiscovery:
             The full package name (e.g., 'seasenselib.readers')
         base_class : Type[ABC]
             The abstract base class that all discovered classes must inherit from
+        entry_point_group : str, optional
+            Entry point group name for plugin discovery (e.g., 'seasenselib.readers')
         """
         self.package_name = package_name
         self.base_class = base_class
+        self.entry_point_group = entry_point_group
         self._discovered_classes: Dict[str, Type] = {}
         self._class_modules: Dict[str, str] = {}
+        self._plugin_classes: Dict[str, Type] = {}
 
-    def discover_classes(self) -> Dict[str, Type]:
+    def _discover_builtin_classes(self) -> Dict[str, Type]:
         """
-        Discover all classes that inherit from the base class.
+        Discover built-in classes from the package.
         
         Returns:
         --------
         Dict[str, Type]
             Dictionary mapping class names to class objects
         """
-        if self._discovered_classes:
-            return self._discovered_classes
+        builtin_classes = {}
 
         try:
             # Import the package
@@ -100,7 +109,7 @@ class BaseDiscovery:
                             issubclass(obj, self.base_class) and 
                             obj.__module__ == full_module_name):
 
-                            self._discovered_classes[name] = obj
+                            builtin_classes[name] = obj
                             self._class_modules[name] = modname
 
                 except ImportError as e:
@@ -110,6 +119,104 @@ class BaseDiscovery:
 
         except ImportError as e:
             print(f"Error: Could not import package {self.package_name}: {e}")
+
+        return builtin_classes
+
+    def _discover_plugin_classes(self) -> Dict[str, Type]:
+        """
+        Discover plugin classes from entry points.
+        
+        Returns:
+        --------
+        Dict[str, Type]
+            Dictionary mapping class names to plugin class objects
+        """
+        if not self.entry_point_group:
+            return {}
+
+        plugin_classes = {}
+
+        try:
+            # Load entry points for this group
+            eps = entry_points()
+            
+            # Handle different return types (dict vs SelectableGroups)
+            if hasattr(eps, 'select'):
+                # Python 3.10+ - returns SelectableGroups
+                group_eps = eps.select(group=self.entry_point_group)
+            elif isinstance(eps, dict):
+                # Python 3.9 - returns dict
+                group_eps = eps.get(self.entry_point_group, [])
+            else:
+                # Fallback - try to get group directly
+                group_eps = getattr(eps, self.entry_point_group, [])
+
+            for ep in group_eps:
+                try:
+                    # Load the class from the entry point
+                    cls = ep.load()
+
+                    # Validate that it's a class
+                    if not isinstance(cls, type):
+                        print(f"Warning: Entry point '{ep.name}' in group '{self.entry_point_group}' "
+                              f"does not point to a class, skipping")
+                        continue
+
+                    # Validate that it's a subclass of the base class
+                    if not issubclass(cls, self.base_class):
+                        print(f"Warning: Entry point '{ep.name}' class {cls.__name__} "
+                              f"is not a subclass of {self.base_class.__name__}, skipping")
+                        continue
+
+                    # Validate that it has required methods
+                    if not hasattr(cls, 'format_key') or not hasattr(cls, 'format_name'):
+                        print(f"Warning: Plugin class {cls.__name__} from entry point '{ep.name}' "
+                              f"does not implement format_key() or format_name(), skipping")
+                        continue
+
+                    # Add to plugin classes
+                    class_name = cls.__name__
+                    plugin_classes[class_name] = cls
+                    self._class_modules[class_name] = f"plugin:{ep.name}"
+
+                    # Only print in debug mode or when explicitly requested
+                    # print(f"Loaded plugin: {class_name} from entry point '{ep.name}'")
+
+                except Exception as e:
+                    print(f"Warning: Could not load entry point '{ep.name}' "
+                          f"in group '{self.entry_point_group}': {e}")
+                    continue
+
+        except Exception as e:
+            print(f"Warning: Error during plugin discovery for group '{self.entry_point_group}': {e}")
+
+        return plugin_classes
+
+    def discover_classes(self) -> Dict[str, Type]:
+        """
+        Discover all classes (built-in + plugins) that inherit from the base class.
+        
+        Returns:
+        --------
+        Dict[str, Type]
+            Dictionary mapping class names to class objects
+        """
+        if self._discovered_classes:
+            return self._discovered_classes
+
+        # Discover built-in classes
+        builtin_classes = self._discover_builtin_classes()
+
+        # Discover plugin classes
+        plugin_classes = self._discover_plugin_classes()
+        self._plugin_classes = plugin_classes
+
+        # Merge: plugins can override built-ins (with warning)
+        self._discovered_classes = dict(builtin_classes)
+        for name, cls in plugin_classes.items():
+            if name in self._discovered_classes:
+                print(f"Warning: Plugin class '{name}' overrides built-in class")
+            self._discovered_classes[name] = cls
 
         return self._discovered_classes
 
@@ -128,13 +235,29 @@ class BaseDiscovery:
         self.discover_classes()  # Ensure discovery is complete
         return self._class_modules.copy()
 
+    def get_plugin_classes(self) -> Dict[str, Type]:
+        """
+        Get only the plugin classes (not built-in).
+        
+        Returns:
+        --------
+        Dict[str, Type]
+            Dictionary of plugin class names to class objects
+        """
+        self.discover_classes()  # Ensure discovery is complete
+        return self._plugin_classes.copy()
+
 
 class ReaderDiscovery(BaseDiscovery):
-    """Autodiscovery for reader classes."""
+    """Autodiscovery for reader classes with plugin support."""
 
     def __init__(self):
         from ..readers.base import AbstractReader
-        super().__init__('seasenselib.readers', AbstractReader)
+        super().__init__(
+            package_name='seasenselib.readers',
+            base_class=AbstractReader,
+            entry_point_group='seasenselib.readers'
+        )
 
     def get_reader_by_format_key(self, format_key: str) -> Optional[Type]:
         """
@@ -232,11 +355,15 @@ class ReaderDiscovery(BaseDiscovery):
 
 
 class WriterDiscovery(BaseDiscovery):
-    """Autodiscovery for writer classes."""
+    """Autodiscovery for writer classes with plugin support."""
 
     def __init__(self):
         from ..writers.base import AbstractWriter
-        super().__init__('seasenselib.writers', AbstractWriter)
+        super().__init__(
+            package_name='seasenselib.writers',
+            base_class=AbstractWriter,
+            entry_point_group='seasenselib.writers'
+        )
 
     def get_writer_by_extension(self, extension: str) -> Optional[Type]:
         """
@@ -358,11 +485,15 @@ class WriterDiscovery(BaseDiscovery):
 
 
 class PlotterDiscovery(BaseDiscovery):
-    """Autodiscovery for plotter classes."""
+    """Autodiscovery for plotter classes with plugin support."""
 
     def __init__(self):
         from ..plotters.base import AbstractPlotter
-        super().__init__('seasenselib.plotters', AbstractPlotter)
+        super().__init__(
+            package_name='seasenselib.plotters',
+            base_class=AbstractPlotter,
+            entry_point_group='seasenselib.plotters'
+        )
 
 
 # Public format constants for CLI and other modules

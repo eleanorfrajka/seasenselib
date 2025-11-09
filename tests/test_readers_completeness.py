@@ -33,6 +33,16 @@ class TestReadersCompleteness(unittest.TestCase):
         self.all_list = readers.__all__
         self.discovery = ReaderDiscovery()
         self.format_info = self.discovery.get_format_info()
+        
+        # Get plugin classes to exclude from certain tests
+        self.plugin_classes = self.discovery.get_plugin_classes()
+        
+        # Get built-in classes only (for tests that shouldn't include plugins)
+        all_classes = self.discovery.discover_classes()
+        self.builtin_classes = {
+            name: cls for name, cls in all_classes.items()
+            if name not in self.plugin_classes
+        }
 
     def test_all_list_exists(self):
         """Test that __all__ list exists and is not empty."""
@@ -114,7 +124,7 @@ class TestReadersCompleteness(unittest.TestCase):
             self.fail(f"Missing reader classes: {', '.join(missing_classes)}")
 
     def test_all_reader_classes_are_properly_imported(self):
-        """Test that all classes in __all__ are properly imported from their respective modules."""
+        """Test that all built-in classes in __all__ are properly imported from their respective modules."""
         for class_name in self.all_list:
             if class_name == 'AbstractReader':
                 continue  # Skip the base class
@@ -126,6 +136,11 @@ class TestReadersCompleteness(unittest.TestCase):
 
                 # Get the class and check its module
                 reader_class = getattr(self.readers_module, class_name)
+                
+                # Skip plugin classes - they come from external packages
+                if class_name in self.plugin_classes:
+                    continue
+                
                 expected_module = f"seasenselib.readers.{self._class_name_to_file_name(class_name)}"
 
                 self.assertEqual(reader_class.__module__, expected_module,
@@ -183,13 +198,20 @@ class TestReadersCompleteness(unittest.TestCase):
 
     def test_all_list_sorted_alphabetically(self):
         """Test that __all__ list is sorted alphabetically for better maintainability."""
-        # Create a sorted version for comparison
-        sorted_all = sorted(self.all_list, key=str.lower)
+        # Separate built-in and plugin classes
+        builtin_names = [name for name in self.all_list if name not in self.plugin_classes]
+        plugin_names = [name for name in self.all_list if name in self.plugin_classes]
+        
+        # Create expected order: built-ins first (sorted), then plugins (sorted)
+        sorted_builtins = sorted(builtin_names, key=str.lower)
+        sorted_plugins = sorted(plugin_names, key=str.lower)
+        expected_order = sorted_builtins + sorted_plugins
 
-        self.assertEqual(self.all_list, sorted_all,
-                        f"__all__ list should be sorted alphabetically.\n"
+        self.assertEqual(self.all_list, expected_order,
+                        f"__all__ list should have built-in classes sorted alphabetically, "
+                        f"followed by plugin classes sorted alphabetically.\n"
                         f"Current: {self.all_list}\n"
-                        f"Expected: {sorted_all}")
+                        f"Expected: {expected_order}")
 
     def test_all_list_has_no_duplicates(self):
         """Test that __all__ list contains no duplicate entries."""
@@ -409,9 +431,14 @@ class TestReadersCompleteness(unittest.TestCase):
         self.assertEqual([], duplicates, f"Duplicate file extensions: {duplicates}")
 
     def test_all_discovered_classes_exist_as_files(self):
-        """Test that every discovered reader class has a corresponding file."""
+        """Test that every discovered built-in reader class has a corresponding file."""
         for entry in self.format_info:
             class_name = entry['class_name']
+            
+            # Skip plugin classes - they come from external packages
+            if class_name in self.plugin_classes:
+                continue
+                
             with self.subTest(class_name=class_name):
                 # Get reader class from module
                 reader_class = getattr(self.readers_module, class_name)

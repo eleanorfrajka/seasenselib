@@ -49,11 +49,11 @@ def _ensure_writers_discovered():
     if not _discovery_done:
         discovery = _get_writer_discovery()
         _all_writers = discovery.discover_classes()
-        
+
         # Import all discovered writer classes into this module's namespace
         for class_name, class_obj in _all_writers.items():
             globals()[class_name] = class_obj
-        
+
         _discovery_done = True
 
 # Trigger discovery on import
