@@ -6,7 +6,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import xarray as xr
-import scipy.io
 from seasenselib.readers.base import AbstractReader
 import seasenselib.parameters as params
 
@@ -42,6 +41,9 @@ class RbrMatlabRsktoolsReader(AbstractReader):
         xr.Dataset
             Converted Dataset.
         """
+
+        import scipy.io
+
         # Load MATLAB file
         try:
             mat = scipy.io.loadmat(

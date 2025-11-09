@@ -6,7 +6,7 @@ import argparse
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
-from ...core import DependencyManager, DataIOManager
+from ...core import DataIOManager
 
 
 @dataclass
@@ -21,8 +21,7 @@ class CommandResult:
 class BaseCommand(ABC):
     """Abstract base class for all commands."""
 
-    def __init__(self, dependency_manager: DependencyManager, io_manager: DataIOManager):
-        self.deps = dependency_manager
+    def __init__(self, io_manager: DataIOManager):
         self.io = io_manager
 
     @abstractmethod

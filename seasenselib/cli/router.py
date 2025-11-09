@@ -1,29 +1,25 @@
 """
 CLI router.
 
-This module handles command routing with lazy dependency loading.
+This module handles command routing and execution.
 """
 
 import sys
 from typing import List
-from ..core import DependencyManager, DataIOManager
+from ..core import DataIOManager
 from ..core.exceptions import SeaSenseLibError
 from .parser import ArgumentParser
 from .commands import CommandFactory
 
 
 class CLIRouter:
-    """Main CLI router with lazy loading capabilities.
+    """Main CLI router.
     
     This class is responsible for routing commands and executing them
-    while managing dependencies and I/O operations. It uses lazy loading
-    to improve startup performance by deferring heavy imports until they
-    are actually needed.
+    while managing I/O operations.
 
     Attributes:
     ----------
-    dependency_manager : DependencyManager
-        Manages lazy loading of dependencies.
     io_manager : DataIOManager
         Handles data input/output operations.
     argument_parser : ArgumentParser
@@ -40,8 +36,8 @@ class CLIRouter:
     """
 
     def __init__(self):
-        self.dependency_manager = DependencyManager()
-        self.io_manager = DataIOManager(self.dependency_manager)
+        # Initialize DataIO manager
+        self.io_manager = DataIOManager()
         self.argument_parser = ArgumentParser()
         self.command_factory = CommandFactory()
 
@@ -86,7 +82,7 @@ class CLIRouter:
 
             # Create command instance
             command = self.command_factory.create_command(
-                command_name, self.dependency_manager, self.io_manager
+                command_name, self.io_manager
             )
 
             # Parse full arguments for this specific command

@@ -5,7 +5,6 @@ Module for reading CTD data from SBE ASCII files.
 from __future__ import annotations
 import re
 from datetime import datetime
-import codecs
 import pandas as pd
 import xarray as xr
 
@@ -20,6 +19,8 @@ class SbeAsciiReader(AbstractReader):
         self.__read()
 
     def __extract_sample_interval(self, file_path):
+        import codecs
+
         with codecs.open(file_path, 'r', 'ascii') as fo:
             content = fo.read()
         lines = content.splitlines()
@@ -34,6 +35,8 @@ class SbeAsciiReader(AbstractReader):
         return sample_interval
 
     def __extract_instrument_type(self, file_path):
+        import codecs
+
         with codecs.open(file_path, 'r', 'ascii') as fo:
             first_line = fo.readline()
         match = re.search(r'\*+\s*(Sea-Bird\s+[A-Z0-9\-]+)', first_line)

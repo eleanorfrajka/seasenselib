@@ -4,7 +4,6 @@ Command-line argument parsing with lazy loading capabilities.
 
 import argparse
 from typing import List, Optional
-from ..core.format_detection import INPUT_FORMATS, OUTPUT_FORMATS
 
 
 class ArgumentParser:
@@ -30,6 +29,25 @@ class ArgumentParser:
 
     def __init__(self):
         self.base_parser = None
+        # Lazy load format lists when needed
+        self._input_formats = None
+        self._output_formats = None
+
+    @property
+    def INPUT_FORMATS(self):
+        """Lazy load input formats."""
+        if self._input_formats is None:
+            from ..core.autodiscovery import get_input_formats
+            self._input_formats = get_input_formats()
+        return self._input_formats
+
+    @property
+    def OUTPUT_FORMATS(self):
+        """Lazy load output formats."""
+        if self._output_formats is None:
+            from ..core.autodiscovery import get_output_formats
+            self._output_formats = get_output_formats()
+        return self._output_formats
 
     def parse_command_quickly(self, args: List[str]) -> Optional[str]:
         """
@@ -83,20 +101,20 @@ class ArgumentParser:
         except ImportError:
             mapping_help = 'Map CNV column names to standard parameter names'
 
-        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(OUTPUT_FORMATS)
+        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(self.OUTPUT_FORMATS)
 
         convert_parser = subparsers.add_parser('convert',
                     help='Convert a file to a specific format.')
         convert_parser.add_argument('-i', '--input', type=str, required=True,
                     help='Path of input file')
         convert_parser.add_argument('-f', '--input-format',
-                    type=str, default=None, choices=INPUT_FORMATS,
+                    type=str, default=None, choices=self.INPUT_FORMATS,
                     help='Format of input file')
         convert_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
         convert_parser.add_argument('-o', '--output', type=str, required=True,
                     help='Path of output file')
-        convert_parser.add_argument('-F', '--output-format', type=str, choices=OUTPUT_FORMATS, 
+        convert_parser.add_argument('-F', '--output-format', type=str, choices=self.OUTPUT_FORMATS, 
                     help=format_help)
         convert_parser.add_argument('-m', '--mapping', nargs='+',
                     help=mapping_help)
@@ -108,7 +126,7 @@ class ArgumentParser:
         show_parser.add_argument('-i', '--input', type=str, required=True,
                     help='Path of input file')
         show_parser.add_argument('-f', '--input-format', type=str,
-                    default=None, choices=INPUT_FORMATS,
+                    default=None, choices=self.INPUT_FORMATS,
                     help='Format of input file')
         show_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
@@ -143,7 +161,7 @@ class ArgumentParser:
         plot_ts_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         plot_ts_parser.add_argument('-f', '--input-format',
-                    type=str, default=None, choices=INPUT_FORMATS,
+                    type=str, default=None, choices=self.INPUT_FORMATS,
                     help='Format of input file')
         plot_ts_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
@@ -170,7 +188,7 @@ class ArgumentParser:
         plot_profile_parser.add_argument('-i', '--input', type=str, required=True,
                     help='Path of input file')
         plot_profile_parser.add_argument('-f', '--input-format', type=str,
-                    default=None, choices=INPUT_FORMATS,
+                    default=None, choices=self.INPUT_FORMATS,
                     help='Format of input file')
         plot_profile_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
@@ -193,7 +211,7 @@ class ArgumentParser:
         plot_series_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         plot_series_parser.add_argument('-f', '--input-format', type=str, 
-                    default=None, choices=INPUT_FORMATS, 
+                    default=None, choices=self.INPUT_FORMATS, 
                     help='Format of input file')
         plot_series_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
@@ -213,20 +231,20 @@ class ArgumentParser:
 
     def _add_subset_parser(self, subparsers):
         """Add subset command parser."""
-        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(OUTPUT_FORMATS)
+        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(self.OUTPUT_FORMATS)
 
         subset_parser = subparsers.add_parser('subset', 
                     help='Extract a subset of a file and save the result in another')
         subset_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         subset_parser.add_argument('-f', '--input-format', type=str, 
-                    default=None, choices=INPUT_FORMATS,
+                    default=None, choices=self.INPUT_FORMATS,
                     help='Format of input file')
         subset_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
         subset_parser.add_argument('-o', '--output', type=str,
                     help='Path of output file')
-        subset_parser.add_argument('-F', '--output-format', type=str, choices=OUTPUT_FORMATS, 
+        subset_parser.add_argument('-F', '--output-format', type=str, choices=self.OUTPUT_FORMATS, 
                     help=format_help)
         subset_parser.add_argument('--time-min', type=str, 
                     help='Minimum datetime value. Formats are: YYYY-MM-DD HH:ii:mm.ss')
@@ -245,7 +263,7 @@ class ArgumentParser:
 
     def _add_calc_parser(self, subparsers):
         """Add calc command parser."""
-        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(OUTPUT_FORMATS)
+        format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(self.OUTPUT_FORMATS)
         method_choices = [
             'min', 'max', 'mean', 'arithmetic_mean', 'median', 'std',
             'standard_deviation', 'var', 'variance', 'sum'
@@ -256,12 +274,12 @@ class ArgumentParser:
         calc_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         calc_parser.add_argument('-f', '--input-format', type=str, default=None,
-                    choices=INPUT_FORMATS, help='Format of input file')
+                    choices=self.INPUT_FORMATS, help='Format of input file')
         calc_parser.add_argument('-H', '--header-input', type=str, default=None,
                     help='Path of header input file (for Nortek ASCII files)')
         calc_parser.add_argument('-o', '--output', type=str, 
                     help='Path of output file')
-        calc_parser.add_argument('-F', '--output-format', type=str, choices=OUTPUT_FORMATS,
+        calc_parser.add_argument('-F', '--output-format', type=str, choices=self.OUTPUT_FORMATS,
                     help=format_help)
         calc_parser.add_argument('-M', '--method', type=str, choices=method_choices,
                     help='Mathematical method operated on the values.')
