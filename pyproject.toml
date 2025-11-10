@@ -61,7 +61,8 @@ dependencies = [
   "netcdf4",
   "gsw",
   "pyrsktools",
-  "setuptools"
+  "setuptools",
+  "importlib-metadata>=1.0; python_version<'3.8'"
 ]
 
 [project.optional-dependencies]

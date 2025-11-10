@@ -8,7 +8,6 @@ Otherwise, raises an error.
 """
 
 from __future__ import annotations
-import scipy.io
 from .base import AbstractReader
 from .rbr_matlab_legacy_reader import RbrMatlabLegacyReader
 from .rbr_matlab_rsktools_reader import RbrMatlabRsktoolsReader
@@ -28,6 +27,8 @@ class RbrMatlabReader(AbstractReader):
         """
         Selects the appropriate reader based on the root variable in the MATLAB file.
         """
+
+        import scipy.io
 
         # Load Matlab file to inspect root variable
         mat = scipy.io.loadmat(self.input_file, squeeze_me=True, struct_as_record=False)

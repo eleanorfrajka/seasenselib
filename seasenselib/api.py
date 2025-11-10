@@ -6,8 +6,7 @@ without requiring knowledge of the internal CLI structure.
 """
 
 from typing import List, Dict, Optional, TYPE_CHECKING
-from .core import DependencyManager, DataIOManager
-from .core.format_registry import get_all_formats
+from .core import DataIOManager
 
 if TYPE_CHECKING:
     import xarray as xr
@@ -82,9 +81,8 @@ def read(filename: str, file_format: Optional[str] = None,
     ```
     """
 
-    # Initialize the core components
-    dependency_manager = DependencyManager()
-    io_manager = DataIOManager(dependency_manager)
+    # Initialize the I/O manager
+    io_manager = DataIOManager()
 
     try:
         # Use the existing I/O infrastructure to read the data
@@ -154,9 +152,8 @@ def write(dataset: 'xr.Dataset', filename: str,
     ```
     """
 
-    # Initialize the core components
-    dependency_manager = DependencyManager()
-    io_manager = DataIOManager(dependency_manager)
+    # Initialize the I/O manager
+    io_manager = DataIOManager()
 
     try:
         # Use the existing I/O infrastructure to write the data
@@ -199,13 +196,17 @@ def formats() -> List[Dict[str, str]]:
         print(f"{format['name']}: '{format['key']}' ({format['extension']})")
     ```
     """
-    reader_formats = get_all_formats()
+    from .core.autodiscovery import ReaderDiscovery
+    
+    discovery = ReaderDiscovery()
+    reader_formats = discovery.get_format_info()
+    
     return [
         {
-            'name': fmt.name,
-            'key': fmt.key, 
-            'extension': fmt.extension,
-            'class_name': fmt.class_name
+            'name': fmt.get('format', 'Unknown'),
+            'key': fmt['key'], 
+            'extension': fmt.get('extension', ''),
+            'class_name': fmt['class_name']
         }
         for fmt in reader_formats
     ]

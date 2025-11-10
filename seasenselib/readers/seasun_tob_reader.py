@@ -5,7 +5,6 @@ Module for reading CTD data from TOB files into xarray Datasets.
 from __future__ import annotations
 import pandas as pd
 import xarray as xr
-import gsw
 import seasenselib.parameters as params
 from .base import AbstractReader
 
@@ -57,6 +56,8 @@ class SeasunTobReader(AbstractReader):
         and organizes the data into an xarray Dataset. It handles the conversion of
         timestamps to datetime objects and assigns metadata according to CF conventions.
         """
+
+        import gsw
 
         # Read the file
         with open(self.input_file, 'r', encoding=self.encoding) as file:

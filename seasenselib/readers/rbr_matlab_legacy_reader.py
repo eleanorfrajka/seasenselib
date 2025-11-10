@@ -6,7 +6,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import xarray as xr
-import scipy.io
 from datetime import datetime
 from seasenselib.readers.base import AbstractReader
 
@@ -37,6 +36,9 @@ class RbrMatlabLegacyReader(AbstractReader):
         multiple parameter columns based on available channels. Also returns 
         side info via instance attributes.
         """
+
+        import scipy.io
+
         # Load the .mat with MATLAB-like structs squeezed into simple objects
         mat = scipy.io.loadmat(mat_file_path, squeeze_me=True, struct_as_record=False)
 
@@ -47,7 +49,7 @@ class RbrMatlabLegacyReader(AbstractReader):
         # Raise error ift RBR entry not in mat file
         if "RBR" not in mat:
             raise ValueError("Expected 'RBR' struct not found in .mat file.")
-        
+
         # Get top-level struct named 'RBR'
         RBR = mat["RBR"]
 

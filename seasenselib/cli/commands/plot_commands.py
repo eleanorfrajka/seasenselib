@@ -17,9 +17,8 @@ class PlotTSCommand(BaseCommand):
             if args.dot_size and (args.dot_size < 1 or args.dot_size > 200):
                 raise ValidationError("--dot-size must be between 1 and 200")
 
-            # Load required dependencies
-            data_deps = self.deps.get_data_dependencies()
-            plot_deps = self.deps.get_plot_dependencies()
+            # Lazy import plotters
+            from ...plotters import TsDiagramPlotter
 
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
@@ -27,9 +26,8 @@ class PlotTSCommand(BaseCommand):
             if not data:
                 raise ValidationError('No data found in file.')
 
-            # Create plotter
-            ts_diagram_plotter = plot_deps['plotters'].TsDiagramPlotter
-            plotter = ts_diagram_plotter(data)
+            # Create and use plotter
+            plotter = TsDiagramPlotter(data)
 
             # Plot with options
             plotter.plot(
@@ -59,9 +57,8 @@ class PlotProfileCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute plot-profile command."""
         try:
-            # Load required dependencies
-            data_deps = self.deps.get_data_dependencies()
-            plot_deps = self.deps.get_plot_dependencies()
+            # Lazy import plotters
+            from ...plotters import ProfilePlotter
 
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
@@ -69,9 +66,8 @@ class PlotProfileCommand(BaseCommand):
             if not data:
                 raise ValidationError('No data found in file.')
 
-            # Create plotter
-            profile_plotter = plot_deps['plotters'].ProfilePlotter
-            plotter = profile_plotter(data)
+            # Create and use plotter
+            plotter = ProfilePlotter(data)
 
             # Plot with options
             plotter.plot(
@@ -98,9 +94,8 @@ class PlotSeriesCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute plot-series command."""
         try:
-            # Load required dependencies
-            data_deps = self.deps.get_data_dependencies()
-            plot_deps = self.deps.get_plot_dependencies()
+            # Lazy import plotters
+            from ...plotters import TimeSeriesPlotter, TimeSeriesPlotterMulti
 
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
@@ -114,13 +109,11 @@ class PlotSeriesCommand(BaseCommand):
             # Choose appropriate plotter
             if len(parameters) == 1:
                 # Single parameter - use TimeSeriesPlotter
-                time_series_plotter = plot_deps['plotters'].TimeSeriesPlotter
-                plotter = time_series_plotter(data)
+                plotter = TimeSeriesPlotter(data)
                 plotter.plot(parameter_name=parameters[0], output_file=args.output)
             else:
                 # Multiple parameters - use TimeSeriesPlotterMulti
-                time_series_plotter_multi = plot_deps['plotters'].TimeSeriesPlotterMulti
-                plotter = time_series_plotter_multi(data)
+                plotter = TimeSeriesPlotterMulti(data)
 
                 # Plot with options
                 plotter.plot(

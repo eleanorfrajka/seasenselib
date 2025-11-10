@@ -85,3 +85,25 @@ class NetCdfWriter(AbstractWriter):
             The file extension for netCDF files, which is '.nc'.
         """
         return '.nc'
+    
+    @staticmethod
+    def format_key() -> str:
+        """Get the format key for this writer.
+        
+        Returns:
+        --------
+        str
+            The format key 'netcdf'.
+        """
+        return 'netcdf'
+    
+    @staticmethod
+    def format_name() -> str:
+        """Get the human-readable format name.
+        
+        Returns:
+        --------
+        str
+            The format name 'netCDF'.
+        """
+        return 'netCDF'

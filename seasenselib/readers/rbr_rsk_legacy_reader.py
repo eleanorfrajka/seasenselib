@@ -3,7 +3,6 @@ Module for reading RBR legacy .rsk files into xarray Datasets.
 """
 
 from __future__ import annotations
-import sqlite3
 import pandas as pd
 import xarray as xr
 from .base import AbstractReader
@@ -136,6 +135,8 @@ class RbrRskLegacyReader(AbstractReader):
         organizes the data into a xarray Dataset. It also assigns long names and
         units as attributes to the dataset variables.
         """
+
+        import sqlite3
 
         # Connect to the SQLite database in the RSK file
         con = sqlite3.connect( self.input_file )

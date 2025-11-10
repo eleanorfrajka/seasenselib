@@ -15,18 +15,21 @@ class FormatsCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute formats command."""
         try:
-            # Use the lightweight format registry instead of loading heavy reader classes
+            # Use autodiscovery to get format information
             # pylint: disable=C0415
-            from ...core.format_registry import get_all_formats
+            from ...core.autodiscovery import ReaderDiscovery
 
-            # Get format information without loading reader classes
+            discovery = ReaderDiscovery()
+            format_info_list = discovery.get_format_info()
+
+            # Convert to the expected format
             formats_data = []
-            for format_info in get_all_formats():
+            for format_info in format_info_list:
                 format_data = {
-                    'name': format_info.name,
-                    'key': format_info.key,
-                    'extension': format_info.extension,
-                    'class': format_info.class_name
+                    'name': format_info.get('format', 'Unknown'),
+                    'key': format_info['key'],
+                    'extension': format_info.get('extension', ''),
+                    'class': format_info['class_name']
                 }
                 formats_data.append(format_data)
 

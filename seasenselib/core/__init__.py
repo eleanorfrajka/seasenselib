@@ -1,22 +1,22 @@
 """
 SeaSenseLib Core Module
 
-Core functionality including dependency management, I/O operations, and utilities.
+Core functionality including I/O operations, autodiscovery, factories, and utilities.
 """
 
-from .dependencies import DependencyManager
 from .io_manager import DataIOManager
-from .format_detection import FormatDetector
-from .format_registry import get_all_formats, get_format_by_key, get_format_by_extension
+from .autodiscovery import FormatDetector, ReaderDiscovery, WriterDiscovery, PlotterDiscovery
+from .factories import ReaderFactory, WriterFactory
 from .exceptions import SeaSenseLibError, FormatDetectionError, DependencyError, ValidationError
 
 __all__ = [
-    'DependencyManager',
     'DataIOManager', 
     'FormatDetector',
-    'get_all_formats',
-    'get_format_by_key', 
-    'get_format_by_extension',
+    'ReaderDiscovery',
+    'WriterDiscovery',
+    'PlotterDiscovery',
+    'ReaderFactory',
+    'WriterFactory',
     'SeaSenseLibError',
     'FormatDetectionError',
     'DependencyError',

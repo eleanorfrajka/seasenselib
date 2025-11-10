@@ -5,7 +5,6 @@ Module for reading RCM data from MATLAB .mat files.
 from __future__ import annotations
 import pandas as pd
 import xarray as xr
-import scipy
 from seasenselib.readers.base import AbstractReader
 
 class RcmMatlabReader(AbstractReader):
@@ -16,6 +15,7 @@ class RcmMatlabReader(AbstractReader):
         self.__read()
 
     def __parse_data(self, mat_file_path):
+        import scipy.io
 
         # read adcp file 
         data = scipy.io.loadmat(mat_file_path)

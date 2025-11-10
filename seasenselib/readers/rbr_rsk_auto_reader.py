@@ -3,7 +3,6 @@ Module for reading RBR RSK data files into xarray Datasets.
 """
 
 from __future__ import annotations
-import sqlite3
 import xarray as xr
 from packaging.version import Version
 from .base import AbstractReader
@@ -51,6 +50,8 @@ class RbrRskAutoReader(AbstractReader):
         type and version of the database, and initializes either the RbrRskReader
         or the RbrRskLegacyReader accordingly. 
         """
+
+        import sqlite3
 
         # Connect to the SQLite database of the RSK file to check type and version
         con = sqlite3.connect(self.input_file)
