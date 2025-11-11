@@ -119,6 +119,44 @@ class AbstractPlotter(ABC):
         """
         pass
 
+    @staticmethod
+    @abstractmethod
+    def name() -> str:
+        """Get the name for this plotter.
+
+        This property must be implemented by all subclasses.
+
+        Returns:
+        --------
+        str
+            The name (e.g., 'Time Series', 'T-S Diagram', 'Vertical Profile').
+
+        Raises:
+        -------
+        NotImplementedError:
+            If the subclass does not implement this property.
+        """
+        raise NotImplementedError("Writer classes must define a format name")
+
+    @staticmethod
+    @abstractmethod
+    def key() -> str:
+        """Get the unique key for this writer.
+
+        This property must be implemented by all subclasses.
+        
+        Returns:
+        --------
+        str
+            The key value (e.g., 'time-series', 'ts-diagram', 'vertical-profile').
+        
+        Raises:
+        -------
+        NotImplementedError:
+            If the subclass does not implement this property.
+        """
+        raise NotImplementedError("Writer classes must define a key")
+
     def _get_dataset_without_nan(self) -> xr.Dataset:
         """Returns dataset with NaN values removed from time dimension.
         

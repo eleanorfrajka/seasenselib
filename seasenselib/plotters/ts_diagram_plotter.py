@@ -172,3 +172,13 @@ class TsDiagramPlotter(AbstractPlotter):
         # Add sigma_0 in gray in the left upper corner
         plt.text(0.02, 0.95, r"$\sigma_0$", color='gray', fontsize=18, 
                 fontweight='bold', transform=plt.gca().transAxes)
+
+    @staticmethod
+    def name() -> str:
+        """Get the human-readable format name."""
+        return "T-S Diagram"
+
+    @staticmethod
+    def key() -> str:
+        """Get the unique key for this plotter."""
+        return "ts-diagram"

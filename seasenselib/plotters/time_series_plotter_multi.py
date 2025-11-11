@@ -391,3 +391,13 @@ class TimeSeriesPlotterMulti(AbstractPlotter):
         """
         self.plot(parameter_names=parameter_names, output_file=output_file,
                  normalize=True, colors=colors, **kwargs)
+
+    @staticmethod
+    def name() -> str:
+        """Return the human-readable format name."""
+        return "Time Series Multi Parameters"
+
+    @staticmethod
+    def key() -> str:
+        """Return the unique format identifier."""
+        return "time-series-multi"
