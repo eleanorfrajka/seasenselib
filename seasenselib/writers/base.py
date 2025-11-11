@@ -28,6 +28,10 @@ class AbstractWriter(ABC):
         Initializes the writer with the provided xarray Dataset.
     file_extension: str
         The default file extension for this writer (to be implemented by subclasses).
+    format_name() -> str:
+        Get the format name for this writer (to be implemented by subclasses).
+    format_key() -> str:
+        Get the format key for this writer (to be implemented by subclasses).
     data: xr.Dataset
         The xarray Dataset containing the sensor data.
     data.setter(value: xr.Dataset):
@@ -64,15 +68,55 @@ class AbstractWriter(ABC):
 
     @staticmethod
     @abstractmethod
-    def file_extension() -> str:
-        """Get the default file extension for this writer.
-        
+    def format_name() -> str:
+        """Get the format name for this writer.
+
+        This property must be implemented by all subclasses.
+
+        Returns:
+        --------
+        str
+            The format (e.g., 'netCDF', 'CSV').
+
+        Raises:
+        -------
+        NotImplementedError:
+            If the subclass does not implement this property.
+        """
+        raise NotImplementedError("Writer classes must define a format name")
+
+    @staticmethod
+    @abstractmethod
+    def format_key() -> str:
+        """Get the format key for this writer.
+
         This property must be implemented by all subclasses.
         
         Returns:
         --------
         str
-            The file extension (e.g., '.nc', '.csv', '.xlsx').
+            The format key (e.g., 'netcdf', 'csv').
+
+        Raises:
+        -------
+        NotImplementedError:
+            If the subclass does not implement this property.
+        """
+        raise NotImplementedError("Writer classes must define a format key")
+
+    @staticmethod
+    @abstractmethod
+    def file_extension() -> str:
+        """Get the default file extension for this writer.
+        
+        This property must be implemented by all subclasses.
+        The extension must be unique over all registered writers.
+        If the writer does not specify a unique file extension, just return `None`.
+        
+        Returns:
+        --------
+        str
+            The file extension (e.g., '.nc', '.csv').
 
         Raises:
         -------

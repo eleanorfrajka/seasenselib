@@ -30,12 +30,12 @@ class HistogramPlotter(AbstractPlotter):
         super().__init__(data)
 
     @staticmethod
-    def format_key() -> str:
+    def key() -> str:
         """Return the unique format identifier."""
         return "histogram"
 
     @staticmethod
-    def format_name() -> str:
+    def name() -> str:
         """Return the human-readable format name."""
         return "Histogram Plot"
 

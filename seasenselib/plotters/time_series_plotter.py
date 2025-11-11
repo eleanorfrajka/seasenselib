@@ -123,3 +123,13 @@ class TimeSeriesPlotter(AbstractPlotter):
         """
         self.plot(parameter_name, output_file=output_file, 
                  ylim_min=ylim_min, ylim_max=ylim_max)
+
+    @staticmethod
+    def name() -> str:
+        """Return the human-readable format name."""
+        return "Time Series"
+    
+    @staticmethod
+    def key() -> str:
+        """Return the unique format identifier."""
+        return "time-series"

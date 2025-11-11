@@ -122,3 +122,11 @@ class ProfilePlotter(AbstractPlotter):
 
         # Save or show the plot
         self._save_or_show_plot(output_file)
+
+    @staticmethod
+    def name() -> str:
+        return "Vertical Profile"
+    
+    @staticmethod
+    def key() -> str:
+        return "vertical-profile"

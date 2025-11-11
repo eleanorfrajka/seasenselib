@@ -451,6 +451,8 @@ class AbstractReader(ABC):
         """Get the file extension for this reader.
 
         This property must be implemented by all subclasses.
+        The extension must be unique over all registered readers.
+        If a reader does not specify a unique file extension, just return `None`.
 
         Returns:
         --------

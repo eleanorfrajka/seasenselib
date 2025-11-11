@@ -14,7 +14,7 @@ authors = [
 ]
 
 dependencies = [
-    "seasenselib>=0.2.0",
+    "seasenselib>=0.3.0",
     "xarray",
     "pandas",
     "numpy",

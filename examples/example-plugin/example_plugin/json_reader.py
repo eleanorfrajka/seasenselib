@@ -5,14 +5,9 @@ This reader demonstrates how to create a custom reader plugin that extends
 SeaSenseLib with support for reading oceanographic data from JSON files.
 """
 
-import json
 from pathlib import Path
-from datetime import datetime
 import xarray as xr
-import numpy as np
-import pandas as pd
 from seasenselib.readers.base import AbstractReader
-
 
 class JsonReader(AbstractReader):
     """
@@ -43,6 +38,7 @@ class JsonReader(AbstractReader):
         self.input_file = Path(input_file)
         self._data = None
         self._validate_file()
+        self._read_json_file()
 
     def _validate_file(self):
         """Validate that the input file exists and is readable."""
@@ -84,9 +80,9 @@ class JsonReader(AbstractReader):
         ValueError
             If the JSON structure is invalid
         """
-        if self._data is None:
-            self._data = self._read_json_file()
-        return self._data
+        if self.data is None:
+            self.data = self._read_json_file()
+        return self.data
 
     def _read_json_file(self) -> xr.Dataset:
         """
@@ -97,6 +93,13 @@ class JsonReader(AbstractReader):
         xr.Dataset
             Parsed dataset with oceanographic data
         """
+
+        # Lazy imports
+        import json
+        from datetime import datetime
+        import pandas as pd
+        import numpy as np
+
         # Read JSON file
         with open(self.input_file, 'r') as f:
             data = json.load(f)
@@ -129,8 +132,7 @@ class JsonReader(AbstractReader):
             data_vars[key] = xr.DataArray(
                 arr,
                 coords={'time': times},
-                dims=['time'],
-                attrs=self._get_variable_attrs(key)
+                dims=['time']
             )
 
         # Create Dataset
@@ -151,47 +153,10 @@ class JsonReader(AbstractReader):
         ds['time'].attrs['long_name'] = 'Time'
         ds['time'].attrs['axis'] = 'T'
 
+        # Perform default post-processing
+        ds = self._perform_default_postprocessing(ds)
+
+        # Store processed data
+        self.data = ds
+
         return ds
-
-    def _get_variable_attrs(self, var_name: str) -> dict:
-        """
-        Get standard attributes for a variable.
-        
-        Parameters:
-        -----------
-        var_name : str
-            Variable name
-            
-        Returns:
-        --------
-        dict
-            Attributes dictionary
-        """
-        # Standard oceanographic variable attributes
-        attrs_map = {
-            'temperature': {
-                'long_name': 'Sea Water Temperature',
-                'standard_name': 'sea_water_temperature',
-                'units': 'degree_Celsius',
-            },
-            'salinity': {
-                'long_name': 'Sea Water Practical Salinity',
-                'standard_name': 'sea_water_practical_salinity',
-                'units': 'PSU',
-            },
-            'pressure': {
-                'long_name': 'Sea Water Pressure',
-                'standard_name': 'sea_water_pressure',
-                'units': 'dbar',
-            },
-            'depth': {
-                'long_name': 'Depth',
-                'standard_name': 'depth',
-                'units': 'm',
-                'positive': 'down',
-            },
-        }
-
-        return attrs_map.get(var_name, {
-            'long_name': var_name.replace('_', ' ').title(),
-        })

@@ -16,12 +16,6 @@ From this directory:
 pip install -e .
 ```
 
-Or if published:
-
-```bash
-pip install seasenselib-example-plugin
-```
-
 ## Usage
 
 Once installed, the plugin formats are automatically available:
@@ -33,42 +27,31 @@ Once installed, the plugin formats are automatically available:
 seasenselib formats
 
 # Convert using the plugin reader
-seasenselib convert data.json output.nc
+seasenselib convert -i data.json -o output.nc
 
 # Convert using the plugin writer
-seasenselib convert input.cnv output.json --output-format example-json
+seasenselib convert -i input.cnv -o output.json --output-format example-json
 ```
 
 ### Python API
 
 ```python
-from seasenselib.api import convert_file
-from seasenselib import read
+import seasenselib as ssl
 from seasenselib.plotters import HistogramPlotter
 
 # Use plugin reader (detected by .json extension)
-convert_file('data.json', 'output.nc')
+ds = ssl.read('data.json')
 
 # Use plugin writer
-convert_file('input.cnv', 'output.json', output_format='example-json')
+ssl.write('output.json', output_format='example-json')
 
 # Use plugin plotter
-ds = read('data.json')
+ds = ssl.read('data.json')
 plotter = HistogramPlotter(ds)
 plotter.plot(parameter='temperature', bins=20, output_file='histogram.png')
 ```
 
 ## Testing the Plugin
-
-**Quick test with the demo script:**
-
-```bash
-python demo_all_plugins.py
-```
-
-This will demonstrate all three plugin types (reader, writer, plotter) in action.
-
-**Or test manually:**
 
 Create a test JSON file:
 
@@ -87,7 +70,7 @@ Create a test JSON file:
 Then convert it:
 
 ```bash
-seasenselib convert test.json output.nc
+seasenselib convert -i test.json -o output.nc
 ```
 
 ## Plugin Architecture
@@ -118,6 +101,7 @@ To modify this plugin:
   - `json_writer.py` - JSON writer implementation
   - `histogram_plotter.py` - Histogram plotter implementation
 - `README.md` - This file
+- `data.json` - Sample data file for testing
 
 ## License
 
