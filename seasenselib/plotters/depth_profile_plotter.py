@@ -8,10 +8,10 @@ from seasenselib.plotters.base import AbstractPlotter
 import seasenselib.parameters as params
 
 
-class ProfilePlotter(AbstractPlotter):
-    """Creates vertical CTD profiles showing temperature and salinity vs depth.
+class DepthProfilePlotter(AbstractPlotter):
+    """Creates CTD depth profiles showing temperature and salinity vs depth.
     
-    This class specializes in creating vertical profile plots with depth on the
+    This class specializes in creating depth profile plots with depth on the
     y-axis and temperature/salinity on separate x-axes.
 
     Attributes:
@@ -125,8 +125,18 @@ class ProfilePlotter(AbstractPlotter):
 
     @staticmethod
     def name() -> str:
-        return "Vertical Profile"
-    
+        return "Depth Profile"
+
     @staticmethod
     def key() -> str:
-        return "vertical-profile"
+        return "depth-profile"
+
+    @classmethod
+    def add_cli_arguments(cls, parser):
+        """Register CLI arguments for the depth profile plotter."""
+        parser.add_argument('--dot-size', type=int, default=3,
+                            help='Dot size for scatter plot (1-200)')
+        parser.add_argument('--no-lines-between-dots', action='store_true', default=False,
+                            help='Disable the connecting lines between dots')
+        parser.add_argument('--no-grid', action='store_true', default=False,
+                            help='Disable the grid')

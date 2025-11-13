@@ -73,7 +73,7 @@ class ExcelWriter(AbstractWriter):
             The file extension for Excel files, which is '.xlsx'.
         """
         return '.xlsx'
-    
+
     @staticmethod
     def format_key() -> str:
         """Get the format key for this writer.
@@ -84,7 +84,7 @@ class ExcelWriter(AbstractWriter):
             The format key 'excel'.
         """
         return 'excel'
-    
+
     @staticmethod
     def format_name() -> str:
         """Get the human-readable format name.

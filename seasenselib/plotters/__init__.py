@@ -10,25 +10,25 @@ Available Plotters:
 All plotter classes are automatically discovered from the plotters directory.
 Common plotters include:
 - TsDiagramPlotter: Create T-S (Temperature-Salinity) diagrams with density isolines
-- ProfilePlotter: Create vertical CTD profiles for temperature and salinity
-- TimeSeriesPlotter: Create time series plots for any parameter
-- TimeSeriesPlotterMulti: Create multi-parameter time series plots
+- DepthProfilePlotter: Create CTD depth profiles for temperature and salinity
+- TimeSeriesPlotter: Create time series plots for single or multiple parameters
 
 Example Usage:
 --------------
-from seasenselib.plotters import TsDiagramPlotter, ProfilePlotter, TimeSeriesPlotter
+from seasenselib.plotters import TsDiagramPlotter, DepthProfilePlotter, TimeSeriesPlotter
 
 # Create a T-S diagram
 ts_plotter = TsDiagramPlotter(data)
 ts_plotter.plot(title="Station 001 T-S Diagram", output_file="ts_diagram.png")
 
 # Create a vertical profile  
-profile_plotter = ProfilePlotter(data)
+profile_plotter = DepthProfilePlotter(data)
 profile_plotter.plot(title="CTD Profile", output_file="profile.png")
 
-# Create a time series plot
+# Create a time series plot (single or multiple parameters)
 time_plotter = TimeSeriesPlotter(data)
-time_plotter.plot("temperature", title="Temperature Time Series", output_file="temp_series.png")
+time_plotter.plot(parameter_names=['temperature'], output_file="temp_series.png")
+time_plotter.plot(parameter_names=['temperature', 'salinity'], dual_axis=True, output_file="multi_series.png")
 """
 
 # Import the base class
