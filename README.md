@@ -10,7 +10,7 @@ A tool for reading, converting, and plotting sensor data from different oceanogr
 - [Example data](#example-data)
   - [Converting a CNV file to netCDF](#converting-a-cnv-file-to-netcdf)
   - [Showing the summary of a netCDF](#showing-the-summary-of-a-netcdf)
-  - [Plotting a T-S diagram, vertical profile and time series](#plotting-a-t-s-diagram-vertical-profile-and-time-series)
+  - [Plotting a T-S diagram, depth profile and time series](#plotting-a-t-s-diagram-depth-profile-and-time-series)
 - [Extending SeaSenseLib with Plugins](#extending-seasenselib-with-plugins)
 - [Development](#development)
 
@@ -89,7 +89,7 @@ writer.write('profile.nc')
 
 # Plot CTD data
 plotter = ssl.plotters.TimeSeriesPlotter(ds)
-plotter.plot(parameter_name='temperature')
+plotter.plot(parameters=['temperature'])
 ```
 
 ## CLI Usage
@@ -162,9 +162,9 @@ For the created netCDF file:
 seasenselib show -i output/sea-practical-2023.nc
 ```
 
-Again, format detection works also for this command via file extension (`.nc` for netCDF).
+Format detection works also for this command via file extension (`.nc` for netCDF).
 
-### Plotting a T-S diagram, vertical profile and time series from a netCDF file
+### Plotting a T-S diagram, depth profile and time series from a netCDF file
 
 Plot a T-S diagram:
 
@@ -172,10 +172,10 @@ Plot a T-S diagram:
 seasenselib plot ts-diagram -i examples/sea-practical-2023.cnv
 ```
 
-Plot a vertical CTD profile:
+Plot a CTD depth profile:
 
 ```bash
-seasenselib plot vertical-profile -i examples/sea-practical-2023.cnv
+seasenselib plot depth-profile -i examples/sea-practical-2023.cnv
 ```
 
 Plot a time series for 'temperature' parameter:

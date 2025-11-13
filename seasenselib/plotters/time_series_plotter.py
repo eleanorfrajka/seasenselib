@@ -32,12 +32,12 @@ class TimeSeriesPlotter(AbstractPlotter):
     
     Methods:
     --------
-    plot(parameter_names, output_file=None, dual_axis=False, 
+    plot(parameters, output_file=None, dual_axis=False, 
          left_params=None, right_params=None, normalize=False, **kwargs):
         Creates and displays/saves the time series plot for multiple parameters.
-    plot_single_parameter(parameter_name, ...):
+    plot_single_parameter(parameter, ...):
         Convenience method for single parameter plotting.
-    plot_multiple_parameters(parameter_names, ...):
+    plot_multiple_parameters(parameters, ...):
         Convenience method for multi-parameter plotting with explicit parameters.
     """
 
@@ -47,10 +47,10 @@ class TimeSeriesPlotter(AbstractPlotter):
         Parameters:
         -----------
         *args : tuple
-            First argument can be parameter_names (str or List[str]).
+            First argument can be parameters (str or List[str]).
         **kwargs : dict
             Keyword arguments:
-            - parameter_names : str or List[str] - Parameter name(s) to plot
+            - parameters : str or List[str] - Parameter(s) to plot
             - output_file : str, optional - Path to save the plot
             - dual_axis : bool, default False - Use dual y-axes for different units
             - left_params : List[str], optional - Parameters for left y-axis
@@ -72,7 +72,7 @@ class TimeSeriesPlotter(AbstractPlotter):
             raise ValueError("No data available to plot. Please set the data attribute first.")
 
         # Extract parameter names from args or kwargs
-        parameter_names = self._extract_parameter_names(*args, **kwargs)
+        parameters = self._extract_parameters(*args, **kwargs)
 
         # Extract other parameters
         output_file = kwargs.get('output_file', None)
@@ -84,16 +84,16 @@ class TimeSeriesPlotter(AbstractPlotter):
         line_styles = kwargs.get('line_styles', None)
 
         # Validate required variables
-        required_vars = [params.TIME] + parameter_names
+        required_vars = [params.TIME] + parameters
         self._validate_required_variables(required_vars)
 
         # Determine axis assignment
         if dual_axis:
             left_params, right_params = self._determine_axis_assignment(
-                parameter_names, left_params, right_params
+                parameters, left_params, right_params
             )
         else:
-            left_params = parameter_names
+            left_params = parameters
             right_params = []
 
         # Create the plot
@@ -104,26 +104,26 @@ class TimeSeriesPlotter(AbstractPlotter):
         # Save or show the plot
         self._save_or_show_plot(output_file)
 
-    def _extract_parameter_names(self, *args, **kwargs):
+    def _extract_parameters(self, *args, **kwargs):
         """Extract parameter names from args and kwargs."""
-        # Check for parameter_names in kwargs
-        if 'parameter_names' in kwargs:
-            parameter_names = kwargs['parameter_names']
+        # Check for parameters in kwargs
+        if 'parameters' in kwargs:
+            parameters = kwargs['parameters']
         # Check first positional argument
         elif args:
-            parameter_names = args[0]
+            parameters = args[0]
         else:
-            raise ValueError("parameter_names must be provided")
+            raise ValueError("parameters must be provided")
 
         # Normalize to list
-        if isinstance(parameter_names, str):
-            return [parameter_names]
-        elif isinstance(parameter_names, list):
-            return parameter_names
+        if isinstance(parameters, str):
+            return [parameters]
+        elif isinstance(parameters, list):
+            return parameters
         else:
-            raise ValueError("parameter_names must be a string or list of strings")
+            raise ValueError("parameters must be a string or list of strings")
 
-    def _determine_axis_assignment(self, parameter_names, left_params, right_params):
+    def _determine_axis_assignment(self, parameters, left_params, right_params):
         """Determine which parameters go on which axis."""
         if left_params is not None and right_params is not None:
             # Manual assignment
@@ -131,10 +131,10 @@ class TimeSeriesPlotter(AbstractPlotter):
 
         # Automatic assignment based on units
         if self.data is None:
-            return parameter_names, []
+            return parameters, []
 
         units_groups = {}
-        for param in parameter_names:
+        for param in parameters:
             units = self.data[param].attrs.get('units', 'unknown')
             if units not in units_groups:
                 units_groups[units] = []
@@ -290,14 +290,14 @@ class TimeSeriesPlotter(AbstractPlotter):
         plt.gcf().autofmt_xdate()
         plt.tight_layout()
 
-    def plot_single_parameter(self, parameter_name: str, output_file: str | None = None, 
+    def plot_single_parameter(self, parameter: str, output_file: str | None = None, 
                              ylim_min: float | None = None, ylim_max: float | None = None,
                              color: str | None = None, line_style: str = '-'):
         """Convenience method for single parameter plotting.
         
         Parameters:
         -----------
-        parameter_name : str
+        parameter : str
             Name of the parameter to plot (must exist in the dataset).
         output_file : str, optional
             Path to save the plot. If None, the plot is displayed.
@@ -312,10 +312,10 @@ class TimeSeriesPlotter(AbstractPlotter):
         """
         ylim_left = (ylim_min, ylim_max) if ylim_min is not None and ylim_max is not None else None
         colors = [color] if color else None
-        self.plot(parameter_name, output_file=output_file, ylim_left=ylim_left,
+        self.plot(parameter, output_file=output_file, ylim_left=ylim_left,
                  colors=colors, line_styles=[line_style])
 
-    def plot_multiple_parameters(self, parameter_names: List[str], output_file: str | None = None,
+    def plot_multiple_parameters(self, parameters: List[str], output_file: str | None = None,
                                 dual_axis: bool = False, left_params: List[str] | None = None,
                                 right_params: List[str] | None = None, normalize: bool = False,
                                 colors: List[str] | None = None,
@@ -326,8 +326,8 @@ class TimeSeriesPlotter(AbstractPlotter):
         
         Parameters:
         -----------
-        parameter_names : List[str]
-            List of parameter names to plot (must exist in the dataset).
+        parameters : List[str]
+            List of parameters to plot (must exist in the dataset).
         output_file : str, optional
             Path to save the plot. If None, the plot is displayed.
         dual_axis : bool, default False
@@ -347,18 +347,18 @@ class TimeSeriesPlotter(AbstractPlotter):
         ylim_right : Tuple[float, float], optional
             Y-axis limits for right axis as (min, max).
         """
-        self.plot(parameter_names=parameter_names, output_file=output_file,
+        self.plot(parameters=parameters, output_file=output_file,
                  dual_axis=dual_axis, left_params=left_params, right_params=right_params,
                  normalize=normalize, colors=colors, line_styles=line_styles,
                  ylim_left=ylim_left, ylim_right=ylim_right)
 
-    def plot_with_auto_dual_axis(self, parameter_names: List[str], output_file: str | None = None,
+    def plot_with_auto_dual_axis(self, parameters: List[str], output_file: str | None = None,
                                 normalize: bool = False, **kwargs):
         """Convenience method that automatically uses dual axis based on parameter units.
         
         Parameters:
         -----------
-        parameter_names : List[str]
+        parameters : List[str]
             List of parameter names to plot (must exist in the dataset).
         output_file : str, optional
             Path to save the plot. If None, the plot is displayed.
@@ -367,10 +367,10 @@ class TimeSeriesPlotter(AbstractPlotter):
         **kwargs : dict
             Additional styling options (colors, line_styles, ylim_left, ylim_right).
         """
-        self.plot(parameter_names=parameter_names, output_file=output_file,
+        self.plot(parameters=parameters, output_file=output_file,
                  dual_axis=True, normalize=normalize, **kwargs)
 
-    def plot_normalized_comparison(self, parameter_names: List[str], output_file: str | None = None,
+    def plot_normalized_comparison(self, parameters: List[str], output_file: str | None = None,
                                   colors: List[str] | None = None, **kwargs):
         """Convenience method for normalized parameter comparison.
         
@@ -379,8 +379,8 @@ class TimeSeriesPlotter(AbstractPlotter):
         
         Parameters:
         -----------
-        parameter_names : List[str]
-            List of parameter names to plot (must exist in the dataset).
+        parameters : List[str]
+            List of parameters to plot (must exist in the dataset).
         output_file : str, optional
             Path to save the plot. If None, the plot is displayed.
         colors : List[str], optional
@@ -388,7 +388,7 @@ class TimeSeriesPlotter(AbstractPlotter):
         **kwargs : dict
             Additional styling options.
         """
-        self.plot(parameter_names=parameter_names, output_file=output_file,
+        self.plot(parameters=parameters, output_file=output_file,
                  normalize=True, colors=colors, **kwargs)
 
     @staticmethod
@@ -404,7 +404,7 @@ class TimeSeriesPlotter(AbstractPlotter):
     @classmethod
     def add_cli_arguments(cls, parser):
         """Register CLI arguments for the multi-parameter time series plotter."""
-        parser.add_argument('-p', '--parameter', type=str, nargs='+', required=True,
+        parser.add_argument('-p', '--parameters', type=str, nargs='+', required=True,
                             help='Standard name(s) of parameter(s), e.g. "temperature" or "temperature salinity"')
         parser.add_argument('--dual-axis', action='store_true', default=False,
                             help='Use dual y-axes for parameters with different units')
