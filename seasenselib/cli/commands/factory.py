@@ -6,8 +6,8 @@ from ...core import DataIOManager
 from ...core.exceptions import SeaSenseLibError
 from .base import BaseCommand
 from .data_commands import ConvertCommand, ShowCommand, SubsetCommand, CalcCommand
-from .plot_commands import PlotTSCommand, PlotProfileCommand, PlotSeriesCommand
-from .info_commands import FormatsCommand
+from .plot_commands import PlotCommand
+from .info_commands import FormatsCommand, ListCommand
 
 
 class CommandFactory:
@@ -45,14 +45,12 @@ class CommandFactory:
             return CalcCommand(io_manager)
 
         # Plotting commands
-        elif command_name == 'plot-ts':
-            return PlotTSCommand(io_manager)
-        elif command_name == 'plot-profile':
-            return PlotProfileCommand(io_manager)
-        elif command_name == 'plot-series':
-            return PlotSeriesCommand(io_manager)
+        elif command_name == 'plot':
+            return PlotCommand(io_manager)
 
         # Info commands
+        elif command_name == 'list':
+            return ListCommand(io_manager)
         elif command_name == 'formats':
             return FormatsCommand(io_manager)
 

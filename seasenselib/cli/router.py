@@ -80,6 +80,10 @@ class CLIRouter:
                 parser.print_help()
                 return 0
 
+            # Special handling for plot command with plotter-specific help
+            if command_name == 'plot':
+                return self._handle_plot_command(args)
+
             # Create command instance
             command = self.command_factory.create_command(
                 command_name, self.io_manager
@@ -91,6 +95,11 @@ class CLIRouter:
 
             # Execute command
             result = command.execute(parsed_args)
+            
+            # Print error message if command failed
+            if not result.success and result.message:
+                print(result.message, file=sys.stderr)
+            
             return 0 if result.success else 1
 
         except KeyboardInterrupt:
@@ -102,3 +111,89 @@ class CLIRouter:
         except Exception as e:
             print(f"Unexpected error: {e}", file=sys.stderr)
             return 1
+
+    def _handle_plot_command(self, args: List[str]) -> int:
+        """Handle plot command with dynamic parser based on plotter key.
+        
+        Parameters:
+        -----------
+        args : List[str]
+            Command line arguments (including 'plot')
+            
+        Returns:
+        --------
+        int
+            Exit code (0 for success, non-zero for error)
+        """
+        from ..core.autodiscovery import PlotterDiscovery
+        
+        # Check if help is requested and extract plotter key
+        help_requested = '-h' in args or '--help' in args
+        
+        # Extract plotter key (second argument after 'plot')
+        plotter_key = None
+        if len(args) >= 2 and not args[1].startswith('-'):
+            plotter_key = args[1]
+        
+        # If help is requested with a specific plotter key, show plotter-specific help
+        if help_requested and plotter_key:
+            # Validate that the plotter exists
+            discovery = PlotterDiscovery()
+            plotter_class = discovery.get_class_by_key(plotter_key)
+            
+            if not plotter_class:
+                available = discovery.get_format_info()
+                keys = [p['key'] for p in available]
+                print(f"Error: Unknown plotter '{plotter_key}'.", file=sys.stderr)
+                print(f"Available plotters: {', '.join(keys)}", file=sys.stderr)
+                print("Use 'seasenselib list plotters' for more details.", file=sys.stderr)
+                return 1
+            
+            # Create and show plotter-specific parser
+            parser = self.argument_parser.create_plot_parser_for_plotter(plotter_key)
+            parser.print_help()
+            return 0
+        
+        # If help is requested without plotter key OR no plotter key provided, show available plotters
+        if (help_requested and not plotter_key) or (not plotter_key):
+            discovery = PlotterDiscovery()
+            plotters = discovery.get_format_info()
+            
+            print("usage: seasenselib plot <plotter-key> [options]")
+            print()
+            print("Create plots using available plotters.")
+            print()
+            print("Available plotter keys:")
+            for plotter in sorted(plotters, key=lambda x: x['key']):
+                plugin_marker = " [PLUGIN]" if plotter.get('is_plugin', False) else ""
+                print(f"  {plotter['key']:<20} {plotter['format']}{plugin_marker}")
+            print()
+            print("Use 'seasenselib plot <plotter-key> -h' for plotter-specific options.")
+            print("Use 'seasenselib list plotters' for more details.")
+            print()
+            print("Examples:")
+            print("  seasenselib plot ts-diagram -i data.cnv -o output.png")
+            print("  seasenselib plot time-series -i data.cnv -p temperature")
+            print("  seasenselib plot time-series-multi -i data.cnv -p temp salinity --dual-axis")
+            return 0
+        
+        # Normal execution - parse with plotter-specific parser
+        parser = self.argument_parser.create_plot_parser_for_plotter(plotter_key)
+        # Remove 'plot' and plotter_key from args for parsing
+        remaining_args = [arg for i, arg in enumerate(args) if not (i == 0 or (i == 1 and arg == plotter_key))]
+        parsed_args = parser.parse_args(remaining_args)
+        # Add back the plotter key
+        parsed_args.plotter = plotter_key
+        # Add default values for optional args that might not be in this specific parser
+        if not hasattr(parsed_args, 'list_plotters'):
+            parsed_args.list_plotters = False
+        
+        # Create and execute command
+        command = self.command_factory.create_command('plot', self.io_manager)
+        result = command.execute(parsed_args)
+        
+        # Print error message if command failed
+        if not result.success and result.message:
+            print(result.message, file=sys.stderr)
+        
+        return 0 if result.success else 1

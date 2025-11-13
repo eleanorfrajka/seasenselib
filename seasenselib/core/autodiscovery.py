@@ -168,10 +168,19 @@ class BaseDiscovery:
                               f"is not a subclass of {self.base_class.__name__}, skipping")
                         continue
 
-                    # Validate that it has required methods
-                    if not hasattr(cls, 'format_key') or not hasattr(cls, 'format_name'):
+                    # Validate that it has required methods (different for plotters vs readers/writers)
+                    base_class_name = self.base_class.__name__
+                    if base_class_name == 'AbstractPlotter':
+                        # Plotters use key() and name()
+                        required_methods = ['key', 'name']
+                    else:
+                        # Readers and writers use format_key() and format_name()
+                        required_methods = ['format_key', 'format_name']
+                    
+                    missing_methods = [m for m in required_methods if not hasattr(cls, m)]
+                    if missing_methods:
                         print(f"Warning: Plugin class {cls.__name__} from entry point '{ep.name}' "
-                              f"does not implement format_key() or format_name(), skipping")
+                              f"does not implement {', '.join(missing_methods)}(), skipping")
                         continue
 
                     # Add to plugin classes
@@ -326,6 +335,7 @@ class ReaderDiscovery(BaseDiscovery):
             List of format information dictionaries
         """
         classes = self.discover_classes()
+        plugin_classes = self.get_plugin_classes()
         formats = []
 
         for class_name, class_obj in classes.items():
@@ -338,6 +348,7 @@ class ReaderDiscovery(BaseDiscovery):
                         'class_name': class_name,
                         'format': class_obj.format_name(),
                         'key': class_obj.format_key(),
+                        'is_plugin': class_name in plugin_classes
                     }
 
                     # Get file extension if available
@@ -429,9 +440,10 @@ class WriterDiscovery(BaseDiscovery):
         --------
         List[Dict[str, str]]
             List of format information dictionaries with keys:
-            'class_name', 'format', 'key', 'extension'
+            'class_name', 'format', 'key', 'extension', 'is_plugin'
         """
         classes = self.discover_classes()
+        plugin_classes = self.get_plugin_classes()
         formats = []
 
         for class_name, class_obj in classes.items():
@@ -444,6 +456,7 @@ class WriterDiscovery(BaseDiscovery):
                         'class_name': class_name,
                         'format': class_obj.format_name(),
                         'key': class_obj.format_key(),
+                        'is_plugin': class_name in plugin_classes
                     }
 
                     # Get file extension if available
@@ -494,6 +507,78 @@ class PlotterDiscovery(BaseDiscovery):
             base_class=AbstractPlotter,
             entry_point_group='seasenselib.plotters'
         )
+
+    def get_format_info(self) -> List[Dict[str, str]]:
+        """
+        Get plotter information for all discovered plotters.
+        
+        Returns:
+        --------
+        List[Dict[str, str]]
+            List of plotter information dictionaries
+        """
+        classes = self.discover_classes()
+        plotters = []
+        plugin_classes = self.get_plugin_classes()
+
+        for class_name, class_obj in classes.items():
+            try:
+                # Plotters use key() and name() static methods
+                if hasattr(class_obj, 'key') and hasattr(class_obj, 'name'):
+                    plotter_info = {
+                        'class_name': class_name,
+                        'format': class_obj.name(),
+                        'key': class_obj.key(),
+                        'extension': '',  # Plotters don't have file extensions
+                        'is_plugin': class_name in plugin_classes
+                    }
+                else:
+                    # Fall back to class name if methods not available
+                    plotter_info = {
+                        'class_name': class_name,
+                        'format': class_name.replace('Plotter', '').replace('_', ' ').title(),
+                        'key': class_name.lower().replace('plotter', ''),
+                        'extension': '',
+                        'is_plugin': class_name in plugin_classes
+                    }
+
+                plotters.append(plotter_info)
+
+            except (AttributeError, TypeError) as e:
+                # Skip classes that don't provide the required interface
+                import sys
+                print(f"Warning: Skipping {class_name}: {e}", file=sys.stderr)
+                continue
+
+        return plotters
+
+    def get_class_by_key(self, key: str) -> Optional[Type]:
+        """
+        Get plotter class by its key.
+        
+        Parameters:
+        -----------
+        key : str
+            The plotter key (e.g., 'ts-diagram', 'histogram')
+            
+        Returns:
+        --------
+        Optional[Type]
+            The plotter class if found, None otherwise
+        """
+        classes = self.discover_classes()
+        
+        for class_name, class_obj in classes.items():
+            try:
+                # Check if class has the key() method
+                if hasattr(class_obj, 'key'):
+                    if class_obj.key() == key:
+                        return class_obj
+            except (AttributeError, TypeError):
+                # Skip classes that don't implement key() properly
+                continue
+        
+        return None
 
 
 # Public format constants for CLI and other modules

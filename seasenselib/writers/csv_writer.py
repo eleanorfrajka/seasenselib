@@ -64,7 +64,7 @@ class CsvWriter(AbstractWriter):
             The file extension for CSV files, which is '.csv'.
         """
         return '.csv'
-    
+
     @staticmethod
     def format_key() -> str:
         """Get the format key for this writer.
@@ -75,7 +75,7 @@ class CsvWriter(AbstractWriter):
             The format key 'csv'.
         """
         return 'csv'
-    
+
     @staticmethod
     def format_name() -> str:
         """Get the human-readable format name.

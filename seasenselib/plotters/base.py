@@ -148,7 +148,7 @@ class AbstractPlotter(ABC):
         Returns:
         --------
         str
-            The key value (e.g., 'time-series', 'ts-diagram', 'vertical-profile').
+            The key value (e.g., 'time-series', 'ts-diagram', 'depth-profile').
         
         Raises:
         -------
@@ -156,6 +156,18 @@ class AbstractPlotter(ABC):
             If the subclass does not implement this property.
         """
         raise NotImplementedError("Writer classes must define a key")
+
+    @classmethod
+    def add_cli_arguments(cls, parser):
+        """Optional hook for plotters to add their CLI arguments.
+
+        Plugins can override this method to register argparse options
+        specific to the plotter. The parser passed in will already contain
+        the common options (input, output, title, etc.). Implementations
+        should only add arguments and not parse them.
+        """
+        # Default: no extra arguments
+        return
 
     def _get_dataset_without_nan(self) -> xr.Dataset:
         """Returns dataset with NaN values removed from time dimension.

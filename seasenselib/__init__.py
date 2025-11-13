@@ -9,19 +9,23 @@ Basic Usage:
 import seasenselib as ssl
 ds = ssl.read('ctd_profile.cnv')
 ssl.write(ds, 'output.nc')
-ssl.plot.time_series(ds, parameters=['temperature', 'salinity'])
+ssl.plot('ts-diagram', ds, dot_size=50)
 ```
 
 API Structure:
 -------------
-- ssl.read()       : Read sensor data files
-- ssl.write()      : Write datasets to various formats  
-- ssl.formats()      : Format discovery and constants
-- ssl.plot         : Domain-specific plotting functions
+- ssl.read()         : Read sensor data files from various formats
+- ssl.write()        : Write datasets to various formats
+- ssl.plot()         : Create plots using any registered plotter
+- ssl.formats()      : List reader formats (legacy)
+- ssl.list_readers() : List available readers (including plugins)
+- ssl.list_writers() : List available writers (including plugins)
+- ssl.list_plotters(): List available plotters (including plugins)
+- ssl.list_all()     : List all available resources
 """
 
 # Core API imports - always available
-from .api import read, write, formats
+from .api import read, write, plot, formats, list_readers, list_writers, list_plotters, list_all
 
 # Lazy loading for heavy modules
 from importlib import import_module
@@ -43,8 +47,6 @@ def __getattr__(name: str) -> Any:
     
     # Define module mappings for lazy loading
     _module_map = {
-        'plot': '.plotters.api',           # ssl.plot.*
-
         # Legacy access - for backward compatibility
         'plotters': '.plotters',
         'processors': '.processors', 
@@ -64,7 +66,11 @@ def __getattr__(name: str) -> Any:
 __all__ = [
     'read',
     'write',
-    'formats',
     'plot',
+    'formats',
+    'list_readers',
+    'list_writers', 
+    'list_plotters',
+    'list_all',
     '__version__'
 ]

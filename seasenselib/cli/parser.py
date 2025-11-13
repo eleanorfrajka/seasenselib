@@ -6,6 +6,51 @@ import argparse
 from typing import List, Optional
 
 
+class _HideFormatsHelpFormatter(argparse.RawTextHelpFormatter):
+    """Custom formatter that hides legacy commands from help output."""
+    
+    # Commands to hide from help
+    HIDDEN_COMMANDS = {'formats'}
+    
+    def _format_action(self, action):
+        """Override to filter out hidden commands from subcommand choices."""
+        # Get the original formatted action
+        result = super()._format_action(action)
+        
+        # If this is the subparsers action, clean up hidden commands
+        if hasattr(action, 'choices') and action.choices:
+            # Check if any hidden commands are present
+            has_hidden = any(cmd in action.choices for cmd in self.HIDDEN_COMMANDS)
+            
+            if has_hidden:
+                # Remove hidden commands from the metavar/choices display in usage line
+                for cmd in self.HIDDEN_COMMANDS:
+                    result = result.replace(f',{cmd}}}', '}')
+                    result = result.replace(f'{{{cmd},', '{')
+                    result = result.replace(f',{cmd},', ',')
+                
+                # Remove any line that contains ==SUPPRESS== (hidden command help lines)
+                lines = result.split('\n')
+                filtered_lines = []
+                for line in lines:
+                    if '==SUPPRESS==' in line:
+                        continue
+                    filtered_lines.append(line)
+                result = '\n'.join(filtered_lines)
+        
+        return result
+    
+    def _format_usage(self, usage, actions, groups, prefix):
+        """Override to remove hidden commands from usage line."""
+        result = super()._format_usage(usage, actions, groups, prefix)
+        # Remove hidden commands from the usage line
+        for cmd in self.HIDDEN_COMMANDS:
+            result = result.replace(f',{cmd}}}', '}')
+            result = result.replace(f'{{{cmd},', '{')
+            result = result.replace(f',{cmd},', ',')
+        return result
+
+
 class ArgumentParser:
     """
     Enhanced argument parser with lazy loading support.
@@ -70,11 +115,68 @@ class ArgumentParser:
             # Handle --help or invalid args
             return None
 
+    def create_plot_parser_for_plotter(self, plotter_key: str) -> argparse.ArgumentParser:
+        """Create a specialized parser for a specific plotter.
+        
+        Parameters:
+        -----------
+        plotter_key : str
+            The key of the plotter (e.g., 'time-series', 'ts-diagram', etc.)
+            
+        Returns:
+        --------
+        argparse.ArgumentParser
+            A parser with only the arguments relevant to the specified plotter
+        """
+        parser = argparse.ArgumentParser(
+            prog=f'seasenselib plot {plotter_key}',
+            description=f'Create plots using the {plotter_key} plotter',
+            formatter_class=_HideFormatsHelpFormatter
+        )
+        
+        # Common arguments for all plotters
+        parser.add_argument('-i', '--input', type=str, required=True,
+                    help='Path of input file')
+        parser.add_argument('-f', '--input-format', type=str,
+                    default=None, choices=self.INPUT_FORMATS,
+                    help='Format of input file')
+        parser.add_argument('-H', '--header-input', type=str, default=None,
+                    help='Path of header input file (for Nortek ASCII files)')
+        parser.add_argument('-o', '--output', type=str,
+                    help='Path of output file if plot shall be written')
+        parser.add_argument('-t', '--title', type=str,
+                    help='Title of the plot')
+        
+        # Try to let the plotter class declare its own CLI args (plugins supported)
+        try:
+            # Lazy import discovery to avoid heavy imports when not needed
+            from ..core.autodiscovery import PlotterDiscovery
+            discovery = PlotterDiscovery()
+            plotter_class = discovery.get_class_by_key(plotter_key)
+            if plotter_class and hasattr(plotter_class, 'add_cli_arguments'):
+                # Allow the plotter to add its arguments to the parser
+                try:
+                    plotter_class.add_cli_arguments(parser)
+                except Exception:
+                    # If the plotter's hook misbehaves, fall back to generic args
+                    parser.add_argument('-p', '--parameter', type=str, nargs='*',
+                                        help='Parameter(s) to plot (plotter-specific)')
+            else:
+                # Unknown or plugin without hook: provide a generic parameter option
+                parser.add_argument('-p', '--parameter', type=str, nargs='*',
+                                    help='Parameter(s) to plot (plotter-specific)')
+        except Exception:
+            # If discovery fails for any reason, provide the generic argument
+            parser.add_argument('-p', '--parameter', type=str, nargs='*',
+                                help='Parameter(s) to plot (plotter-specific)')
+        
+        return parser
+
     def create_full_parser(self) -> argparse.ArgumentParser:
         """Create the full argument parser with all subcommands."""
         parser = argparse.ArgumentParser(
             description='SeaSenseLib - Oceanographic sensor data processing',
-            formatter_class=argparse.RawTextHelpFormatter
+            formatter_class=_HideFormatsHelpFormatter
         )
 
         subparsers = parser.add_subparsers(dest='command', help='Available commands')
@@ -82,10 +184,13 @@ class ArgumentParser:
         # Add all subcommands
         self._add_convert_parser(subparsers)
         self._add_show_parser(subparsers)
-        self._add_formats_parser(subparsers)
-        self._add_plot_parsers(subparsers)
+        self._add_list_parser(subparsers)
+        self._add_plot_parser(subparsers)
         self._add_subset_parser(subparsers)
         self._add_calc_parser(subparsers)
+        
+        # Add hidden aliases for backward compatibility
+        self._add_formats_alias(subparsers)
 
         return parser
 
@@ -134,10 +239,45 @@ class ArgumentParser:
                     choices=['summary', 'info', 'example'], default='summary',
                     help='What to show.')
 
-    def _add_formats_parser(self, subparsers):
-        """Add formats command parser."""
+    def _add_list_parser(self, subparsers):
+        """Add list command parser."""
+        list_parser = subparsers.add_parser('list',
+                    help='List available readers, writers, and plotters.')
+        list_parser.add_argument('resource_type', type=str, nargs='?', default='all',
+                    choices=['all', 'readers', 'writers', 'plotters'],
+                    help='Type of resources to list (default: all)')
+        list_parser.add_argument('--output', '-o', type=str,
+                    choices=['table', 'json', 'yaml', 'csv'], default='table',
+                    help='Output format (default: table)')
+        list_parser.add_argument('--filter', '-f', type=str,
+                    help='Filter by name or extension (case-insensitive)')
+        list_parser.add_argument('--sort', '-s', type=str,
+                    choices=['name', 'key', 'extension', 'type'], default='name',
+                    help='Sort by field (default: name)')
+        list_parser.add_argument('--reverse', '-r', action='store_true',
+                    help='Reverse sort order')
+        list_parser.add_argument('--no-header', action='store_true',
+                    help='Omit header row (useful for scripts)')
+        list_parser.add_argument('--verbose', '-v', action='store_true',
+                    help='Show additional information like class names')
+
+    def _add_plot_parser(self, subparsers):
+        """Add unified plot command parser (simplified for main help)."""
+        plot_parser = subparsers.add_parser('plot',
+                    help='Create plots using available plotters.')
+        plot_parser.add_argument('plotter', type=str, nargs='?',
+                    help='Plotter key (use --list-plotters to see available plotters)')
+        plot_parser.add_argument('--list-plotters', action='store_true',
+                    help='List available plotters and exit')
+        # Add a dummy -i argument to prevent "required" error when just checking help
+        plot_parser.add_argument('-i', '--input', type=str,
+                    help='Path of input file (use "plot <plotter-key> -h" for plotter-specific help)')
+
+    def _add_formats_alias(self, subparsers):
+        """Add formats command as a hidden alias for 'list readers' (backward compatibility)."""
+        # Create a hidden parser that acts like 'list readers'
         formats_parser = subparsers.add_parser('formats',
-                    help='Display supported input file formats.')
+                    help=argparse.SUPPRESS)  # Hidden from help
         formats_parser.add_argument('--output', '-o', type=str,
                     choices=['table', 'json', 'yaml', 'csv'], default='table',
                     help='Output format (default: table)')
@@ -153,88 +293,12 @@ class ArgumentParser:
         formats_parser.add_argument('--verbose', '-v', action='store_true',
                     help='Show additional information like class names')
 
-    def _add_plot_parsers(self, subparsers):
-        """Add plotting command parsers."""
-        # Plot T-S diagram
-        plot_ts_parser = subparsers.add_parser('plot-ts',
-                    help='Plot a T-S diagram from a netCDF, CNV, CSV, or TOB file')
-        plot_ts_parser.add_argument('-i', '--input', type=str, required=True, 
-                    help='Path of input file')
-        plot_ts_parser.add_argument('-f', '--input-format',
-                    type=str, default=None, choices=self.INPUT_FORMATS,
-                    help='Format of input file')
-        plot_ts_parser.add_argument('-H', '--header-input', type=str, default=None,
-                    help='Path of header input file (for Nortek ASCII files)')
-        plot_ts_parser.add_argument('-o', '--output', type=str, 
-                    help='Path of output file if plot shall be written')
-        plot_ts_parser.add_argument('-t', '--title', default='T-S Diagram', type=str,
-                    help='Title of the plot.')
-        plot_ts_parser.add_argument('--dot-size', default=70, type=int, 
-                    help='Dot size for scatter plot (1-200)')
-        plot_ts_parser.add_argument('--colormap', default='jet', type=str,
-                    help='Name of the colormap for the plot. Must be a valid Matplotlib colormap.')
-        plot_ts_parser.add_argument('--no-lines-between-dots', default=False, action='store_true',
-                    help='Disable the connecting lines between dots.')
-        plot_ts_parser.add_argument('--no-colormap', action='store_true', default=False,
-                    help='Disable the colormap in the plot')
-        plot_ts_parser.add_argument('--no-isolines', default=False, action='store_true',
-                    help='Disable the density isolines in the plot')
-        plot_ts_parser.add_argument('--no-grid', default=False, action='store_true',
-                    help='Disable the grid.')
-
-        # Plot profile
-        plot_profile_parser = subparsers.add_parser('plot-profile',
-                    help='Plot a vertical CTD profile from an input file')
-        plot_profile_parser.add_argument('-i', '--input', type=str, required=True,
-                    help='Path of input file')
-        plot_profile_parser.add_argument('-f', '--input-format', type=str,
-                    default=None, choices=self.INPUT_FORMATS,
-                    help='Format of input file')
-        plot_profile_parser.add_argument('-H', '--header-input', type=str, default=None,
-                    help='Path of header input file (for Nortek ASCII files)')
-        plot_profile_parser.add_argument('-o', '--output', type=str,
-                    help='Path of output file if plot shall be written')
-        plot_profile_parser.add_argument('-t', '--title', 
-                    default='Salinity and Temperature Profiles', type=str,
-                    help='Title of the plot.')
-        plot_profile_parser.add_argument('--dot-size', default=3, type=int,
-                    help='Dot size for scatter plot (1-200)')
-        plot_profile_parser.add_argument('--no-lines-between-dots', 
-                    default=False, action='store_true',
-                    help='Disable the connecting lines between dots.')
-        plot_profile_parser.add_argument('--no-grid', default=False, action='store_true',
-                    help='Disable the grid.')
-
-        # Plot time series
-        plot_series_parser = subparsers.add_parser('plot-series', 
-                    help='Plot a time series for one or multiple parameters from an input file')
-        plot_series_parser.add_argument('-i', '--input', type=str, required=True, 
-                    help='Path of input file')
-        plot_series_parser.add_argument('-f', '--input-format', type=str, 
-                    default=None, choices=self.INPUT_FORMATS, 
-                    help='Format of input file')
-        plot_series_parser.add_argument('-H', '--header-input', type=str, default=None,
-                    help='Path of header input file (for Nortek ASCII files)')
-        plot_series_parser.add_argument('-o', '--output', type=str, 
-                    help='Path of output file if plot shall be written')
-        plot_series_parser.add_argument('-p', '--parameter', type=str, nargs='+', required=True,
-                    help='Standard name(s) of parameter(s), e.g. ' \
-                    '"temperature" or "temperature,salinity"')
-        plot_series_parser.add_argument('--dual-axis', action='store_true', default=False,
-                    help='Use dual y-axes for parameters with different units')
-        plot_series_parser.add_argument('--normalize', action='store_true', default=False,
-                    help='Normalize all parameters to 0-1 range for comparison')
-        plot_series_parser.add_argument('--colors', type=str, nargs='*',
-                    help='Custom colors for each parameter line')
-        plot_series_parser.add_argument('--line-styles', type=str, nargs='*',
-                    help='Custom line styles for each parameter')
-
     def _add_subset_parser(self, subparsers):
         """Add subset command parser."""
         format_help = 'Choose the output format. Allowed formats are: ' + ', '.join(self.OUTPUT_FORMATS)
 
         subset_parser = subparsers.add_parser('subset', 
-                    help='Extract a subset of a file and save the result in another')
+                    help='Extract a subset of a file.')
         subset_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         subset_parser.add_argument('-f', '--input-format', type=str, 
@@ -270,7 +334,7 @@ class ArgumentParser:
         ]
 
         calc_parser = subparsers.add_parser('calc',
-                    help='Run an aggregate function on a parameter of the whole dataset')
+                    help='Run an aggregate function on parameters of a dataset.')
         calc_parser.add_argument('-i', '--input', type=str, required=True, 
                     help='Path of input file')
         calc_parser.add_argument('-f', '--input-format', type=str, default=None,
