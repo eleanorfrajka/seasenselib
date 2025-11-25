@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seasenselib-example-plugin"
+version = "0.1.0"
+description = "Example plugin for SeaSenseLib demonstrating the plugin system"
+readme = "README.md"
+requires-python = ">=3.7"
+
+authors = [
+    {name = "SeaSenseLib Team"}
+]
+
+dependencies = [
+    "seasenselib>=0.3.0",
+    "xarray",
+    "pandas",
+    "numpy",
+]
+
+[project.urls]
+Homepage = "https://github.com/ocean-uhh/seasenselib"
+
+# Register the example reader plugin
+[project.entry-points."seasenselib.readers"]
+example_json_reader = "example_plugin.json_reader:JsonReader"
+
+# Register the example writer plugin
+[project.entry-points."seasenselib.writers"]
+example_json_writer = "example_plugin.json_writer:JsonWriter"
+
+# Register the example plotter plugin
+[project.entry-points."seasenselib.plotters"]
+example_histogram_plotter = "example_plugin.histogram_plotter:HistogramPlotter"
+
+[tool.setuptools.packages.find]
+where = ["."]

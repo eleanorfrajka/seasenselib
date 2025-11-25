@@ -6,7 +6,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import xarray as xr
-import scipy.io
 from datetime import datetime
 from seasenselib.readers.base import AbstractReader
 
@@ -58,6 +57,8 @@ class AdcpMatlabRdadcpReader(AbstractReader):
 
     # ---------- core parsing ----------
     def __parse(self, mat_file_path):
+        import scipy.io
+
         mat = scipy.io.loadmat(mat_file_path, squeeze_me=True, struct_as_record=False)
         if "adcp" not in mat:
             raise KeyError("Expected a top-level struct named 'adcp' in the MAT file.")

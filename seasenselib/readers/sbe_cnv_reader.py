@@ -5,10 +5,8 @@ Module for reading CTD data from SBE CNV files.
 from __future__ import annotations
 import re
 from datetime import datetime
-import pycnv
 import pandas as pd
 import numpy as np
-import gsw
 
 from seasenselib.readers.base import AbstractReader
 import seasenselib.parameters as params
@@ -468,6 +466,8 @@ class SbeCnvReader(AbstractReader):
             Depth values in meters, or None if pressure not available.
         """
 
+        import gsw
+
         depth = None
 
         for alias in params.default_mappings[params.PRESSURE]:
@@ -523,6 +523,8 @@ class SbeCnvReader(AbstractReader):
 
     def __read(self):
         """ Reads a CNV file and converts it to a xarray Dataset. """
+
+        import pycnv
 
         # Check if the file contains bad lines
         has_bad_lines, error_message = self._check_bad_lines(self.input_file)

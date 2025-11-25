@@ -13,12 +13,9 @@ class ConvertCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute convert command."""
         try:
-            # Load required dependencies
-            deps = self.deps.get_data_dependencies()
-
             # Validate parameter mapping if provided
             if args.mapping:
-                params = self.deps.get_parameters_module()
+                import seasenselib.parameters as params
                 allowed_parameters = params.allowed_parameters()
 
                 for mapping in args.mapping:
@@ -55,9 +52,6 @@ class ShowCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute show command."""
         try:
-            # Load required dependencies
-            deps = self.deps.get_data_dependencies()
-
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
 
@@ -86,9 +80,8 @@ class SubsetCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute subset command."""
         try:
-            # Load required dependencies
-            deps = self.deps.get_data_dependencies()
-            processing_deps = self.deps.get_processing_dependencies()
+            # Lazy import processors
+            from ...processors import SubsetProcessor
 
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
@@ -97,8 +90,7 @@ class SubsetCommand(BaseCommand):
                 raise ValidationError('No data found in file.')
 
             # Create subsetter
-            subset_processor = processing_deps['processors'].SubsetProcessor
-            subsetter = subset_processor(data)
+            subsetter = SubsetProcessor(data)
 
             # Apply subsetting parameters
             if args.sample_min:
@@ -137,10 +129,9 @@ class CalcCommand(BaseCommand):
     def execute(self, args: argparse.Namespace) -> CommandResult:
         """Execute calc command."""
         try:
-            # Load required dependencies
-            deps = self.deps.get_data_dependencies()
-            processing_deps = self.deps.get_processing_dependencies()
-
+            # Lazy import processors
+            from ...processors import ResampleProcessor, StatisticsProcessor
+            
             # Read data
             data = self.io.read_data(args.input, args.input_format, args.header_input)
 
@@ -152,14 +143,13 @@ class CalcCommand(BaseCommand):
                 if not args.time_interval:
                     raise ValidationError("Time interval is required when resampling")
 
-                resample_processor = processing_deps['processors'].ResampleProcessor
-                resampler = resample_processor(data)
+                resampler = ResampleProcessor(data)
                 data = resampler.resample(args.time_interval)
                 
                 # Process resampled data
                 # pylint: disable=C0415
                 import re
-                pd = deps['pd']
+                import pandas as pd
 
                 # Format datetime output based on time interval
                 datetime_format_pattern = "%Y-%m-%d %H:%M:%S"
@@ -177,13 +167,13 @@ class CalcCommand(BaseCommand):
                 # Process each time period
                 for time_period, group in data:
                     result = self._run_calculation(
-                        group, args.method, args.parameter, processing_deps)
+                        group, args.method, args.parameter, StatisticsProcessor)
                     dt_datetime = pd.to_datetime(time_period)
                     datetime_string = dt_datetime.strftime(datetime_format_pattern)
                     print(f"{datetime_string}: {result}")
             else:
                 # Single calculation
-                result = self._run_calculation(data, args.method, args.parameter, processing_deps)
+                result = self._run_calculation(data, args.method, args.parameter, StatisticsProcessor)
                 print(result)
             
             return CommandResult(success=True, message="Calculation completed successfully")
@@ -191,10 +181,9 @@ class CalcCommand(BaseCommand):
         except Exception as e:
             return CommandResult(success=False, message=str(e))
     
-    def _run_calculation(self, data, method, parameter, processing_deps):
+    def _run_calculation(self, data, method, parameter, StatisticsProcessor):
         """Run the specified calculation on the data."""
-        statistics_processor = processing_deps['processors'].StatisticsProcessor
-        calc = statistics_processor(data, parameter)
+        calc = StatisticsProcessor(data, parameter)
 
         if method == 'max':
             return calc.max()

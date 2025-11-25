@@ -11,9 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.11", "3.12", "3.x"]  # Min, popular, latest stable, bleeding edge
+        python-version: ["3.9", "3.11", "3.12", "3.13"]  # Min, popular, latest stable
       fail-fast: false
-    continue-on-error: ${{ matrix.python-version == '3.x' }}  # Don't fail CI if newest Python has issues
 
     steps:
     - name: Checkout code

@@ -5,7 +5,6 @@ Module for reading RBR .rsk files into xarray Datasets.
 from __future__ import annotations
 import pandas as pd
 import xarray as xr
-from pyrsktools import RSK
 import seasenselib.parameters as params
 from .base import AbstractReader
 
@@ -45,6 +44,8 @@ class RbrRskReader(AbstractReader):
         organizes the data into a xarray Dataset. It also assigns metadata 
         according to the CF conventions to the dataset variables.
         """
+
+        from pyrsktools import RSK
 
         # Open the RSK file and read the data
         rsk = RSK(self.input_file)

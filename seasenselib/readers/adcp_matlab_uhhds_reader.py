@@ -3,7 +3,6 @@
 from __future__ import annotations
 import numpy as np
 import xarray as xr
-import scipy.io
 import pandas as pd
 from datetime import datetime, timedelta
 import re
@@ -53,6 +52,8 @@ class AdcpMatlabUhhdsReader(AbstractReader):
         self._read()
 
     def _read(self):
+        import scipy.io
+
         self.data = scipy.io.loadmat(self.input_file, struct_as_record=False)
         self.format = self._detect_format()
         if not self.format:

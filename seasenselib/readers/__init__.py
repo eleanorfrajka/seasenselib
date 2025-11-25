@@ -1,28 +1,19 @@
 """
-SeaSenseLib Readers Module
+SeaSenseLib Readers Module with Autodiscovery
 
 This module provides various reader classes for importing CTD sensor data
-from different file formats into xarray Datasets. It includes a registry
-of available readers, allowing for lazy loading of specific reader classes
-based on the file format.
+from different file formats into xarray Datasets. It uses an autodiscovery
+mechanism to automatically find and register all available reader classes.
 
 Available Readers:
 -----------------
-- AdcpMatlabReader: Read ADCP Matlab files
+All reader classes are automatically discovered from the readers directory.
+Common readers include:
+- SbeCnvReader: Read SeaBird CNV files
 - NetCdfReader: Read NetCDF files
 - CsvReader: Read CSV files
-- AdcpMatlabRdadcpReader: Read ADCP Matlab files converted from rdadcp binaries
-- AdcpMatlabUhhdsReader: Read ADCP Matlab files converted from UHH DS binaries
-- RbrAsciiReader: Read RBR ASCII files
-- NortekAsciiReader: Read Nortek ASCII files
-- RbrMatlabReader: Auto-detect RBR Matlab format
-- RbrMatlabLegacyReader: Read RBR Matlab Legacy files
-- RbrMatlabRsktoolsReader: Read RBR Matlab RSKtools files
-- RbrRskLegacyReader: Read legacy RSK files
-- RbrRskReader: Read RSK files
-- RbrRskAutoReader: Auto-detect RSK format
-- SbeCnvReader: Read SeaBird CNV files
-- SeasunTobReader: Read Sea & Sun TOB files
+- RbrRskReader: Read RBR RSK files
+- And many more...
 
 Example Usage:
 --------------
@@ -37,48 +28,55 @@ nc_reader = NetCdfReader("data.nc")
 nc_data = nc_reader.get_data()
 """
 
-# Import the base class (lightweight)
+# Import the base class
 from .base import AbstractReader
 
-# Import reader registry (single source of truth)
-from .registry import get_reader_modules, get_all_reader_classes
+# Import autodiscovery functionality (lazy to avoid circular imports)
+def _get_reader_discovery():
+    """Get reader discovery instance lazily."""
+    from ..core.autodiscovery import ReaderDiscovery
+    return ReaderDiscovery()
 
-# Get reader class mapping from registry for lazy loading
-_READER_MODULES = get_reader_modules()
+# Discover all available reader classes
+_all_readers = {}
+_discovery_done = False
 
-# Cache for loaded reader classes
-_loaded_readers = {}
+def _ensure_readers_discovered():
+    """Ensure readers are discovered and loaded into module namespace."""
+    global _all_readers, _discovery_done
+    if not _discovery_done:
+        discovery = _get_reader_discovery()
+        _all_readers = discovery.discover_classes()
 
-def __getattr__(name):
-    """Lazy loading of reader classes."""
-    if name in _READER_MODULES:
-        if name not in _loaded_readers:
-            # Import only the specific module and class
-            # pylint: disable=C0415
-            from importlib import import_module
-            module = import_module(_READER_MODULES[name], package=__name__)
-            _loaded_readers[name] = getattr(module, name)
-        return _loaded_readers[name]
+        # Import all discovered reader classes into this module's namespace
+        for class_name, class_obj in _all_readers.items():
+            globals()[class_name] = class_obj
 
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+        _discovery_done = True
 
-# Build __all__ from registry  
-__all__ = [
-    'AbstractReader',
-    'AdcpMatlabRdadcpReader',
-    'AdcpMatlabUhhdsReader',
-    'CsvReader',
-    'NetCdfReader', 
-    'NortekAsciiReader',
-    'RbrAsciiReader',
-    'RbrMatlabLegacyReader',
-    'RbrMatlabReader',
-    'RbrMatlabRsktoolsReader',
-    'RbrRskAutoReader',
-    'RbrRskLegacyReader',
-    'RbrRskReader',
-    'RcmMatlabReader',
-    'SbeAsciiReader',
-    'SbeCnvReader',
-    'SeasunTobReader'
-]
+# Trigger discovery on import
+_ensure_readers_discovered()
+
+# Build __all__ from discovered classes
+__all__ = ['AbstractReader'] + list(_all_readers.keys())
+
+# Legacy compatibility functions for registry-like access
+def get_reader_by_format_key(format_key: str):
+    """Get reader class by format key."""
+    discovery = _get_reader_discovery()
+    return discovery.get_reader_by_format_key(format_key)
+
+def get_readers_by_extension(extension: str):
+    """Get reader classes that can handle a specific file extension."""
+    discovery = _get_reader_discovery()
+    return discovery.get_readers_by_extension(extension)
+
+def get_all_reader_classes():
+    """Get list of all reader class names."""
+    discovery = _get_reader_discovery()
+    return discovery.get_all_class_names()
+
+def get_format_info():
+    """Get format information for all readers."""
+    discovery = _get_reader_discovery()
+    return discovery.get_format_info()

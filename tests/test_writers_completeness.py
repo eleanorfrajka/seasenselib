@@ -19,6 +19,7 @@ from pathlib import Path
 
 from seasenselib import writers
 from seasenselib.writers.base import AbstractWriter
+from seasenselib.core.autodiscovery import WriterDiscovery
 
 
 class TestWritersCompleteness(unittest.TestCase):
@@ -29,6 +30,17 @@ class TestWritersCompleteness(unittest.TestCase):
         self.writers_module = writers
         self.writers_dir = Path(writers.__file__).parent
         self.all_list = writers.__all__
+        
+        # Add plugin discovery
+        self.discovery = WriterDiscovery()
+        self.plugin_classes = self.discovery.get_plugin_classes()
+        
+        # Get built-in classes only (for tests that shouldn't include plugins)
+        all_classes = self.discovery.discover_classes()
+        self.builtin_classes = {
+            name: cls for name, cls in all_classes.items()
+            if name not in self.plugin_classes
+        }
 
     def test_all_list_exists(self):
         """Test that __all__ list exists and is not empty."""
@@ -110,7 +122,7 @@ class TestWritersCompleteness(unittest.TestCase):
             self.fail(f"Missing writer classes: {', '.join(missing_classes)}")
 
     def test_all_writer_classes_are_properly_imported(self):
-        """Test that all classes in __all__ are properly imported from their respective modules."""
+        """Test that all built-in classes in __all__ are properly imported from their respective modules."""
         for class_name in self.all_list:
             if class_name == 'AbstractWriter':
                 continue  # Skip the base class
@@ -122,6 +134,11 @@ class TestWritersCompleteness(unittest.TestCase):
 
                 # Get the class and check its module
                 writer_class = getattr(self.writers_module, class_name)
+                
+                # Skip plugin classes - they come from external packages
+                if class_name in self.plugin_classes:
+                    continue
+                
                 expected_module = f"seasenselib.writers.{self._class_name_to_file_name(class_name)}"
 
                 self.assertEqual(writer_class.__module__, expected_module,
@@ -184,13 +201,20 @@ class TestWritersCompleteness(unittest.TestCase):
 
     def test_all_list_sorted_alphabetically(self):
         """Test that __all__ list is sorted alphabetically for better maintainability."""
-        # Create a sorted version for comparison
-        sorted_all = sorted(self.all_list, key=str.lower)
+        # Separate built-in and plugin classes
+        builtin_names = [name for name in self.all_list if name not in self.plugin_classes]
+        plugin_names = [name for name in self.all_list if name in self.plugin_classes]
+        
+        # Create expected order: built-ins first (sorted), then plugins (sorted)
+        sorted_builtins = sorted(builtin_names, key=str.lower)
+        sorted_plugins = sorted(plugin_names, key=str.lower)
+        expected_order = sorted_builtins + sorted_plugins
 
-        self.assertEqual(self.all_list, sorted_all,
-                        f"__all__ list should be sorted alphabetically.\\n"
+        self.assertEqual(self.all_list, expected_order,
+                        f"__all__ list should have built-in classes sorted alphabetically, "
+                        f"followed by plugin classes sorted alphabetically.\\n"
                         f"Current: {self.all_list}\\n"
-                        f"Expected: {sorted_all}")
+                        f"Expected: {expected_order}")
 
     def test_all_list_has_no_duplicates(self):
         """Test that __all__ list contains no duplicate entries."""

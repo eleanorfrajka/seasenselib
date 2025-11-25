@@ -172,3 +172,29 @@ class TsDiagramPlotter(AbstractPlotter):
         # Add sigma_0 in gray in the left upper corner
         plt.text(0.02, 0.95, r"$\sigma_0$", color='gray', fontsize=18, 
                 fontweight='bold', transform=plt.gca().transAxes)
+
+    @staticmethod
+    def name() -> str:
+        """Get the human-readable format name."""
+        return "T-S Diagram"
+
+    @staticmethod
+    def key() -> str:
+        """Get the unique key for this plotter."""
+        return "ts-diagram"
+
+    @classmethod
+    def add_cli_arguments(cls, parser):
+        """Register CLI arguments for the T-S diagram plotter."""
+        parser.add_argument('--dot-size', type=int, default=70,
+                            help='Dot size for scatter plot (1-200)')
+        parser.add_argument('--colormap', type=str, default='jet',
+                            help='Name of the colormap for the plot')
+        parser.add_argument('--no-lines-between-dots', action='store_true', default=False,
+                            help='Disable the connecting lines between dots')
+        parser.add_argument('--no-colormap', action='store_true', default=False,
+                            help='Disable the colormap in the plot')
+        parser.add_argument('--no-isolines', action='store_true', default=False,
+                            help='Disable the density isolines in the plot')
+        parser.add_argument('--no-grid', action='store_true', default=False,
+                            help='Disable the grid')
