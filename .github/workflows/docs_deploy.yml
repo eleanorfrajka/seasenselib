@@ -41,6 +41,7 @@ jobs:
         run: |
           set -e
           micromamba run -n seasenselib jupyter nbconvert --to notebook --execute notebooks/demo.ipynb --output=demo-output.ipynb --ExecutePreprocessor.allow_errors=False
+          micromamba run -n seasenselib jupyter nbconvert --to notebook --execute notebooks/demo_mooring.ipynb --output=demo_mooring-output.ipynb --ExecutePreprocessor.allow_errors=False
           mv notebooks/*output.ipynb docs/source/
           pushd docs
           micromamba run -n seasenselib make clean html

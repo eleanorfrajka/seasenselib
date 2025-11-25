@@ -21,9 +21,10 @@ For recommendations or bug reports, please visit https://github.com/ocean-uhh/se
 
 .. toctree::
    :maxdepth: 2
-   :caption: Demo notebooks
+   :caption: Demo
 
    demo-output.ipynb
+   demo_mooring-output.ipynb
 
 
 .. toctree::
