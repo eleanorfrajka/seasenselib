@@ -37,6 +37,16 @@ Format keys can be used with ``ssl.read(filename, file_format='key')`` when auto
      - ``.dat`` + ``.hdr``
      - ``nortek-ascii``
      - Nortek ASCII format (requires header file)
+   * - Nortek
+     - Aquadopp
+     - ``.csv``
+     - ``nortek-csv``
+     - Nortek AquaPro CSV export format
+   * - Nortek
+     - Aquadopp, Vector, AWAC
+     - ``.aqd``, ``.VEC``, ``.wpr``
+     - ``nortek-raw``
+     - Nortek raw binary files via MHKiT DOLfYN (experimental)
    * - RBR
      - Solo T
      - ``.rsk``
@@ -72,11 +82,21 @@ Format keys can be used with ``ssl.read(filename, file_format='key')`` when auto
      - ``.txt``, ``.dat``
      - ``rbr-ascii``
      - RBR ASCII format
+   * - RBR
+     - TR1050
+     - ``.hex``
+     - ``rbr-hex``
+     - RBR binary HEX format (explicit format key required)
    * - SeaBird
      - SBE37 MicroCAT
      - ``.cnv``
      - ``sbe-cnv``
      - SeaBird CNV format (time series)
+   * - SeaBird
+     - SBE37 MicroCAT
+     - ``.hex``
+     - ``sbe-hex``
+     - SeaBird HEX format (time series)
    * - SeaBird
      - SBE 911
      - ``.cnv``
@@ -102,16 +122,21 @@ Format keys can be used with ``ssl.read(filename, file_format='key')`` when auto
      - ``.tob``
      - ``seasun-tob``
      - Seasun TOB format
-   * - Teledyne/RDI
+   * - Teledyne RDI
      - ADCP
      - ``.mat``
      - ``adcp-matlab-uhhds``
      - ADCP MATLAB UHHDS format
-   * - Teledyne/RDI
+   * - Teledyne RDI
      - ADCP
      - ``.mat``
      - ``adcp-matlab-rdadcp``
      - ADCP MATLAB RDADCP format
+   * - Teledyne RDI
+     - ADCP
+     - ``.000``, ``.PD0``, ``.ENR``, ``.ENS``, ``.ENX``
+     - ``rdi-raw``
+     - RDI raw binary ADCP files
 
 Usage Examples
 --------------
@@ -126,10 +151,12 @@ SeaSenseLib can automatically detect format for files with unique extensions:
    
    # Automatic detection for unique extensions
    dataset = ssl.read('your_file.cnv')     # SeaBird CNV files
+   dataset = ssl.read('your_file.hex')     # SeaBird SBE37 HEX files
    dataset = ssl.read('logger_data.rsk')   # RBR RSK files (auto-selects modern/legacy)
    dataset = ssl.read('grid_data.nc')      # NetCDF files
    dataset = ssl.read('sensor_data.csv')   # CSV files
    dataset = ssl.read('tob_data.tob')      # Seasun TOB files
+   dataset = ssl.read('aquadopp.aqd')      # Nortek raw files
 
 **Explicit Format Specification:**
 
@@ -142,6 +169,10 @@ SeaSenseLib can automatically detect format for files with unique extensions:
    rbr_data = ssl.read('logger_export.mat', file_format='rbr-matlab')
    adcp_data = ssl.read('current_data.mat', file_format='adcp-matlab-uhhds')
 
+   # RBR HEX files also require an explicit key because .hex auto-detects
+   # as SeaBird SBE37 HEX
+   rbr_hex_data = ssl.read('logger.hex', file_format='rbr-hex')
+
 **Multi-file Formats:**
 
 .. code-block:: python
@@ -151,21 +182,47 @@ SeaSenseLib can automatically detect format for files with unique extensions:
                           file_format='nortek-ascii',
                           header_file='current_meter.hdr')
 
+   # Nortek AquaPro CSV exports use an explicit format key because .csv is
+   # also used by the generic CSV reader
+   nortek_csv_data = ssl.read('Average Velocity DF3.csv',
+                              file_format='nortek-csv')
+
+   # Nortek raw Aquadopp, Vector and AWAC data is decoded by MHKiT DOLfYN
+   # (experimental)
+   nortek_raw_data = ssl.read('DS-FDA01.aqd',
+                              file_format='nortek-raw')
+
+   # RDI raw ADCP data is decoded by MHKiT DOLfYN
+   rdi_data = ssl.read('DS2_2025_recovery.000',
+                       file_format='rdi-raw',
+                       nens=100)
+
+   # Automatic detection also works for supported RDI raw suffixes:
+   rdi_data = ssl.read('DS2_2025_recovery.000', nens=100)
+
+For reader-specific interpretation notes, including conservative RDI raw ADCP
+mapping choices, see :doc:`reader_notes`.
+
 Format Detection Summary
 ------------------------
 
 **Auto-detected formats** (unique file extensions):
    
 - ``.cnv`` → ``sbe-cnv`` (SeaBird CNV files)
+- ``.hex`` → ``sbe-hex`` (SeaBird SBE37 HEX files)
 - ``.rsk`` → ``rbr-rsk`` (RBR RSK files - automatically selects modern/legacy reader)
 - ``.nc`` → ``netcdf`` (NetCDF files)
 - ``.csv`` → ``csv`` (CSV files)
 - ``.tob`` → ``seasun-tob`` (Sea & Sun TOB files)
+- ``.aqd/.VEC/.wpr`` → ``nortek-raw`` (Nortek raw binary files via MHKiT DOLfYN, experimental)
+- ``.000/.PD0/.ENR/.ENS/.ENX`` → ``rdi-raw`` (RDI raw ADCP files via MHKiT DOLfYN)
 
 **Requires explicit format keys** (ambiguous extensions):
 
+- RBR ``.hex`` files: ``rbr-hex`` (``.hex`` otherwise auto-detects as ``sbe-hex``)
 - ``.mat`` files: ``rbr-matlab``, ``rcm-matlab``, ``adcp-matlab-uhhds``, ``adcp-matlab-rdadcp``
 - ``.txt/.dat`` files: ``rbr-ascii``, ``sbe-ascii``, ``nortek-ascii``
+- Nortek AquaPro ``.csv`` exports: ``nortek-csv`` (``.csv`` otherwise auto-detects as generic ``csv``)
 - Multi-file formats: ``nortek-ascii`` (requires both ``.dat`` and ``.hdr`` files)
 
 When to Use Format Keys

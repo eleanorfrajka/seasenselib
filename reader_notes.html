@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reader Notes &mdash; seasenselib v0.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=20758594" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8b92e751"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developers Guide" href="developers_guide.html" />
+    <link rel="prev" title="Supported File Formats" href="supported_formats.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            seasenselib
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Demo notebooks</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demo-output.html">SeaSenseLib Demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo_mooring-output.html">Formats Demo</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Help and reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="http://github.com/ocean-uhh/seasenselib">GitHub Repo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported_formats.html">Supported File Formats</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reader Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rbr-hex">RBR HEX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nortek-raw">Nortek raw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rdi-raw-adcp">RDI raw ADCP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source-annotations">Source annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#velocity">Velocity</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers_guide.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">seasenselib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Reader Notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/reader_notes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reader-notes">
+<h1>Reader Notes<a class="headerlink" href="#reader-notes" title="Link to this heading"></a></h1>
+<p>This page documents reader-specific interpretation choices that affect the
+scientific meaning of decoded variables. The supported formats overview stays
+short; details live here when a raw format needs extra care.</p>
+<section id="rbr-hex">
+<h2>RBR HEX<a class="headerlink" href="#rbr-hex" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rbr-hex</span></code> reader decodes RBR TR-1050 style binary HEX exports with a
+human-readable header followed by ASCII HEX encoded binary data. The reader
+preserves raw 24-bit ADC counts as <code class="docutils literal notranslate"><span class="pre">channel_N</span></code> variables and adds calibrated
+engineering variables when the header contains the expected four calibration
+coefficients. For thermistor channels, calibration follows the RBR
+Steinhart-Hart form used by the original standalone decoder.</p>
+<p>RBR HEX files use the same <code class="docutils literal notranslate"><span class="pre">.hex</span></code> suffix as SeaBird SBE37 HEX files.
+SeaSenseLib therefore keeps automatic <code class="docutils literal notranslate"><span class="pre">.hex</span></code> detection assigned to
+<code class="docutils literal notranslate"><span class="pre">sbe-hex</span></code> and requires explicit selection for RBR HEX data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rbr_logger.hex&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;rbr-hex&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>seasenselib<span class="w"> </span>convert<span class="w"> </span>-f<span class="w"> </span>rbr-hex<span class="w"> </span>-i<span class="w"> </span>rbr_logger.hex<span class="w"> </span>-o<span class="w"> </span>rbr_logger.nc
+</pre></div>
+</div>
+<p>The original RBR text header, parsed calibration coefficients, timestamp/event
+anchors and channel metadata are preserved in <code class="docutils literal notranslate"><span class="pre">raw_metadata</span></code>.</p>
+</section>
+<section id="nortek-raw">
+<h2>Nortek raw<a class="headerlink" href="#nortek-raw" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">nortek-raw</span></code> reader decodes classic Nortek raw binary files, currently
+advertised for Aquadopp <code class="docutils literal notranslate"><span class="pre">.aqd</span></code>, Vector <code class="docutils literal notranslate"><span class="pre">.VEC</span></code> and AWAC <code class="docutils literal notranslate"><span class="pre">.wpr</span></code> files,
+with MHKiT DOLfYN. Nortek Signature <code class="docutils literal notranslate"><span class="pre">.ad2cp</span></code> files use a separate DOLfYN
+decoder and are not part of this reader. This reader is marked experimental
+because support is still being validated across Nortek raw variants.</p>
+<p>Velocity is preserved as vector variable <code class="docutils literal notranslate"><span class="pre">vel</span></code>. If <code class="docutils literal notranslate"><span class="pre">coord_sys</span></code> is
+<code class="docutils literal notranslate"><span class="pre">earth</span></code>, the decoded <code class="docutils literal notranslate"><span class="pre">dir</span></code> coordinate usually identifies east, north and
+up components, but the reader does not split these into CF component variables
+automatically.</p>
+<p>Where Nortek header fields give clear evidence, the reader uses the same
+compact <code class="docutils literal notranslate"><span class="pre">sensor_source</span></code> and <code class="docutils literal notranslate"><span class="pre">sensor_source_basis</span></code> attributes as other raw
+readers; otherwise variables are left unannotated.</p>
+</section>
+<section id="rdi-raw-adcp">
+<h2>RDI raw ADCP<a class="headerlink" href="#rdi-raw-adcp" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rdi-raw</span></code> reader decodes Teledyne RD Instruments ADCP raw binary files
+with MHKiT DOLfYN and keeps the decoded ADCP vector structure intact.
+SeaSenseLib then applies conservative mappings through the normal processing
+pipeline, for example <code class="docutils literal notranslate"><span class="pre">temp</span></code> to <code class="docutils literal notranslate"><span class="pre">temperature</span></code> and <code class="docutils literal notranslate"><span class="pre">c_sound</span></code> to
+<code class="docutils literal notranslate"><span class="pre">speed_of_sound</span></code> when the decoded metadata supports that interpretation.</p>
+<p>RDI variable-leader environmental fields may contain measured values,
+configured values, or unused placeholder fields. SeaSenseLib inspects decoded
+RDI fixed-leader sensor-source and sensor-available flags when they are
+present. Manual or fallback values are kept under RDI-specific names, such as
+<code class="docutils literal notranslate"><span class="pre">rdi_salinity_setting</span></code> and <code class="docutils literal notranslate"><span class="pre">rdi_temperature_setting</span></code>, so downstream
+processing does not silently treat them as measurements.</p>
+<p>The transducer-depth field is kept as <code class="docutils literal notranslate"><span class="pre">rdi_transducer_depth</span></code> because it
+describes the ADCP head, not the depth coordinate of each velocity cell. A
+pressure field containing only zeros is kept as <code class="docutils literal notranslate"><span class="pre">rdi_pressure_placeholder</span></code>
+rather than mapped to canonical <code class="docutils literal notranslate"><span class="pre">pressure</span></code>.</p>
+<p>RDI salinity values are represented with CF-style dimensionless units
+<code class="docutils literal notranslate"><span class="pre">1e-3</span></code>. Decoder-provided units such as <code class="docutils literal notranslate"><span class="pre">psu</span></code> remain available as
+<code class="docutils literal notranslate"><span class="pre">original_units</span></code> when present.</p>
+<section id="source-annotations">
+<h3>Source annotations<a class="headerlink" href="#source-annotations" title="Link to this heading"></a></h3>
+<p>Variables get source annotations only when the reader has defensible evidence.
+For environmental and orientation fields covered by the RDI fixed-leader flags
+(<code class="docutils literal notranslate"><span class="pre">c_sound</span></code>, <code class="docutils literal notranslate"><span class="pre">temp</span></code>, <code class="docutils literal notranslate"><span class="pre">salinity</span></code>, <code class="docutils literal notranslate"><span class="pre">depth</span></code>, <code class="docutils literal notranslate"><span class="pre">heading</span></code>, <code class="docutils literal notranslate"><span class="pre">pitch</span></code> and
+<code class="docutils literal notranslate"><span class="pre">roll</span></code>), SeaSenseLib stores compact attributes such as <code class="docutils literal notranslate"><span class="pre">sensor_source</span></code> and
+<code class="docutils literal notranslate"><span class="pre">sensor_source_basis</span></code>. Raw RDI evidence remains available as
+<code class="docutils literal notranslate"><span class="pre">rdi_sensor_source_flag</span></code> and <code class="docutils literal notranslate"><span class="pre">rdi_sensor_available_flag</span></code>.</p>
+<p>These source annotations are SeaSenseLib terms, not external standard
+vocabulary terms. Their definitions and the decoded RDI flag evidence are
+stored in <code class="docutils literal notranslate"><span class="pre">raw_metadata.blocks.sensor_sources</span></code>.</p>
+</section>
+<section id="velocity">
+<h3>Velocity<a class="headerlink" href="#velocity" title="Link to this heading"></a></h3>
+<p>Velocity is preserved as vector variable <code class="docutils literal notranslate"><span class="pre">vel</span></code>. If <code class="docutils literal notranslate"><span class="pre">coord_sys</span></code> is
+<code class="docutils literal notranslate"><span class="pre">earth</span></code>, the vector components can be interpreted as east, north, up and
+error velocity after review. For <code class="docutils literal notranslate"><span class="pre">beam</span></code>, <code class="docutils literal notranslate"><span class="pre">inst</span></code>, <code class="docutils literal notranslate"><span class="pre">ship</span></code> or
+<code class="docutils literal notranslate"><span class="pre">principal</span></code> data, splitting into CF east/north/up variables would require
+coordinate rotation or deployment-specific interpretation, so the reader does
+not do this automatically.</p>
+<p>The reader does not add <code class="docutils literal notranslate"><span class="pre">sensor_source</span></code> to velocity or quality variables
+such as <code class="docutils literal notranslate"><span class="pre">amp</span></code>, <code class="docutils literal notranslate"><span class="pre">corr</span></code> or <code class="docutils literal notranslate"><span class="pre">prcnt_gd</span></code> because the RDI fixed-leader source
+flags do not provide equivalent per-variable evidence for those fields.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="supported_formats.html" class="btn btn-neutral float-left" title="Supported File Formats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="developers_guide.html" class="btn btn-neutral float-right" title="Developers Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Yves Sorge.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -61,6 +61,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference external" href="http://github.com/ocean-uhh/seasenselib">GitHub Repo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported_formats.html">Supported File Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reader_notes.html">Reader Notes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="developers_guide.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
 </ul>
@@ -197,7 +198,7 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RbrAsciiReader.data">(seasenselib.readers.RbrAsciiReader attribute)</a>
 </li>
-        <li><a href="api_reference.html#id37">(seasenselib.readers.RbrRskAutoReader attribute)</a>, <a href="api_reference.html#seasenselib.readers.RbrRskAutoReader.data">[1]</a>
+        <li><a href="api_reference.html#id38">(seasenselib.readers.RbrRskAutoReader attribute)</a>, <a href="api_reference.html#seasenselib.readers.RbrRskAutoReader.data">[1]</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RbrRskLegacyReader.data">(seasenselib.readers.RbrRskLegacyReader attribute)</a>
 </li>
@@ -241,7 +242,13 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.NortekAsciiReader.file_extension">(seasenselib.readers.NortekAsciiReader class method)</a>
 </li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekCsvReader.file_extension">(seasenselib.readers.NortekCsvReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekRawReader.file_extension">(seasenselib.readers.NortekRawReader class method)</a>
+</li>
         <li><a href="api_reference.html#seasenselib.readers.RbrAsciiReader.file_extension">(seasenselib.readers.RbrAsciiReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RbrHexReader.file_extension">(seasenselib.readers.RbrHexReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RbrMatlabLegacyReader.file_extension">(seasenselib.readers.RbrMatlabLegacyReader class method)</a>
 </li>
@@ -257,6 +264,8 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RcmMatlabReader.file_extension">(seasenselib.readers.RcmMatlabReader class method)</a>
 </li>
+        <li><a href="api_reference.html#seasenselib.readers.RdiRawReader.file_extension">(seasenselib.readers.RdiRawReader class method)</a>
+</li>
         <li><a href="api_reference.html#seasenselib.readers.SbeAsciiReader.file_extension">(seasenselib.readers.SbeAsciiReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.SbeCnvReader.file_extension">(seasenselib.readers.SbeCnvReader class method)</a>
@@ -270,6 +279,14 @@
         <li><a href="api_reference.html#seasenselib.writers.ExcelWriter.file_extension">(seasenselib.writers.ExcelWriter static method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.writers.NetCdfWriter.file_extension">(seasenselib.writers.NetCdfWriter static method)</a>
+</li>
+      </ul></li>
+      <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.file_extensions">file_extensions() (seasenselib.readers.base.AbstractReader class method)</a>
+
+      <ul>
+        <li><a href="api_reference.html#seasenselib.readers.NortekRawReader.file_extensions">(seasenselib.readers.NortekRawReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RdiRawReader.file_extensions">(seasenselib.readers.RdiRawReader class method)</a>
 </li>
       </ul></li>
       <li><a href="api_reference.html#seasenselib.readers.SbeCnvReader.fix_missing_coords">fix_missing_coords (seasenselib.readers.SbeCnvReader attribute)</a>
@@ -287,7 +304,13 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.NortekAsciiReader.format_key">(seasenselib.readers.NortekAsciiReader class method)</a>
 </li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekCsvReader.format_key">(seasenselib.readers.NortekCsvReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekRawReader.format_key">(seasenselib.readers.NortekRawReader class method)</a>
+</li>
         <li><a href="api_reference.html#seasenselib.readers.RbrAsciiReader.format_key">(seasenselib.readers.RbrAsciiReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RbrHexReader.format_key">(seasenselib.readers.RbrHexReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RbrMatlabLegacyReader.format_key">(seasenselib.readers.RbrMatlabLegacyReader class method)</a>
 </li>
@@ -302,6 +325,8 @@
         <li><a href="api_reference.html#seasenselib.readers.RbrRskReader.format_key">(seasenselib.readers.RbrRskReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RcmMatlabReader.format_key">(seasenselib.readers.RcmMatlabReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RdiRawReader.format_key">(seasenselib.readers.RdiRawReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.SbeAsciiReader.format_key">(seasenselib.readers.SbeAsciiReader class method)</a>
 </li>
@@ -327,9 +352,15 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.NortekAsciiReader.format_mappings">(seasenselib.readers.NortekAsciiReader class method)</a>
 </li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekRawReader.format_mappings">(seasenselib.readers.NortekRawReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RbrHexReader.format_mappings">(seasenselib.readers.RbrHexReader class method)</a>
+</li>
         <li><a href="api_reference.html#seasenselib.readers.RbrRskReader.format_mappings">(seasenselib.readers.RbrRskReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RcmMatlabReader.format_mappings">(seasenselib.readers.RcmMatlabReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RdiRawReader.format_mappings">(seasenselib.readers.RdiRawReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.SbeAsciiReader.format_mappings">(seasenselib.readers.SbeAsciiReader class method)</a>
 </li>
@@ -351,7 +382,13 @@
 </li>
         <li><a href="api_reference.html#seasenselib.readers.NortekAsciiReader.format_name">(seasenselib.readers.NortekAsciiReader class method)</a>
 </li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekCsvReader.format_name">(seasenselib.readers.NortekCsvReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.NortekRawReader.format_name">(seasenselib.readers.NortekRawReader class method)</a>
+</li>
         <li><a href="api_reference.html#seasenselib.readers.RbrAsciiReader.format_name">(seasenselib.readers.RbrAsciiReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RbrHexReader.format_name">(seasenselib.readers.RbrHexReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RbrMatlabLegacyReader.format_name">(seasenselib.readers.RbrMatlabLegacyReader class method)</a>
 </li>
@@ -366,6 +403,8 @@
         <li><a href="api_reference.html#seasenselib.readers.RbrRskReader.format_name">(seasenselib.readers.RbrRskReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.RcmMatlabReader.format_name">(seasenselib.readers.RcmMatlabReader class method)</a>
+</li>
+        <li><a href="api_reference.html#seasenselib.readers.RdiRawReader.format_name">(seasenselib.readers.RdiRawReader class method)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.SbeAsciiReader.format_name">(seasenselib.readers.SbeAsciiReader class method)</a>
 </li>
@@ -390,7 +429,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference.html#seasenselib.processors.StatisticsProcessor.get_all_statistics">get_all_statistics() (seasenselib.processors.StatisticsProcessor method)</a>
 </li>
-      <li><a href="api_reference.html#id6">get_data() (seasenselib.readers.base.AbstractReader method)</a>, <a href="api_reference.html#seasenselib.readers.base.AbstractReader.get_data">[1]</a>
+      <li><a href="api_reference.html#id7">get_data() (seasenselib.readers.base.AbstractReader method)</a>, <a href="api_reference.html#seasenselib.readers.base.AbstractReader.get_data">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -417,7 +456,7 @@
       <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.input_file">input_file (seasenselib.readers.base.AbstractReader attribute)</a>
 
       <ul>
-        <li><a href="api_reference.html#id7">(seasenselib.readers.base.AbstractReader property)</a>
+        <li><a href="api_reference.html#id8">(seasenselib.readers.base.AbstractReader property)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.CsvReader.input_file">(seasenselib.readers.CsvReader attribute)</a>
 </li>
@@ -439,13 +478,13 @@
       <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.input_header_file">input_header_file (seasenselib.readers.base.AbstractReader attribute)</a>
 
       <ul>
-        <li><a href="api_reference.html#id8">(seasenselib.readers.base.AbstractReader property)</a>
+        <li><a href="api_reference.html#id9">(seasenselib.readers.base.AbstractReader property)</a>
 </li>
       </ul></li>
       <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.is_loaded">is_loaded (seasenselib.readers.base.AbstractReader attribute)</a>
 
       <ul>
-        <li><a href="api_reference.html#id9">(seasenselib.readers.base.AbstractReader property)</a>
+        <li><a href="api_reference.html#id10">(seasenselib.readers.base.AbstractReader property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -471,7 +510,7 @@
       <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.mapping">mapping (seasenselib.readers.base.AbstractReader attribute)</a>
 
       <ul>
-        <li><a href="api_reference.html#id10">(seasenselib.readers.base.AbstractReader property)</a>
+        <li><a href="api_reference.html#id11">(seasenselib.readers.base.AbstractReader property)</a>
 </li>
         <li><a href="api_reference.html#seasenselib.readers.CsvReader.mapping">(seasenselib.readers.CsvReader attribute)</a>
 </li>
@@ -499,7 +538,7 @@
       <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.metadata">metadata (seasenselib.readers.base.AbstractReader attribute)</a>
 
       <ul>
-        <li><a href="api_reference.html#id11">(seasenselib.readers.base.AbstractReader property)</a>
+        <li><a href="api_reference.html#id12">(seasenselib.readers.base.AbstractReader property)</a>
 </li>
       </ul></li>
       <li><a href="api_reference.html#seasenselib.processors.StatisticsProcessor.min">min() (seasenselib.processors.StatisticsProcessor method)</a>
@@ -531,13 +570,17 @@
         <li><a href="api_reference.html#seasenselib.plotters.TsDiagramPlotter.name">(seasenselib.plotters.TsDiagramPlotter static method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference.html#seasenselib.readers.NetCdfReader">NetCdfReader (class in seasenselib.readers)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference.html#seasenselib.writers.NetCdfWriter">NetCdfWriter (class in seasenselib.writers)</a>
 </li>
       <li><a href="api_reference.html#seasenselib.readers.NortekAsciiReader">NortekAsciiReader (class in seasenselib.readers)</a>
+</li>
+      <li><a href="api_reference.html#seasenselib.readers.NortekCsvReader">NortekCsvReader (class in seasenselib.readers)</a>
+</li>
+      <li><a href="api_reference.html#seasenselib.readers.NortekRawReader">NortekRawReader (class in seasenselib.readers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -605,6 +648,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api_reference.html#seasenselib.readers.RbrAsciiReader">RbrAsciiReader (class in seasenselib.readers)</a>
 </li>
+      <li><a href="api_reference.html#seasenselib.readers.RbrHexReader">RbrHexReader (class in seasenselib.readers)</a>
+</li>
       <li><a href="api_reference.html#seasenselib.readers.RbrMatlabLegacyReader">RbrMatlabLegacyReader (class in seasenselib.readers)</a>
 </li>
       <li><a href="api_reference.html#seasenselib.readers.RbrMatlabReader">RbrMatlabReader (class in seasenselib.readers)</a>
@@ -619,12 +664,14 @@
 </li>
       <li><a href="api_reference.html#seasenselib.readers.RcmMatlabReader">RcmMatlabReader (class in seasenselib.readers)</a>
 </li>
-      <li><a href="api_reference.html#id12">reload() (seasenselib.readers.base.AbstractReader method)</a>, <a href="api_reference.html#seasenselib.readers.base.AbstractReader.reload">[1]</a>
+      <li><a href="api_reference.html#seasenselib.readers.RdiRawReader">RdiRawReader (class in seasenselib.readers)</a>
 </li>
-      <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.rename_variables">rename_variables (seasenselib.readers.base.AbstractReader attribute)</a>
+      <li><a href="api_reference.html#id13">reload() (seasenselib.readers.base.AbstractReader method)</a>, <a href="api_reference.html#seasenselib.readers.base.AbstractReader.reload">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api_reference.html#seasenselib.readers.base.AbstractReader.rename_variables">rename_variables (seasenselib.readers.base.AbstractReader attribute)</a>
+</li>
       <li><a href="api_reference.html#seasenselib.processors.ResampleProcessor.resample">resample() (seasenselib.processors.ResampleProcessor method)</a>
 </li>
       <li><a href="api_reference.html#seasenselib.processors.ResampleProcessor.resample_count">resample_count() (seasenselib.processors.ResampleProcessor method)</a>

@@ -51,7 +51,22 @@ Specific Reader Classes
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: seasenselib.readers.RbrHexReader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: seasenselib.readers.NortekAsciiReader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: seasenselib.readers.NortekCsvReader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: seasenselib.readers.NortekRawReader
    :members:
    :undoc-members:
    :show-inheritance:
@@ -62,6 +77,11 @@ Specific Reader Classes
    :show-inheritance:
 
 .. autoclass:: seasenselib.readers.AdcpMatlabUhhdsReader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: seasenselib.readers.RdiRawReader
    :members:
    :undoc-members:
    :show-inheritance:
@@ -204,4 +224,3 @@ Specific Processor Classes
    :members:
    :undoc-members:
    :show-inheritance:
-
