@@ -16,10 +16,10 @@
    "id": "cell-1",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-07-21T12:50:17.353353Z",
-     "iopub.status.busy": "2026-07-21T12:50:17.353166Z",
-     "iopub.status.idle": "2026-07-21T12:50:17.644753Z",
-     "shell.execute_reply": "2026-07-21T12:50:17.644053Z"
+     "iopub.execute_input": "2026-08-07T17:32:39.176298Z",
+     "iopub.status.busy": "2026-08-07T17:32:39.176183Z",
+     "iopub.status.idle": "2026-08-07T17:32:39.435124Z",
+     "shell.execute_reply": "2026-08-07T17:32:39.434474Z"
     }
    },
    "outputs": [],
@@ -47,10 +47,10 @@
    "id": "cell-3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-07-21T12:50:17.646802Z",
-     "iopub.status.busy": "2026-07-21T12:50:17.646494Z",
-     "iopub.status.idle": "2026-07-21T12:50:18.800528Z",
-     "shell.execute_reply": "2026-07-21T12:50:18.799838Z"
+     "iopub.execute_input": "2026-08-07T17:32:39.436859Z",
+     "iopub.status.busy": "2026-08-07T17:32:39.436659Z",
+     "iopub.status.idle": "2026-08-07T17:32:40.494106Z",
+     "shell.execute_reply": "2026-08-07T17:32:40.493602Z"
     }
    },
    "outputs": [
@@ -58,84 +58,14 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:pycnv: Opening file: ../examples/denmark-strait-ds-m1-17.cnv\n"
+      "pycnv: Could not compute datetime dates based on timeM\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "WARNING:pycnv:Could not compute datetime dates based on timeM\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:pycnv:Could not compute datetime dates based on timeS\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:pycnv:Dates computed based on start_date and time_interval\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Computing date\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.pipeline:Starting pipeline with 7 stages\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.mapping.handlers.mapping_runner:Mapped 5 variables\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.derivation.handlers.derivation_runner:Derived 6 parameter(s)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_extraction.handlers.extraction_runner:Extracted metadata from 2 source(s)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.cf_convention:Applied CF-1.13 conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.acdd_convention:Applied ACDD conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.pipeline:Pipeline completed successfully\n"
+      "pycnv: Could not compute datetime dates based on timeS\n"
      ]
     },
     {
@@ -176,10 +106,10 @@
    "id": "cell-5",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-07-21T12:50:18.802339Z",
-     "iopub.status.busy": "2026-07-21T12:50:18.802064Z",
-     "iopub.status.idle": "2026-07-21T12:50:19.296825Z",
-     "shell.execute_reply": "2026-07-21T12:50:19.296020Z"
+     "iopub.execute_input": "2026-08-07T17:32:40.495797Z",
+     "iopub.status.busy": "2026-08-07T17:32:40.495553Z",
+     "iopub.status.idle": "2026-08-07T17:32:40.937455Z",
+     "shell.execute_reply": "2026-08-07T17:32:40.936894Z"
     }
    },
    "outputs": [
@@ -187,77 +117,28 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Initialized reader NortekAsciiReader for '../examples/DSC18_477102.dat'\n"
+      "Skipped derivation 'density': missing input 'salinity'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Loading data from '../examples/DSC18_477102.dat'\n"
+      "Skipped derivation 'potential_temperature': missing input 'salinity'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.pipeline.pipeline:Starting pipeline with 7 stages\n"
+      "Skipped derivation 'conservative_temperature': missing input 'salinity'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'density': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'potential_temperature': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'conservative_temperature': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_extraction.handlers.extraction_runner:Extracted metadata from 2 source(s)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.cf_convention:Applied CF-1.13 conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.acdd_convention:Applied ACDD conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.pipeline:Pipeline completed successfully\n"
+      "Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
      ]
     },
     {
@@ -280,7 +161,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9f0f6278",
+   "id": "84ef849b",
    "metadata": {},
    "source": [
     "## RBR TR1050 Thermistor (MAT Format)\n",
@@ -301,10 +182,10 @@
    "id": "cell-7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-07-21T12:50:19.298401Z",
-     "iopub.status.busy": "2026-07-21T12:50:19.298256Z",
-     "iopub.status.idle": "2026-07-21T12:50:32.323338Z",
-     "shell.execute_reply": "2026-07-21T12:50:32.322572Z"
+     "iopub.execute_input": "2026-08-07T17:32:40.938926Z",
+     "iopub.status.busy": "2026-08-07T17:32:40.938797Z",
+     "iopub.status.idle": "2026-08-07T17:32:49.784535Z",
+     "shell.execute_reply": "2026-08-07T17:32:49.783816Z"
     }
    },
    "outputs": [
@@ -312,105 +193,42 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Initialized reader RbrMatlabReader for '../examples/DSE18_013889_20180827_1349.mat'\n"
+      "Skipped derivation 'density': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Loading data from '../examples/DSE18_013889_20180827_1349.mat'\n"
+      "Skipped derivation 'depth': missing input 'pressure'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Initialized reader RbrMatlabLegacyReader for '../examples/DSE18_013889_20180827_1349.mat'\n"
+      "Skipped derivation 'potential_temperature': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Loading data from '../examples/DSE18_013889_20180827_1349.mat'\n"
+      "Skipped derivation 'conservative_temperature': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.pipeline.pipeline:Starting pipeline with 7 stages\n"
+      "Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'density': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'depth': missing input 'pressure'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'potential_temperature': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'conservative_temperature': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'speed_of_sound': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_extraction.handlers.extraction_runner:Extracted metadata from 2 source(s)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.cf_convention:Applied CF-1.13 conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.acdd_convention:Applied ACDD conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.pipeline:Pipeline completed successfully\n"
+      "Skipped derivation 'speed_of_sound': units for 'temperature' are ['�c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
@@ -444,10 +262,10 @@
    "id": "cell-9",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-07-21T12:50:32.324910Z",
-     "iopub.status.busy": "2026-07-21T12:50:32.324764Z",
-     "iopub.status.idle": "2026-07-21T12:50:32.841919Z",
-     "shell.execute_reply": "2026-07-21T12:50:32.841288Z"
+     "iopub.execute_input": "2026-08-07T17:32:49.785898Z",
+     "iopub.status.busy": "2026-08-07T17:32:49.785758Z",
+     "iopub.status.idle": "2026-08-07T17:32:50.239854Z",
+     "shell.execute_reply": "2026-08-07T17:32:50.239178Z"
     }
    },
    "outputs": [
@@ -455,112 +273,42 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Initialized reader RbrRskAutoReader for '../examples/DSE18_101647_20180827_1551.rsk'\n"
+      "Skipped derivation 'density': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Loading data from '../examples/DSE18_101647_20180827_1551.rsk'\n"
+      "Skipped derivation 'depth': missing input 'pressure'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Initialized reader RbrRskLegacyReader for '../examples/DSE18_101647_20180827_1551.rsk'\n"
+      "Skipped derivation 'potential_temperature': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.readers.base:Loading data from '../examples/DSE18_101647_20180827_1551.rsk'\n"
+      "Skipped derivation 'conservative_temperature': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.pipeline.pipeline:Starting pipeline with 7 stages\n"
+      "Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
      ]
     },
     {
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "INFO:seasenselib.pipeline.mapping.handlers.mapping_runner:Mapped 1 variables\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'density': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'depth': missing input 'pressure'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'potential_temperature': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'conservative_temperature': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'absolute_salinity': missing input 'salinity'\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "WARNING:seasenselib.pipeline.derivation.handlers.derivation_runner:Skipped derivation 'speed_of_sound': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_extraction.handlers.extraction_runner:Extracted metadata from 2 source(s)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.cf_convention:Applied CF-1.13 conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.metadata_enrichment.handlers.acdd_convention:Applied ACDD conventions\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "INFO:seasenselib.pipeline.pipeline:Pipeline completed successfully\n"
+      "Skipped derivation 'speed_of_sound': units for 'temperature' are ['°c'], expected one of ['degc', 'degree_celsius']\n"
      ]
     },
     {

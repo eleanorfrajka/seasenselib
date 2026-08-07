@@ -640,10 +640,40 @@ access the <cite>data</cite> property and inspect the xarray Dataset directly.</
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.base.AbstractReader.pipeline_transformations">
+<span class="sig-name descname"><span class="pre">pipeline_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/base.html#AbstractReader.pipeline_transformations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.base.AbstractReader.pipeline_transformations" title="Link to this definition"></a></dt>
+<dd><p>Return optional transformation handlers for this concrete dataset.</p>
+<p>Readers can override this hook when a transformation depends on data,
+header metadata, or reader state. The transformation stage accepts
+objects implementing <code class="docutils literal notranslate"><span class="pre">ITransformation</span></code>. The default performs no
+transformations.</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="seasenselib.readers.base.AbstractReader.processing_metadata">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">processing_metadata</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#seasenselib.readers.base.AbstractReader.processing_metadata" title="Link to this definition"></a></dt>
 <dd><p>Return processing metadata from the stage pipeline (if available).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.base.AbstractReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/base.html#AbstractReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.base.AbstractReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.base.AbstractReader.reader_groups">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/base.html#AbstractReader.reader_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.base.AbstractReader.reader_groups" title="Link to this definition"></a></dt>
+<dd><p>Return optional reader-group identifiers for pipeline controls.</p>
+<p>Reader groups allow pipeline stages to enable/disable behavior for
+related formats such as <code class="docutils literal notranslate"><span class="pre">nortek-ascii</span></code> and <code class="docutils literal notranslate"><span class="pre">nortek-csv</span></code> without
+coupling the stage to concrete reader classes. The default derives the
+group from the format key prefix before the first hyphen.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -682,16 +712,14 @@ need to create a new reader instance (for eager-loading readers).</p>
 <h3>Specific Reader Classes<a class="headerlink" href="#specific-reader-classes" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="seasenselib.readers.SbeCnvReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">SbeCnvReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix_missing_coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/sbe_cnv_reader.html#SbeCnvReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.SbeCnvReader" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">SbeCnvReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_default_latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_latitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/sbe_cnv_reader.html#SbeCnvReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.SbeCnvReader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#seasenselib.readers.base.AbstractReader" title="seasenselib.readers.base.AbstractReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractReader</span></code></a></p>
 <p>Reads sensor data from a SeaBird CNV file into a xarray Dataset.</p>
 <p>This class is used to read SeaBird CNV files, which are commonly used for storing
 sensor data. The provided data is expected to be in a CNV format, and this reader
 is designed to parse that format correctly.</p>
-<p>The reader includes automatic fixing capabilities for common issues:
-- File sanitization: Fixes trailing whitespace and malformed lines that cause pycnv errors
-- Coordinate defaults: Uses 45 degrees latitude when missing (common for moored instruments)</p>
-<p>These behaviors can be controlled via the sanitize_input and fix_missing_coords parameters.</p>
+<p>The reader includes automatic file sanitization for common issues such as
+trailing whitespace and malformed lines that cause pycnv errors.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="seasenselib.readers.SbeCnvReader.data">
 <span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#seasenselib.readers.SbeCnvReader.data" title="Link to this definition"></a></dt>
@@ -736,20 +764,9 @@ is designed to parse that format correctly.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="seasenselib.readers.SbeCnvReader.fix_missing_coords">
-<span class="sig-name descname"><span class="pre">fix_missing_coords</span></span><a class="headerlink" href="#seasenselib.readers.SbeCnvReader.fix_missing_coords" title="Link to this definition"></a></dt>
-<dd><p>Whether to use default values for missing coordinates (default: True).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">__init__(input_file,</span> <span class="pre">sanitize_input=True,</span> <span class="pre">fix_missing_coords=True,</span> <span class="pre">mapping=None,</span> <span class="pre">\*\*kwargs):</span></span></dt>
+<span class="sig-name descname"><span class="pre">__init__(input_file,</span> <span class="pre">sanitize_input=True,</span> <span class="pre">use_default_latitude=None,</span> <span class="pre">default_latitude=None,</span> <span class="pre">mapping=None,</span> <span class="pre">\*\*kwargs):</span></span></dt>
 <dd><p>Initializes the CnvReader with the input file and configuration options.</p>
 </dd></dl>
 
@@ -775,10 +792,6 @@ is designed to parse that format correctly.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default behavior (auto-fix enabled)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s1">&#39;mooring_data.cnv&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Disable automatic coordinate fixing</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s1">&#39;mooring_data.cnv&#39;</span><span class="p">,</span> <span class="n">fix_missing_coords</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Disable file sanitization (stricter parsing)</span>
@@ -862,6 +875,16 @@ variable name patterns commonly found in CNV files.</p>
 </dd>
 </dl>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.SbeCnvReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/sbe_cnv_reader.html#SbeCnvReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.SbeCnvReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1647,7 +1670,7 @@ variable name patterns. Empty dict means no format-specific mappings.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seasenselib.readers.NortekAsciiReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekAsciiReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dat_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_ascii_reader.html#NortekAsciiReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekAsciiReader" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekAsciiReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dat_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_coordinate_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointing_down</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transform_keep_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transform_overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_ascii_reader.html#NortekAsciiReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekAsciiReader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#seasenselib.readers.base.AbstractReader" title="seasenselib.readers.base.AbstractReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractReader</span></code></a></p>
 <p>Reads Nortek ASCII data from a .dat file into a xarray Dataset.</p>
 <p>This class reads Nortek ASCII data files, extracts column names and units from a .hdr file,
@@ -1801,11 +1824,35 @@ variable name patterns commonly found in ASCII export files.</p>
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekAsciiReader.pipeline_transformations">
+<span class="sig-name descname"><span class="pre">pipeline_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_ascii_reader.html#NortekAsciiReader.pipeline_transformations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekAsciiReader.pipeline_transformations" title="Link to this definition"></a></dt>
+<dd><p>Return reader-provided transformations for the pipeline.</p>
+<p>The base reader calls this hook after <code class="docutils literal notranslate"><span class="pre">_load_data()</span></code> and before the
+transformation stage runs. By then the Nortek header has already been
+parsed and stored in <code class="docutils literal notranslate"><span class="pre">_raw_metadata_blocks</span></code>, so the transformation
+handler can read the BEAM-to-XYZ matrix from the normal pipeline
+metadata context. This method only decides whether a transformation was
+requested by the caller and passes through the reader-level options.</p>
+<p>If no target coordinate system was requested, no handler is returned and
+the default read path remains unchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekAsciiReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_ascii_reader.html#NortekAsciiReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekAsciiReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seasenselib.readers.NortekCsvReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekCsvReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_header_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_csv_reader.html#NortekCsvReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekCsvReader" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekCsvReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_header_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_coordinate_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointing_down</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transform_keep_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_transform_overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_csv_reader.html#NortekCsvReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekCsvReader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#seasenselib.readers.base.AbstractReader" title="seasenselib.readers.base.AbstractReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractReader</span></code></a></p>
 <p>Read Nortek CSV data exported from AquaPro software.</p>
 <p>This class is a SeaSenseLib wrapper around the original Nortek CSV helper
@@ -1878,16 +1925,56 @@ None when there is no single primary extension (see <code class="xref py py-meth
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekCsvReader.pipeline_transformations">
+<span class="sig-name descname"><span class="pre">pipeline_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_csv_reader.html#NortekCsvReader.pipeline_transformations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekCsvReader.pipeline_transformations" title="Link to this definition"></a></dt>
+<dd><p>Return reader-provided transformations for the pipeline.</p>
+<p>The base reader calls this hook after <code class="docutils literal notranslate"><span class="pre">_load_data()</span></code> and before the
+transformation stage runs. By then <code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">Data.csv</span></code> has already been
+parsed and stored in <code class="docutils literal notranslate"><span class="pre">_raw_metadata_blocks</span></code>, so the transformation
+handler can read the BEAM-to-XYZ matrix from the normal pipeline
+metadata context. This method only decides whether a transformation was
+requested by the caller and passes through the reader-level options.</p>
+<p>If no target coordinate system was requested, no handler is returned and
+the default read path remains unchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekCsvReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_csv_reader.html#NortekCsvReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekCsvReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="seasenselib.readers.NortekRawReader">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekRawReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_decoder_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_aquadopp_compatibility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_raw_reader.html#NortekRawReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekRawReader" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">seasenselib.readers.</span></span><span class="sig-name descname"><span class="pre">NortekRawReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">userdata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_checksum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rebuild_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dual_profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_decoder_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_aquadopp_compatibility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_nortek2_aquadopp_compatibility</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/readers/nortek_raw_reader.html#NortekRawReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekRawReader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#seasenselib.readers.base.AbstractReader" title="seasenselib.readers.base.AbstractReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractReader</span></code></a></p>
 <p>Read Nortek raw binary files with MHKiT DOLfYN.</p>
-<p>The reader delegates binary decoding to DOLfYN and keeps the returned
-xarray structure intact. SeaSenseLib adds compact provenance, raw metadata
-hints, and conservative mappings for clearly identified scalar variables.</p>
+<dl class="simple">
+<dt>Responsibility</dt><dd><p><code class="docutils literal notranslate"><span class="pre">NortekRawReader</span></code> is the public SeaSenseLib wrapper for Nortek binary
+raw-like files. It keeps backend decoding as close as possible to DOLfYN
+while adding SeaSenseLib provenance, conservative metadata annotations,
+and safe scalar variable mappings.</p>
+</dd>
+<dt>Decode path selection</dt><dd><p>Classic Nortek files are delegated to DOLfYN’s classic Nortek reader.
+Gen2/AD2CP-style <code class="docutils literal notranslate"><span class="pre">.aqd</span></code> files are selected from the binary header. Full
+Gen2 raw packet streams go through DOLfYN’s Nortek2 reader, optionally
+with the scoped average-record repair above. Already averaged ID 38
+<code class="docutils literal notranslate"><span class="pre">*_avgd.aqd</span></code> products use the small SeaSenseLib fallback decoder
+because current DOLfYN builds do not index that packet family.</p>
+</dd>
+<dt>Compatibility policy</dt><dd><p>The compatibility helpers are intentionally narrow and temporary: they
+patch DOLfYN only in memory, only during a single read, and only after
+guarded evidence from the file/backend state indicates the known layout
+issue. They are not intended to replace DOLfYN as the normal decoder.</p>
+</dd>
+</dl>
 <p>This reader is marked experimental because support is still being validated
 across Nortek raw variants.</p>
 <p>Velocity is intentionally preserved as vector variable <code class="docutils literal notranslate"><span class="pre">vel</span></code>. Its
@@ -1984,6 +2071,33 @@ primary extension returned by <a class="reference internal" href="#seasenselib.r
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekRawReader.pipeline_transformations">
+<span class="sig-name descname"><span class="pre">pipeline_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_raw_reader.html#NortekRawReader.pipeline_transformations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekRawReader.pipeline_transformations" title="Link to this definition"></a></dt>
+<dd><p>Return no reader-provided coordinate transformations for raw data.</p>
+<p>Nortek ASCII and CSV readers expose velocity as explicit SeaSenseLib
+component triplets such as <code class="docutils literal notranslate"><span class="pre">velocity_beam1</span></code>/<code class="docutils literal notranslate"><span class="pre">velocity_beam2</span></code>/
+<code class="docutils literal notranslate"><span class="pre">velocity_beam3</span></code> or <code class="docutils literal notranslate"><span class="pre">east_velocity</span></code>/<code class="docutils literal notranslate"><span class="pre">north_velocity</span></code>/
+<code class="docutils literal notranslate"><span class="pre">up_velocity</span></code>. The coordinate transformation handler works on those
+scalar triplets.</p>
+<p>The raw reader intentionally preserves DOLfYN’s decoded vector variable
+<code class="docutils literal notranslate"><span class="pre">vel</span></code> and its <code class="docutils literal notranslate"><span class="pre">dir</span></code> coordinate. Splitting that vector into scalar
+components is a separate interpretation step, because the meaning of
+<code class="docutils literal notranslate"><span class="pre">dir</span></code> depends on DOLfYN metadata such as <code class="docutils literal notranslate"><span class="pre">coord_sys</span></code> and on raw-file
+variants that still need validation. Returning an empty list here makes
+that limitation explicit and keeps raw reads reproducible.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.NortekRawReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/nortek_raw_reader.html#NortekRawReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.NortekRawReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -2070,6 +2184,16 @@ None when there is no single primary extension (see <code class="xref py py-meth
 </dd>
 </dl>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.AdcpMatlabRdadcpReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/adcp_matlab_rdadcp_reader.html#AdcpMatlabRdadcpReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.AdcpMatlabRdadcpReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2292,6 +2416,16 @@ primary extension returned by <a class="reference internal" href="#seasenselib.r
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.RdiRawReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/rdi_raw_reader.html#RdiRawReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.RdiRawReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -2364,6 +2498,16 @@ None when there is no single primary extension (see <code class="xref py py-meth
 </dd>
 </dl>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.RbrMatlabLegacyReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/rbr_matlab_legacy_reader.html#RbrMatlabLegacyReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.RbrMatlabLegacyReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2522,6 +2666,16 @@ None when there is no single primary extension (see <code class="xref py py-meth
 </dd>
 </dl>
 </section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.RbrMatlabRsktoolsReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/rbr_matlab_rsktools_reader.html#RbrMatlabRsktoolsReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.RbrMatlabRsktoolsReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2987,6 +3141,16 @@ None when there is no single primary extension (see <code class="xref py py-meth
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="seasenselib.readers.SeasunTobReader.reader_args">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reader_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/seasenselib/readers/seasun_tob_reader.html#SeasunTobReader.reader_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.readers.SeasunTobReader.reader_args" title="Link to this definition"></a></dt>
+<dd><p>Return CLI-discoverable reader-specific arguments.</p>
+<p>Reader subclasses should override this when they can provide concise,
+user-facing descriptions. The fallback introspects explicit constructor
+parameters, which keeps plugin readers discoverable even without a custom
+metadata hook.</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -3239,7 +3403,7 @@ writer.write(“output_file.nc”)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="seasenselib.writers.NetCdfWriter.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/writers/netcdf_writer.html#NetCdfWriter.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.writers.NetCdfWriter.write" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seasenselib/writers/netcdf_writer.html#NetCdfWriter.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#seasenselib.writers.NetCdfWriter.write" title="Link to this definition"></a></dt>
 <dd><p>Writes the xarray Dataset to a netCDF file with the specified file name.</p>
 <section id="id163">
 <h5>Parameters:<a class="headerlink" href="#id163" title="Link to this heading"></a></h5>
@@ -3247,7 +3411,7 @@ writer.write(“output_file.nc”)</p>
 <dt>file_name (str):</dt><dd><p>The name of the output netCDF file where the data will be saved.</p>
 </dd>
 <dt>sanitize_names<span class="classifier">bool, optional</span></dt><dd><p>If True, replace slashes in NetCDF dimension, coordinate, and variable
-names with underscores before writing.</p>
+names with underscores before writing. Enabled by default.</p>
 </dd>
 </dl>
 </section>

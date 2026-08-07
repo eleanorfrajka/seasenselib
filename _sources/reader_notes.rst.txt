@@ -5,6 +5,34 @@ This page documents reader-specific interpretation choices that affect the
 scientific meaning of decoded variables. The supported formats overview stays
 short; details live here when a raw format needs extra care.
 
+SeaBird SBE HEX
+---------------
+
+The ``sbe-hex`` reader uses Sea-Bird SBE37 header metadata to detect the raw
+hex row layout, then decodes rows with ``seabirdscientific``. ``TxRealTime`` is
+preserved as metadata but is not treated as a layout by itself: recovered files
+can contain ``TxRealTime=no`` while still storing the same
+temperature/conductivity/time row structure. The reader validates the detected
+layout against ``SampleLength`` and each data row's hex length instead.
+
+For MicroCAT files without a pressure sensor, the header may contain
+``ReferencePressure``. This is deployment/configuration metadata, not a
+measured pressure time series, so SeaSenseLib does not create a pressure
+variable from it by default. Users can explicitly opt in when they want the
+reference pressure to be represented as a constant pressure variable and used
+for conductivity pressure correction:
+
+.. code-block:: bash
+
+   seasenselib show -i microcat.hex --reader-arg create-pressure-from-reference-pressure=true
+
+.. code-block:: python
+
+   dataset = ssl.read(
+       "microcat.hex",
+       create_pressure_from_reference_pressure=True,
+   )
+
 RBR HEX
 -------
 
@@ -33,11 +61,17 @@ anchors and channel metadata are preserved in ``raw_metadata``.
 Nortek raw
 ----------
 
-The ``nortek-raw`` reader decodes classic Nortek raw binary files, currently
-advertised for Aquadopp ``.aqd``, Vector ``.VEC`` and AWAC ``.wpr`` files,
-with MHKiT DOLfYN. Nortek Signature ``.ad2cp`` files use a separate DOLfYN
-decoder and are not part of this reader. This reader is marked experimental
-because support is still being validated across Nortek raw variants.
+The ``nortek-raw`` reader decodes Nortek raw binary files with MHKiT DOLfYN.
+It dispatches classic Aquadopp ``.aqd``, Vector ``.VEC`` and AWAC ``.wpr``
+files to DOLfYN's classic Nortek decoder, and dispatches AD2CP/Gen2-style
+``.aqd`` files to DOLfYN's Nortek2 decoder based on the binary file header.
+Nortek2 averaged ``*_avgd.aqd`` products with ID 38 packets are decoded by a
+small SeaSenseLib fallback because the DOLfYN Nortek2 indexer does not include
+that packet family.
+
+Nortek Signature ``.ad2cp`` files use the same DOLfYN decoder family but are
+not advertised by this reader yet. This reader is marked experimental because
+support is still being validated across Nortek raw variants.
 
 Velocity is preserved as vector variable ``vel``. If ``coord_sys`` is
 ``earth``, the decoded ``dir`` coordinate usually identifies east, north and

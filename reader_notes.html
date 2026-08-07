@@ -65,6 +65,7 @@
 <li class="toctree-l1"><a class="reference external" href="http://github.com/ocean-uhh/seasenselib">GitHub Repo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="supported_formats.html">Supported File Formats</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Reader Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#seabird-sbe-hex">SeaBird SBE HEX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rbr-hex">RBR HEX</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#nortek-raw">Nortek raw</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rdi-raw-adcp">RDI raw ADCP</a><ul>
@@ -107,6 +108,30 @@
 <p>This page documents reader-specific interpretation choices that affect the
 scientific meaning of decoded variables. The supported formats overview stays
 short; details live here when a raw format needs extra care.</p>
+<section id="seabird-sbe-hex">
+<h2>SeaBird SBE HEX<a class="headerlink" href="#seabird-sbe-hex" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sbe-hex</span></code> reader uses Sea-Bird SBE37 header metadata to detect the raw
+hex row layout, then decodes rows with <code class="docutils literal notranslate"><span class="pre">seabirdscientific</span></code>. <code class="docutils literal notranslate"><span class="pre">TxRealTime</span></code> is
+preserved as metadata but is not treated as a layout by itself: recovered files
+can contain <code class="docutils literal notranslate"><span class="pre">TxRealTime=no</span></code> while still storing the same
+temperature/conductivity/time row structure. The reader validates the detected
+layout against <code class="docutils literal notranslate"><span class="pre">SampleLength</span></code> and each data row’s hex length instead.</p>
+<p>For MicroCAT files without a pressure sensor, the header may contain
+<code class="docutils literal notranslate"><span class="pre">ReferencePressure</span></code>. This is deployment/configuration metadata, not a
+measured pressure time series, so SeaSenseLib does not create a pressure
+variable from it by default. Users can explicitly opt in when they want the
+reference pressure to be represented as a constant pressure variable and used
+for conductivity pressure correction:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>seasenselib<span class="w"> </span>show<span class="w"> </span>-i<span class="w"> </span>microcat.hex<span class="w"> </span>--reader-arg<span class="w"> </span>create-pressure-from-reference-pressure<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+    <span class="s2">&quot;microcat.hex&quot;</span><span class="p">,</span>
+    <span class="n">create_pressure_from_reference_pressure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="rbr-hex">
 <h2>RBR HEX<a class="headerlink" href="#rbr-hex" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">rbr-hex</span></code> reader decodes RBR TR-1050 style binary HEX exports with a
@@ -129,11 +154,16 @@ anchors and channel metadata are preserved in <code class="docutils literal notr
 </section>
 <section id="nortek-raw">
 <h2>Nortek raw<a class="headerlink" href="#nortek-raw" title="Link to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">nortek-raw</span></code> reader decodes classic Nortek raw binary files, currently
-advertised for Aquadopp <code class="docutils literal notranslate"><span class="pre">.aqd</span></code>, Vector <code class="docutils literal notranslate"><span class="pre">.VEC</span></code> and AWAC <code class="docutils literal notranslate"><span class="pre">.wpr</span></code> files,
-with MHKiT DOLfYN. Nortek Signature <code class="docutils literal notranslate"><span class="pre">.ad2cp</span></code> files use a separate DOLfYN
-decoder and are not part of this reader. This reader is marked experimental
-because support is still being validated across Nortek raw variants.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nortek-raw</span></code> reader decodes Nortek raw binary files with MHKiT DOLfYN.
+It dispatches classic Aquadopp <code class="docutils literal notranslate"><span class="pre">.aqd</span></code>, Vector <code class="docutils literal notranslate"><span class="pre">.VEC</span></code> and AWAC <code class="docutils literal notranslate"><span class="pre">.wpr</span></code>
+files to DOLfYN’s classic Nortek decoder, and dispatches AD2CP/Gen2-style
+<code class="docutils literal notranslate"><span class="pre">.aqd</span></code> files to DOLfYN’s Nortek2 decoder based on the binary file header.
+Nortek2 averaged <code class="docutils literal notranslate"><span class="pre">*_avgd.aqd</span></code> products with ID 38 packets are decoded by a
+small SeaSenseLib fallback because the DOLfYN Nortek2 indexer does not include
+that packet family.</p>
+<p>Nortek Signature <code class="docutils literal notranslate"><span class="pre">.ad2cp</span></code> files use the same DOLfYN decoder family but are
+not advertised by this reader yet. This reader is marked experimental because
+support is still being validated across Nortek raw variants.</p>
 <p>Velocity is preserved as vector variable <code class="docutils literal notranslate"><span class="pre">vel</span></code>. If <code class="docutils literal notranslate"><span class="pre">coord_sys</span></code> is
 <code class="docutils literal notranslate"><span class="pre">earth</span></code>, the decoded <code class="docutils literal notranslate"><span class="pre">dir</span></code> coordinate usually identifies east, north and
 up components, but the reader does not split these into CF component variables
