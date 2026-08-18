@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,14 +92,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.rbr_matlab_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Facade for reading RBR MATLAB .mat files, automatically selecting the correct reader</span>
 <span class="sd">based on the root variable in the MATLAB structure.</span>
 
-<span class="sd">If the root variable is &quot;RBR&quot;, delegates to RbrMatlabLegacyReader.</span>
-<span class="sd">If the root variable is &quot;rsk&quot;, delegates to RbrMatlabRsktoolsReader.</span>
+<span class="sd">If the root variable is "RBR", delegates to RbrMatlabLegacyReader.</span>
+<span class="sd">If the root variable is "rsk", delegates to RbrMatlabRsktoolsReader.</span>
 <span class="sd">Otherwise, raises an error.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
@@ -109,7 +110,7 @@
 <div class="viewcode-block" id="RbrMatlabReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrMatlabReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RbrMatlabReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Facade for reading RBR Matlab .mat files, automatically selecting the correct reader</span>
 <span class="sd">    based on the root variable in the MATLAB structure.</span>
 <span class="sd">    </span>
@@ -119,11 +120,11 @@
 <span class="sd">    This is intentional design for defense-in-depth and to ensure delegate readers</span>
 <span class="sd">    work correctly when instantiated directly. The validation overhead is</span>
 <span class="sd">    negligible compared to file loading time.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize RbrMatlabReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize RbrMatlabReader.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -144,9 +145,9 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Avoid running the pipeline twice: delegate reader handles postprocessing.</span>
-        <span class="n">delegate_use_steps</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;use_steps&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">delegate_use_steps</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"use_steps"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">use_steps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reader_format_name</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reader_format_key</span> <span class="o">=</span> <span class="kc">None</span>
@@ -157,17 +158,17 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for MATLAB files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">,)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for MATLAB files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.mat'</span><span class="p">,)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the appropriate reader and load data.</span>
+<span class="w">        </span><span class="sd">"""Select the appropriate reader and load data.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The loaded dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.io</span>
 
@@ -176,14 +177,14 @@
 
         <span class="c1"># Select the appropriate reader based on root variable</span>
         <span class="c1"># Pass through all kwargs to honor configuration options</span>
-        <span class="k">if</span> <span class="s2">&quot;RBR&quot;</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"RBR"</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">RbrMatlabLegacyReader</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span>
                 <span class="n">mapping</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
                 <span class="n">use_steps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_delegate_use_steps</span><span class="p">,</span>
                 <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="s2">&quot;rsk&quot;</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="s2">"rsk"</span> <span class="ow">in</span> <span class="n">mat</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">RbrMatlabRsktoolsReader</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span>
                 <span class="n">mapping</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
@@ -191,7 +192,7 @@
                 <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Neither &#39;RBR&#39; nor &#39;rsk&#39; struct found in .mat file.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Neither 'RBR' nor 'rsk' struct found in .mat file."</span><span class="p">)</span>
 
         <span class="c1"># Store reader metadata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reader_format_name</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">format_name</span><span class="p">()</span>
@@ -203,14 +204,14 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrMatlabReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;rbr-matlab&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'rbr-matlab'</span></div>
 
 
 <div class="viewcode-block" id="RbrMatlabReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrMatlabReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;RBR Matlab&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'RBR Matlab'</span></div>
 
 
 <div class="viewcode-block" id="RbrMatlabReader.file_extension">

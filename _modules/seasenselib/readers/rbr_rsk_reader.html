@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.rbr_rsk_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for reading RBR .rsk files into xarray Datasets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -105,7 +106,7 @@
 <div class="viewcode-block" id="RbrRskReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RbrRskReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Reads sensor data from a RBR .rsk file into a xarray Dataset.</span>
 
 <span class="sd">    Attributes</span>
@@ -116,12 +117,12 @@
 <span class="sd">        The path to the input file containing the RBR legacy data.</span>
 <span class="sd">    mapping : dict, optional</span>
 <span class="sd">        A dictionary mapping names used in the input file to standard names.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize RbrRskReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize RbrRskReader.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -142,17 +143,17 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_file</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for RSK files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.rsk&#39;</span><span class="p">,)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for RSK files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.rsk'</span><span class="p">,)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reads a RSK file and converts it to a xarray Dataset. </span>
+<span class="w">        </span><span class="sd">""" Reads a RSK file and converts it to a xarray Dataset. </span>
 
 <span class="sd">        This method uses the pyrsktools library to read the RSK file, extracts</span>
 <span class="sd">        channel information and measurement data, processes the timestamps, and</span>
@@ -163,7 +164,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The loaded dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">pyrsktools</span><span class="w"> </span><span class="kn">import</span> <span class="n">RSK</span>
 
@@ -175,8 +176,8 @@
 
         <span class="c1"># Convert array to xarray Dataset</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-            <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">([</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">rsk</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">rsk</span><span class="o">.</span><span class="n">channelNames</span><span class="p">},</span>
-            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">rsk</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)}</span>
+            <span class="n">data_vars</span><span class="o">=</span><span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">([</span><span class="s1">'time'</span><span class="p">],</span> <span class="n">rsk</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">rsk</span><span class="o">.</span><span class="n">channelNames</span><span class="p">},</span>
+            <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">rsk</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)}</span>
         <span class="p">)</span>
 
         <span class="c1"># Assign metadata to the dataset variables</span>
@@ -186,17 +187,17 @@
         <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">rsk</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">channel</span><span class="o">.</span><span class="n">longName</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
                 <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;rsk_channel_id&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">channelID</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_long_name&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">longName</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_short_name&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">shortName</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_label&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_dbName&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">_dbName</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_units&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_units_plain_text&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">unitsPlainText</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_fe_module_type&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">feModuleType</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_fe_module_version&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">feModuleVersion</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_is_measured&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">isMeasured</span><span class="p">,</span>
-                    <span class="s1">&#39;rsk_is_derived&#39;</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">isDerived</span><span class="p">,</span>
+                    <span class="s1">'rsk_channel_id'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">channelID</span><span class="p">,</span>
+                    <span class="s1">'rsk_long_name'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">longName</span><span class="p">,</span>
+                    <span class="s1">'rsk_short_name'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">shortName</span><span class="p">,</span>
+                    <span class="s1">'rsk_label'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+                    <span class="s1">'rsk_dbName'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">_dbName</span><span class="p">,</span>
+                    <span class="s1">'rsk_units'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+                    <span class="s1">'rsk_units_plain_text'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">unitsPlainText</span><span class="p">,</span>
+                    <span class="s1">'rsk_fe_module_type'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">feModuleType</span><span class="p">,</span>
+                    <span class="s1">'rsk_fe_module_version'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">feModuleVersion</span><span class="p">,</span>
+                    <span class="s1">'rsk_is_measured'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">isMeasured</span><span class="p">,</span>
+                    <span class="s1">'rsk_is_derived'</span><span class="p">:</span> <span class="n">channel</span><span class="o">.</span><span class="n">isDerived</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="n">ds</span><span class="p">[</span><span class="n">channel</span><span class="o">.</span><span class="n">longName</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
 
@@ -207,19 +208,19 @@
         <span class="c1"># Add instrument information as global attributes</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="p">:</span>
             <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;instrument_model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
-                <span class="s1">&#39;instrument_serial&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">serialID</span><span class="p">,</span>
-                <span class="s1">&#39;instrument_firmware_version&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">firmwareVersion</span><span class="p">,</span>
-                <span class="s1">&#39;instrument_firmware_type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">firmwareType</span><span class="p">,</span>
+                <span class="s1">'instrument_model'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                <span class="s1">'instrument_serial'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">serialID</span><span class="p">,</span>
+                <span class="s1">'instrument_firmware_version'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">firmwareVersion</span><span class="p">,</span>
+                <span class="s1">'instrument_firmware_type'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">firmwareType</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="p">,</span> <span class="s2">&quot;partNumber&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_part_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">partNumber</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="p">,</span> <span class="s2">"partNumber"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_part_number'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instrument_info</span><span class="o">.</span><span class="n">partNumber</span>
 
         <span class="c1"># Add database information as global attributes</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_info</span><span class="p">:</span>
-            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rsk_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_info</span><span class="o">.</span><span class="n">version</span>
-            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rsk_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_info</span><span class="o">.</span><span class="n">type</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'rsk_version'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_info</span><span class="o">.</span><span class="n">version</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'rsk_type'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_info</span><span class="o">.</span><span class="n">type</span>
 
         <span class="c1"># Perform default post-processing</span>
         <span class="k">return</span> <span class="n">ds</span>
@@ -228,14 +229,14 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;rbr-rsk-default&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'rbr-rsk-default'</span></div>
 
 
 <div class="viewcode-block" id="RbrRskReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;RBR RSK Default&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'RBR RSK Default'</span></div>
 
 
 <div class="viewcode-block" id="RbrRskReader.file_extension">
@@ -249,18 +250,18 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskReader.format_mappings">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_mappings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get RBR RSK format-specific variable name mappings.</span>
+<span class="w">        </span><span class="sd">"""Get RBR RSK format-specific variable name mappings.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary mapping canonical parameter names to RBR-specific</span>
 <span class="sd">            variable name patterns commonly found in RSK files.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;temperature_00&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature_01&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;conductivity_00&#39;</span><span class="p">,</span> <span class="s1">&#39;conductivity_01&#39;</span><span class="p">,</span> <span class="s1">&#39;conductivity&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;sea_pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">SALINITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;salinity_00&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity_01&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;depth&#39;</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'temperature_00'</span><span class="p">,</span> <span class="s1">'temperature_01'</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'conductivity_00'</span><span class="p">,</span> <span class="s1">'conductivity_01'</span><span class="p">,</span> <span class="s1">'conductivity'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'sea_pressure'</span><span class="p">,</span> <span class="s1">'pressure'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">SALINITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'salinity_00'</span><span class="p">,</span> <span class="s1">'salinity_01'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">:</span> <span class="p">[</span><span class="s1">'depth'</span><span class="p">],</span>
         <span class="p">}</span></div>
 </div>
 

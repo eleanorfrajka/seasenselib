@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.rcm_matlab_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for reading RCM data from MATLAB .mat files.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -104,12 +105,12 @@
 <div class="viewcode-block" id="RcmMatlabReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RcmMatlabReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RcmMatlabReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reader which converts RCM data stored in MATLAB .mat files into xarray dataset.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Reader which converts RCM data stored in MATLAB .mat files into xarray dataset."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize RcmMatlabReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize RcmMatlabReader.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -130,14 +131,14 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_file</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for MATLAB files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.mat&#39;</span><span class="p">,)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for MATLAB files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.mat'</span><span class="p">,)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat_file_path</span><span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.io</span>
@@ -148,49 +149,49 @@
         <span class="c1">#prepare for alteration</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">mat_to_dict</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="s1">&#39;flatten&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="s1">'flatten'</span><span class="p">)</span>
                     <span class="k">else</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
             <span class="p">}</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">mat_to_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="c1"># convert julian time to datetime</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">719529</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'t'</span><span class="p">]</span> <span class="o">-</span> <span class="mi">719529</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'D'</span><span class="p">)</span>
         
         <span class="c1"># remove original julian time </span>
-        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'t'</span><span class="p">)</span>
 
         <span class="c1">#create pandas dataframe </span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">([(</span><span class="n">key</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()]))</span>
 
         <span class="c1"># set time as index</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">df</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_xarray_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create xarray dataset from pandas dataframe.</span>
+<span class="w">        </span><span class="sd">"""Create xarray dataset from pandas dataframe.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns raw dataset with format-specific variable names.</span>
 <span class="sd">        Variable mapping and metadata enrichment handled by stages.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
         
         <span class="c1"># Add minimal units from raw data (stages will enrich with CF metadata)</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;m/s&#39;</span><span class="p">}</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;m/s&#39;</span><span class="p">}</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;°C&#39;</span><span class="p">}</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;cond&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;S/m&#39;</span><span class="p">}</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;dbar&#39;</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'u'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'m/s'</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'v'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'m/s'</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'temp'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'°C'</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'cond'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'S/m'</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'pres'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'dbar'</span><span class="p">}</span>
         
         <span class="c1"># Add source information</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Recording Current Meter - Aanderaa&#39;</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;RCM&#39;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'source'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'Recording Current Meter - Aanderaa'</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'RCM'</span>
         
         <span class="k">return</span> <span class="n">ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from the MATLAB file and return an xarray Dataset.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Load data from the MATLAB file and return an xarray Dataset."""</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_xarray_dataset</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -198,21 +199,21 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RcmMatlabReader.format_mappings">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_mappings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return RCM-specific variable name mappings.</span>
+<span class="w">        </span><span class="sd">"""Return RCM-specific variable name mappings.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict[str, list]</span>
 <span class="sd">            Dictionary mapping standard names to RCM format-specific aliases.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">EAST_VELOCITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;u&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">NORTH_VELOCITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cond&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;vdir&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;vdir&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;vmag&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;vmag&#39;</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">EAST_VELOCITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'u'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">NORTH_VELOCITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'v'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'temp'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'cond'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'pres'</span><span class="p">],</span>
+            <span class="s1">'vdir'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'vdir'</span><span class="p">],</span>
+            <span class="s1">'vmag'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'vmag'</span><span class="p">],</span>
         <span class="p">}</span></div>
 
 
@@ -220,14 +221,14 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RcmMatlabReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;rcm-matlab&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'rcm-matlab'</span></div>
 
 
 <div class="viewcode-block" id="RcmMatlabReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RcmMatlabReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;RCM Matlab&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'RCM Matlab'</span></div>
 
 
 <div class="viewcode-block" id="RcmMatlabReader.file_extension">

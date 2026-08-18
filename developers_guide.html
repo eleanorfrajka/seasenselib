@@ -49,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -115,16 +116,16 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Read any supported format into an xarray dataset</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;sea-practical-2023.cnv&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"sea-practical-2023.cnv"</span><span class="p">)</span>
 
 <span class="c1"># Create oceanographic plots</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Profile&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;T-S Diagram&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CTD Profile"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"T-S Diagram"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">])</span>
 
 <span class="c1"># Export to various formats</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>   <span class="c1"># NetCDF</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.csv&#39;</span><span class="p">)</span>  <span class="c1"># CSV</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">)</span>   <span class="c1"># NetCDF</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.csv'</span><span class="p">)</span>  <span class="c1"># CSV</span>
 </pre></div>
 </div>
 <p><strong>Using the Command Line:</strong></p>
@@ -152,9 +153,9 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Simple, automatic format detection</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;mooring_data.rsk&#39;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'mooring_data.rsk'</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">])</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Legacy API:</strong></p>
@@ -163,14 +164,14 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetCdfWriter</span>
 
 <span class="c1"># Explicit class instantiation and control</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskReader</span><span class="p">(</span><span class="s1">&#39;mooring_data.rsk&#39;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskReader</span><span class="p">(</span><span class="s1">'mooring_data.rsk'</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">TimeSeriesPlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">&#39;temp_series.png&#39;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">output_file</span><span class="o">=</span><span class="s1">'temp_series.png'</span><span class="p">)</span>
 
 <span class="n">writer</span> <span class="o">=</span> <span class="n">NetCdfWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">'output.nc'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Architecture Overview:</strong></p>
@@ -189,15 +190,15 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Automatic format detection</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;profile_001.cnv&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"profile_001.cnv"</span><span class="p">)</span>
 
 <span class="c1"># Explicit format specification</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;mooring_data.rsk&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-rsk&#39;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"mooring_data.rsk"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-rsk'</span><span class="p">)</span>
 
 <span class="c1"># Multi-file formats (e.g., Nortek with header)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;current_data.dat&quot;</span><span class="p">,</span>
-                  <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;nortek-ascii&#39;</span><span class="p">,</span>
-                  <span class="n">header_file</span><span class="o">=</span><span class="s2">&quot;current_data.hdr&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"current_data.dat"</span><span class="p">,</span>
+                  <span class="n">file_format</span><span class="o">=</span><span class="s1">'nortek-ascii'</span><span class="p">,</span>
+                  <span class="n">header_file</span><span class="o">=</span><span class="s2">"current_data.hdr"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Advanced Usage (Legacy API):</strong></p>
@@ -205,11 +206,11 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SbeCnvReader</span><span class="p">,</span> <span class="n">RbrRskAutoReader</span>
 
 <span class="c1"># Direct class instantiation</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">&quot;profile_001.cnv&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">"profile_001.cnv"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># Access reader-specific methods</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskAutoReader</span><span class="p">(</span><span class="s2">&quot;mooring_data.rsk&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskAutoReader</span><span class="p">(</span><span class="s2">"mooring_data.rsk"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -218,11 +219,11 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># CNV files (profiles and time series)</span>
-<span class="n">profile_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;ctd_profile.cnv&quot;</span><span class="p">)</span>
-<span class="n">timeseries_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;microcat_timeseries.cnv&quot;</span><span class="p">)</span>
+<span class="n">profile_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"ctd_profile.cnv"</span><span class="p">)</span>
+<span class="n">timeseries_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"microcat_timeseries.cnv"</span><span class="p">)</span>
 
 <span class="c1"># ASCII format</span>
-<span class="n">ascii_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;sbe_data.asc&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;sbe-ascii&#39;</span><span class="p">)</span>
+<span class="n">ascii_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"sbe_data.asc"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'sbe-ascii'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -230,11 +231,11 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SbeCnvReader</span><span class="p">,</span> <span class="n">SbeAsciiReader</span>
 
 <span class="c1"># CNV format reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">&quot;profile_001.cnv&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">"profile_001.cnv"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># ASCII format reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeAsciiReader</span><span class="p">(</span><span class="s2">&quot;sbe_data.asc&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeAsciiReader</span><span class="p">(</span><span class="s2">"sbe_data.asc"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -243,15 +244,15 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Native RSK format (auto-detection)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;solo_temp.rsk&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"solo_temp.rsk"</span><span class="p">)</span>
 
 <span class="c1"># MATLAB exports</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rbr_export.mat&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-matlab&#39;</span><span class="p">)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rsktools_export.mat&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-matlab-rsktools&#39;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"rbr_export.mat"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-matlab'</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"rsktools_export.mat"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-matlab-rsktools'</span><span class="p">)</span>
 
 <span class="c1"># RBR HEX exports require an explicit format key because .hex is also used</span>
 <span class="c1"># by SeaBird HEX files</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rbr_logger.hex&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-hex&#39;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"rbr_logger.hex"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-hex'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -259,15 +260,15 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">RbrRskAutoReader</span><span class="p">,</span> <span class="n">RbrMatlabReader</span><span class="p">,</span> <span class="n">RbrHexReader</span>
 
 <span class="c1"># Auto-detect RSK format version</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskAutoReader</span><span class="p">(</span><span class="s2">&quot;solo_temp.rsk&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrRskAutoReader</span><span class="p">(</span><span class="s2">"solo_temp.rsk"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># MATLAB format reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrMatlabReader</span><span class="p">(</span><span class="s2">&quot;rbr_export.mat&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrMatlabReader</span><span class="p">(</span><span class="s2">"rbr_export.mat"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># HEX format reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrHexReader</span><span class="p">(</span><span class="s2">&quot;rbr_logger.hex&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">RbrHexReader</span><span class="p">(</span><span class="s2">"rbr_logger.hex"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -276,16 +277,16 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Nortek ASCII format (requires both data and header files)</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;aquadopp.dat&quot;</span><span class="p">,</span>
-                  <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;nortek-ascii&#39;</span><span class="p">,</span>
-                  <span class="n">header_file</span><span class="o">=</span><span class="s2">&quot;aquadopp.hdr&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"aquadopp.dat"</span><span class="p">,</span>
+                  <span class="n">file_format</span><span class="o">=</span><span class="s1">'nortek-ascii'</span><span class="p">,</span>
+                  <span class="n">header_file</span><span class="o">=</span><span class="s2">"aquadopp.hdr"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NortekAsciiReader</span>
 
 <span class="c1"># Explicit file specification</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">NortekAsciiReader</span><span class="p">(</span><span class="s2">&quot;aquadopp.dat&quot;</span><span class="p">,</span> <span class="s2">&quot;aquadopp.hdr&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">NortekAsciiReader</span><span class="p">(</span><span class="s2">"aquadopp.dat"</span><span class="p">,</span> <span class="s2">"aquadopp.hdr"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -294,10 +295,10 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># NetCDF files</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;ocean_data.nc&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"ocean_data.nc"</span><span class="p">)</span>
 
 <span class="c1"># CSV files</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;sensor_data.csv&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"sensor_data.csv"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -305,11 +306,11 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetCdfReader</span><span class="p">,</span> <span class="n">CsvReader</span>
 
 <span class="c1"># NetCDF reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">NetCdfReader</span><span class="p">(</span><span class="s2">&quot;ocean_data.nc&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">NetCdfReader</span><span class="p">(</span><span class="s2">"ocean_data.nc"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 
 <span class="c1"># CSV reader</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">CsvReader</span><span class="p">(</span><span class="s2">&quot;sensor_data.csv&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">CsvReader</span><span class="p">(</span><span class="s2">"sensor_data.csv"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
@@ -319,10 +320,10 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>plotters
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Parameter mapping during read</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;custom_names.cnv&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;tv290C&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pressure&#39;</span><span class="p">:</span> <span class="s1">&#39;prdM&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;salinity&#39;</span><span class="p">:</span> <span class="s1">&#39;sal00&#39;</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"custom_names.cnv"</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">'temperature'</span><span class="p">:</span> <span class="s1">'tv290C'</span><span class="p">,</span>
+    <span class="s1">'pressure'</span><span class="p">:</span> <span class="s1">'prdM'</span><span class="p">,</span>
+    <span class="s1">'salinity'</span><span class="p">:</span> <span class="s1">'sal00'</span>
 <span class="p">})</span>
 </pre></div>
 </div>
@@ -335,10 +336,10 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SbeCnvReader</span>
 
 <span class="c1"># Parameter mapping in constructor</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">&quot;custom_names.cnv&quot;</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;tv290C&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;pressure&#39;</span><span class="p">:</span> <span class="s1">&#39;prdM&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;salinity&#39;</span><span class="p">:</span> <span class="s1">&#39;sal00&#39;</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">"custom_names.cnv"</span><span class="p">,</span> <span class="n">mapping</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">'temperature'</span><span class="p">:</span> <span class="s1">'tv290C'</span><span class="p">,</span>
+    <span class="s1">'pressure'</span><span class="p">:</span> <span class="s1">'prdM'</span><span class="p">,</span>
+    <span class="s1">'salinity'</span><span class="p">:</span> <span class="s1">'sal00'</span>
 <span class="p">})</span>
 </pre></div>
 </div>
@@ -350,9 +351,9 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Automatic format detection from extension</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>    <span class="c1"># NetCDF</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.csv&#39;</span><span class="p">)</span>   <span class="c1"># CSV</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.xlsx&#39;</span><span class="p">)</span>  <span class="c1"># Excel</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">)</span>    <span class="c1"># NetCDF</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.csv'</span><span class="p">)</span>   <span class="c1"># CSV</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.xlsx'</span><span class="p">)</span>  <span class="c1"># Excel</span>
 </pre></div>
 </div>
 <p><strong>Advanced Usage (Legacy API):</strong></p>
@@ -361,10 +362,10 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Custom NetCDF export</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">NetCdfWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">global_attributes</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;CTD Profile Station 001&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;institution&#39;</span><span class="p">:</span> <span class="s1">&#39;University of Hamburg&#39;</span>
+    <span class="s1">'title'</span><span class="p">:</span> <span class="s1">'CTD Profile Station 001'</span><span class="p">,</span>
+    <span class="s1">'institution'</span><span class="p">:</span> <span class="s1">'University of Hamburg'</span>
 <span class="p">})</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.nc"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>NetCDF Export</strong></p>
@@ -373,10 +374,10 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Simple export</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">)</span>
 
 <span class="c1"># Explicit format specification</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;netcdf&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'netcdf'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -384,14 +385,14 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Basic export</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">NetCdfWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.nc"</span><span class="p">)</span>
 
 <span class="c1"># With custom global attributes</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">NetCdfWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">global_attributes</span><span class="o">=</span><span class="p">{</span>
-    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;CTD Profile Station 001&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;institution&#39;</span><span class="p">:</span> <span class="s1">&#39;University of Hamburg&#39;</span>
+    <span class="s1">'title'</span><span class="p">:</span> <span class="s1">'CTD Profile Station 001'</span><span class="p">,</span>
+    <span class="s1">'institution'</span><span class="p">:</span> <span class="s1">'University of Hamburg'</span>
 <span class="p">})</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.nc"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>CSV Export</strong></p>
@@ -400,7 +401,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Simple CSV export</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.csv&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.csv'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -408,7 +409,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Custom CSV export</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">CsvWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.csv&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.csv"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Excel Export</strong></p>
@@ -417,7 +418,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Simple Excel export</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.xlsx&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.xlsx'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -425,7 +426,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Custom Excel export</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">ExcelWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.xlsx&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.xlsx"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -436,12 +437,12 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Create common oceanographic plots</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;T-S Diagram&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Profile&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"T-S Diagram"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CTD Profile"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">])</span>
 
 <span class="c1"># Save plots to files</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;ts_diagram.png&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"ts_diagram.png"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Advanced Usage (Legacy API):</strong></p>
@@ -450,7 +451,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Advanced customization</span>
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">TsDiagramPlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Station 001&quot;</span><span class="p">,</span> <span class="n">dot_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">show_density_isolines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Station 001"</span><span class="p">,</span> <span class="n">dot_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">show_density_isolines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Temperature-Salinity Diagrams</strong></p>
@@ -459,21 +460,21 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Simple T-S diagram</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Station 001 T-S Diagram&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Station 001 T-S Diagram"</span><span class="p">)</span>
 
 <span class="c1"># Save to file</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;ts_diagram.png&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"ts_diagram.png"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.plotters</span><span class="w"> </span><span class="kn">import</span> <span class="n">TsDiagramPlotter</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">TsDiagramPlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Station 001 T-S Diagram&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Station 001 T-S Diagram"</span><span class="p">)</span>
 
 <span class="c1"># Custom styling options</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Custom T-S&quot;</span><span class="p">,</span> <span class="n">dot_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span>
-             <span class="n">show_density_isolines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;ts_diagram.png&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"Custom T-S"</span><span class="p">,</span> <span class="n">dot_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">colormap</span><span class="o">=</span><span class="s1">'plasma'</span><span class="p">,</span>
+             <span class="n">show_density_isolines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"ts_diagram.png"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Vertical Profiles</strong></p>
@@ -482,17 +483,17 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Standard depth profile</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Profile&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CTD Profile"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.plotters</span><span class="w"> </span><span class="kn">import</span> <span class="n">DepthProfilePlotter</span>
 
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">DepthProfilePlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Profile&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"CTD Profile"</span><span class="p">)</span>
 
 <span class="c1"># Customize displayed parameters</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">,</span> <span class="s1">&#39;oxygen&#39;</span><span class="p">])</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">,</span> <span class="s1">'oxygen'</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><strong>Time Series</strong></p>
@@ -501,12 +502,12 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Single parameter</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span>
-         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Temperature Time Series&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span>
+         <span class="n">title</span><span class="o">=</span><span class="s2">"Temperature Time Series"</span><span class="p">)</span>
 
 <span class="c1"># Multiple parameters</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">],</span>
-         <span class="n">dual_axis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Multi-parameter Series&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">],</span>
+         <span class="n">dual_axis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Multi-parameter Series"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>Legacy API:</em></p>
@@ -514,12 +515,12 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Single parameter with customization</span>
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">TimeSeriesPlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Temperature Time Series&quot;</span><span class="p">,</span>
-             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">],</span> <span class="n">line_styles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--&#39;</span><span class="p">])</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Temperature Time Series"</span><span class="p">,</span>
+             <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">'red'</span><span class="p">],</span> <span class="n">line_styles</span><span class="o">=</span><span class="p">[</span><span class="s1">'--'</span><span class="p">])</span>
 
 <span class="c1"># Multiple parameters with dual axis</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">],</span> <span class="n">dual_axis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-             <span class="n">left_params</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">right_params</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;salinity&#39;</span><span class="p">])</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">],</span> <span class="n">dual_axis</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">left_params</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">right_params</span><span class="o">=</span><span class="p">[</span><span class="s1">'salinity'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -531,7 +532,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 
 <span class="c1"># Time subset</span>
 <span class="n">processor</span> <span class="o">=</span> <span class="n">SubsetProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">subset</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">subset_time</span><span class="p">(</span><span class="s1">&#39;2023-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-01-31&#39;</span><span class="p">)</span>
+<span class="n">subset</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">subset_time</span><span class="p">(</span><span class="s1">'2023-01-01'</span><span class="p">,</span> <span class="s1">'2023-01-31'</span><span class="p">)</span>
 
 <span class="c1"># Depth subset</span>
 <span class="n">depth_subset</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">subset_depth</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 10-100m depth</span>
@@ -542,7 +543,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResampleProcessor</span>
 
 <span class="n">processor</span> <span class="o">=</span> <span class="n">ResampleProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">hourly_data</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;1H&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">hourly_data</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">'1H'</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Statistics</strong></p>
@@ -550,7 +551,7 @@ seasenselib<span class="w"> </span>convert<span class="w"> </span>-i<span class=
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.processors</span><span class="w"> </span><span class="kn">import</span> <span class="n">StatisticsProcessor</span>
 
 <span class="n">processor</span> <span class="o">=</span> <span class="n">StatisticsProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">calculate_statistics</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">])</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">calculate_statistics</span><span class="p">([</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
@@ -633,7 +634,7 @@ seasenselib<span class="w"> </span>plot-series<span class="w"> </span>-i<span cl
 <li><p>You need to override the default reader choice</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Force specific format</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;sbe-ascii&#39;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"data.txt"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'sbe-ascii'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Accessing Legacy Functionality</strong></p>
@@ -641,7 +642,7 @@ seasenselib<span class="w"> </span>plot-series<span class="w"> </span>-i<span cl
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SbeCnvReader</span>
 
 <span class="c1"># Access reader-specific validation methods</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">&quot;data.cnv&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">"data.cnv"</span><span class="p">)</span>
 <span class="n">reader</span><span class="o">.</span><span class="n">validate_format</span><span class="p">()</span>  <span class="c1"># Reader-specific method</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
@@ -652,19 +653,19 @@ seasenselib<span class="w"> </span>plot-series<span class="w"> </span>-i<span cl
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">NetCdfWriter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.plotters</span><span class="w"> </span><span class="kn">import</span> <span class="n">TsDiagramPlotter</span>
 
-<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">&quot;data.cnv&quot;</span><span class="p">)</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">SbeCnvReader</span><span class="p">(</span><span class="s2">"data.cnv"</span><span class="p">)</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">data</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">NetCdfWriter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"output.nc"</span><span class="p">)</span>
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">TsDiagramPlotter</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;T-S Diagram&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"T-S Diagram"</span><span class="p">)</span>
 
 <span class="c1"># Modern equivalent</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;data.cnv&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">&quot;output.nc&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;T-S Diagram&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"data.cnv"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s2">"output.nc"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"T-S Diagram"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

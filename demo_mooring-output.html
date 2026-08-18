@@ -52,6 +52,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -113,10 +114,10 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-v0_8&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-v0_8'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -127,8 +128,8 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load SeaBird MicroCAT time series data and plot salinity</span>
-<span class="n">microcat_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;../examples/denmark-strait-ds-m1-17.cnv&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">microcat_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;salinity&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;MicroCAT Salinity Time Series&quot;</span><span class="p">)</span>
+<span class="n">microcat_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"../examples/denmark-strait-ds-m1-17.cnv"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">microcat_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'salinity'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"MicroCAT Salinity Time Series"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -156,7 +157,7 @@ pycnv: Could not compute datetime dates based on timeS
 <li><p>‘nortek-ascii’ - Nortek ASCII format reader</p></li>
 </ul>
 <p>For Nortek Aquadopps, you should use:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>aquadopp_data = ssl.read(&quot;filename.dat&quot;, file_format=&#39;nortek-ascii&#39;, header_file=&quot;filename.hdr&quot;)
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>aquadopp_data = ssl.read("filename.dat", file_format='nortek-ascii', header_file="filename.hdr")
 </pre></div>
 </div>
 <div class="nbinput docutils container">
@@ -164,9 +165,9 @@ pycnv: Could not compute datetime dates based on timeS
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Nortek Aquadopp velocity data and plot u,v components</span>
-<span class="n">aquadopp_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;../examples/DSC18_477102.dat&quot;</span><span class="p">,</span>
-  <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;nortek-ascii&#39;</span><span class="p">,</span> <span class="n">header_file</span><span class="o">=</span><span class="s2">&quot;../examples/DSC18_477102.hdr&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">aquadopp_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;east_velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;north_velocity&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Aquadopp Velocity Components&quot;</span><span class="p">)</span>
+<span class="n">aquadopp_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"../examples/DSC18_477102.dat"</span><span class="p">,</span>
+  <span class="n">file_format</span><span class="o">=</span><span class="s1">'nortek-ascii'</span><span class="p">,</span> <span class="n">header_file</span><span class="o">=</span><span class="s2">"../examples/DSC18_477102.hdr"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">aquadopp_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'east_velocity'</span><span class="p">,</span> <span class="s1">'north_velocity'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Aquadopp Velocity Components"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -206,8 +207,8 @@ Skipped derivation &#39;absolute_salinity&#39;: missing input &#39;salinity&#39;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load RBR TR1050 thermistor data from Ruskin MAT export and plot temperature</span>
-<span class="n">tr1050_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;../examples/DSE18_013889_20180827_1349.mat&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-matlab&#39;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">tr1050_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;RBR TR1050 Temperature&quot;</span><span class="p">)</span>
+<span class="n">tr1050_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"../examples/DSE18_013889_20180827_1349.mat"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-matlab'</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">tr1050_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"RBR TR1050 Temperature"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -239,8 +240,8 @@ Skipped derivation &#39;speed_of_sound&#39;: units for &#39;temperature&#39; are
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load RBR Solo T data from native Ruskin format and plot temperature</span>
-<span class="n">solo_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;../examples/DSE18_101647_20180827_1551.rsk&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">solo_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;RBR Solo T Temperature&quot;</span><span class="p">)</span>
+<span class="n">solo_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"../examples/DSE18_101647_20180827_1551.rsk"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">solo_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span> <span class="n">title</span><span class="o">=</span><span class="s2">"RBR Solo T Temperature"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

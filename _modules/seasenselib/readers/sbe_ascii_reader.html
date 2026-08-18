@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.sbe_ascii_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for reading CTD data from SBE ASCII files.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -109,12 +110,12 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_extract_date</span><span class="p">(</span><span class="n">date_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a combined date/time string, supporting multiple SeaBird ASCII formats.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Parse a combined date/time string, supporting multiple SeaBird ASCII formats."""</span>
     <span class="n">date_formats</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> %b %Y %H:%M:%S&quot;</span><span class="p">,</span>  <span class="c1"># &quot;30 Mar 2026 03:00:01&quot;</span>
-        <span class="s2">&quot;%m-</span><span class="si">%d</span><span class="s2">-%Y %H:%M:%S&quot;</span><span class="p">,</span>  <span class="c1"># &quot;03-30-2026 03:00:01&quot;</span>
-        <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y %H:%M:%S&quot;</span><span class="p">,</span>  <span class="c1"># &quot;30-03-2026 03:00:01&quot;</span>
-        <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">,</span>  <span class="c1"># &quot;2026-03-30 03:00:01&quot;</span>
+        <span class="s2">"</span><span class="si">%d</span><span class="s2"> %b %Y %H:%M:%S"</span><span class="p">,</span>  <span class="c1"># "30 Mar 2026 03:00:01"</span>
+        <span class="s2">"%m-</span><span class="si">%d</span><span class="s2">-%Y %H:%M:%S"</span><span class="p">,</span>  <span class="c1"># "03-30-2026 03:00:01"</span>
+        <span class="s2">"</span><span class="si">%d</span><span class="s2">-%m-%Y %H:%M:%S"</span><span class="p">,</span>  <span class="c1"># "30-03-2026 03:00:01"</span>
+        <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">,</span>  <span class="c1"># "2026-03-30 03:00:01"</span>
     <span class="p">]</span>
 
     <span class="n">date_string</span> <span class="o">=</span> <span class="n">date_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -123,18 +124,18 @@
             <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_string</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">pass</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not parse datetime string: </span><span class="si">{</span><span class="n">date_string</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not parse datetime string: </span><span class="si">{</span><span class="n">date_string</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SbeAsciiReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.SbeAsciiReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SbeAsciiReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reads CTD data from a SeaBird ASCII file into an xarray Dataset.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Reads CTD data from a SeaBird ASCII file into an xarray Dataset."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize SbeAsciiReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize SbeAsciiReader.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -155,31 +156,31 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_file</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for SeaBird ASCII files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.asc&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for SeaBird ASCII files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.asc'</span><span class="p">,</span> <span class="s1">'.txt'</span><span class="p">,</span> <span class="s1">'.dat'</span><span class="p">,</span> <span class="s1">'.csv'</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_extension_validation_strict</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;ASCII formats can have various extensions, so warn only.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""ASCII formats can have various extensions, so warn only."""</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_sample_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">codecs</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="s1">'ascii'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
 
         <span class="n">sample_interval</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;sample interval&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"sample interval"</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="n">sample_interval</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="k">break</span>
@@ -188,93 +189,93 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_instrument_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">codecs</span>
 
-        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ascii&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="s1">'ascii'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
             <span class="n">first_line</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\*+\s*(Sea-Bird\s+[A-Z0-9\-]+)&#39;</span><span class="p">,</span> <span class="n">first_line</span><span class="p">)</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\*+\s*(Sea-Bird\s+[A-Z0-9\-]+)'</span><span class="p">,</span> <span class="n">first_line</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;Unknown Instrument&quot;</span>
+        <span class="k">return</span> <span class="s2">"Unknown Instrument"</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">data_start</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;*END*&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'*END*'</span><span class="p">):</span>
                 <span class="n">data_start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
                 <span class="k">break</span>
-            <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">metadata</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\* &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">())]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s1">'='</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'^\* '</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">())]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
         <span class="c1">#  Inject default reference pressure if missing</span>
-        <span class="k">if</span> <span class="s2">&quot;reference pressure&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">):</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Injecting default reference pressure: 0.0 db&quot;</span><span class="p">)</span>
-            <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;reference pressure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0.0 db&quot;</span>
+        <span class="k">if</span> <span class="s2">"reference pressure"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Injecting default reference pressure: 0.0 db"</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s2">"reference pressure"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"0.0 db"</span>
 
         <span class="c1"># Prepare data list</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">pressure_data</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Store pressure if available</span>
 
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">data_start</span><span class="p">:]:</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>  <span class="c1"># Case without pressure</span>
                 <span class="n">temp</span><span class="p">,</span> <span class="n">cond</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">parts</span>
-                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_extract_date</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_extract_date</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span> <span class="n">timestamp</span><span class="p">])</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>  <span class="c1"># Case with pressure</span>
                 <span class="n">temp</span><span class="p">,</span> <span class="n">cond</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">parts</span>
-                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_extract_date</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">_extract_date</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                 <span class="n">pressure_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">pres</span><span class="p">))</span>  <span class="c1"># Store pressure data</span>
                 <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span> <span class="n">timestamp</span><span class="p">])</span>
 
         <span class="c1"># If pressure data is available, append it to the DataFrame</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;conductivity&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'conductivity'</span><span class="p">,</span> <span class="s1">'time'</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">pressure_data</span><span class="p">:</span>
-            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pressure_data</span>  <span class="c1"># Add pressure column</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pressure_data</span>  <span class="c1"># Add pressure column</span>
 
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">metadata</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_xarray_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">sample_interval</span><span class="p">,</span> <span class="n">instrument_type</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create xarray dataset from pandas dataframe.</span>
+<span class="w">        </span><span class="sd">"""Create xarray dataset from pandas dataframe.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns raw dataset with format-specific variable names.</span>
 <span class="sd">        Variable mapping and metadata enrichment handled by stages.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
         <span class="c1"># SBE37 ASCII output is S/m for conductivity. Verify magnitude matches</span>
         <span class="c1"># declared unit; the pipeline unit_handling stage normalises to mS cm-1.</span>
-        <span class="n">cond_values</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;conductivity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-        <span class="n">declared_unit</span> <span class="o">=</span> <span class="s2">&quot;S/m&quot;</span>
+        <span class="n">cond_values</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">'conductivity'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">declared_unit</span> <span class="o">=</span> <span class="s2">"S/m"</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">infer_conductivity_unit</span><span class="p">(</span><span class="n">cond_values</span><span class="p">,</span> <span class="n">declared</span><span class="o">=</span><span class="n">declared_unit</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Could not verify conductivity units against magnitude: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"Could not verify conductivity units against magnitude: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="n">exc</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;conductivity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">declared_unit</span><span class="p">,</span>
-            <span class="s1">&#39;conductivity_unit_source&#39;</span><span class="p">:</span> <span class="s2">&quot;SBE37 ASC format outputs S/m&quot;</span><span class="p">,</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'conductivity'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'units'</span><span class="p">:</span> <span class="n">declared_unit</span><span class="p">,</span>
+            <span class="s1">'conductivity_unit_source'</span><span class="p">:</span> <span class="s2">"SBE37 ASC format outputs S/m"</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c1"># Add minimal units from raw data (stages will enrich with CF metadata)</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degree_C&#39;</span><span class="p">}</span>
-        <span class="k">if</span> <span class="s1">&#39;pressure&#39;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-            <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;dbar&#39;</span><span class="p">}</span>
+        <span class="n">ds</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'degree_C'</span><span class="p">}</span>
+        <span class="k">if</span> <span class="s1">'pressure'</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+            <span class="n">ds</span><span class="p">[</span><span class="s1">'pressure'</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'units'</span><span class="p">:</span> <span class="s1">'dbar'</span><span class="p">}</span>
 
         <span class="c1"># Add source information and metadata</span>
         <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_type</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'source'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_type</span>
 
         <span class="k">if</span> <span class="n">sample_interval</span><span class="p">:</span>
-            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;information&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sample interval </span><span class="si">{</span><span class="n">sample_interval</span><span class="si">}</span><span class="s2"> seconds&quot;</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'information'</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"sample interval </span><span class="si">{</span><span class="n">sample_interval</span><span class="si">}</span><span class="s2"> seconds"</span>
         
         <span class="c1"># Assign meta information for all attributes of the xarray Dataset</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
@@ -283,13 +284,13 @@
         <span class="k">return</span> <span class="n">ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the SeaBird ASCII data and return an xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Load the SeaBird ASCII data and return an xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The loaded dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">df</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">)</span>
         <span class="n">sample_interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_sample_interval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">)</span>
         <span class="n">instrument_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_instrument_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">)</span>
@@ -300,17 +301,17 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.SbeAsciiReader.format_mappings">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_mappings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return SeaBird ASCII format-specific variable name mappings.</span>
+<span class="w">        </span><span class="sd">"""Return SeaBird ASCII format-specific variable name mappings.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict[str, list]</span>
 <span class="sd">            Dictionary mapping standard names to SBE ASCII format-specific aliases.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;conductivity&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'temperature'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">CONDUCTIVITY</span><span class="p">:</span> <span class="p">[</span><span class="s1">'conductivity'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'pressure'</span><span class="p">],</span>
         <span class="p">}</span></div>
 
 
@@ -318,14 +319,14 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.SbeAsciiReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;sbe-ascii&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'sbe-ascii'</span></div>
 
 
 <div class="viewcode-block" id="SbeAsciiReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.SbeAsciiReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;SeaBird ASCII&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'SeaBird ASCII'</span></div>
 
 
 <div class="viewcode-block" id="SbeAsciiReader.file_extension">

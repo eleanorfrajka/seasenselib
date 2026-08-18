@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,14 +92,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.writers.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for abstract base class for writing sensor data from xarray Datasets.</span>
 
 <span class="sd">This module defines the `AbstractWriter` class, which serves as a base class for</span>
 <span class="sd">all writer implementations in the SeaSenseLib package. Concrete writer classes should</span>
 <span class="sd">inherit from this class and implement the `write` method to handle the specifics of</span>
 <span class="sd">writing data to various formats (e.g., NetCDF, CSV, Excel).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
@@ -111,7 +112,7 @@
 <div class="viewcode-block" id="AbstractWriter">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.base.AbstractWriter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AbstractWriter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for writing sensor data from xarray Datasets.</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for writing sensor data from xarray Datasets.</span>
 <span class="sd">    </span>
 <span class="sd">    This class provides a common interface for all writer implementations.</span>
 <span class="sd">    All concrete writer classes should inherit from this class and implement</span>
@@ -120,7 +121,7 @@
 <span class="sd">    This class supports the context manager protocol for automatic resource cleanup:</span>
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; with SomeWriter(dataset) as writer:</span>
-<span class="sd">    ...     writer.write(&#39;output.nc&#39;)</span>
+<span class="sd">    ...     writer.write('output.nc')</span>
 <span class="sd">    &gt;&gt;&gt; # resources automatically cleaned up</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes:</span>
@@ -151,10 +152,10 @@
 <span class="sd">        If the subclass does not implement the `write` method or the `file_extension` property.</span>
 <span class="sd">    TypeError:</span>
 <span class="sd">        If the provided data is not an xarray Dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the writer with the provided xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Initialize the writer with the provided xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -165,35 +166,35 @@
 <span class="sd">        -------</span>
 <span class="sd">        TypeError:</span>
 <span class="sd">            If the provided data is not an xarray Dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data must be an xarray Dataset.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Data must be an xarray Dataset."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Flag to control setter behavior</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initialized writer </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Initialized writer </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AbstractWriter.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.base.AbstractWriter.format_name">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the format name for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the format name for this writer.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format (e.g., &#39;netCDF&#39;, &#39;CSV&#39;).</span>
+<span class="sd">            The format (e.g., 'netCDF', 'CSV').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a format name&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a format name"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractWriter.format_key">
@@ -201,21 +202,21 @@
     <span class="nd">@staticmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the format key for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the format key for this writer.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format key (e.g., &#39;netcdf&#39;, &#39;csv&#39;).</span>
+<span class="sd">            The format key (e.g., 'netcdf', 'csv').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a format key&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a format key"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractWriter.file_extension">
@@ -223,7 +224,7 @@
     <span class="nd">@staticmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_extension</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the default file extension for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the default file extension for this writer.</span>
 <span class="sd">        </span>
 <span class="sd">        This property must be implemented by all subclasses.</span>
 <span class="sd">        The extension must be unique over all registered writers.</span>
@@ -232,30 +233,30 @@
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The file extension (e.g., &#39;.nc&#39;, &#39;.csv&#39;).</span>
+<span class="sd">            The file extension (e.g., '.nc', '.csv').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a file extension&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a file extension"</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the xarray Dataset (read-only).</span>
+<span class="w">        </span><span class="sd">"""Get the xarray Dataset (read-only).</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The xarray Dataset containing the sensor data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the xarray Dataset with validation (deprecated).</span>
+<span class="w">        </span><span class="sd">"""Set the xarray Dataset with validation (deprecated).</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 1.5</span>
 <span class="sd">            Setting data after construction is deprecated and will be</span>
@@ -270,23 +271,23 @@
 <span class="sd">        -------</span>
 <span class="sd">        TypeError:</span>
 <span class="sd">            If the provided data is not an xarray Dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data must be an xarray Dataset.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Data must be an xarray Dataset."</span><span class="p">)</span>
         
         <span class="c1"># Warn if trying to set after initialization</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_initialized&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_initialized'</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Setting data after construction is deprecated and will be &quot;</span>
-                <span class="s2">&quot;removed in version 2.0. Create a new writer instance instead.&quot;</span><span class="p">,</span>
+                <span class="s2">"Setting data after construction is deprecated and will be "</span>
+                <span class="s2">"removed in version 2.0. Create a new writer instance instead."</span><span class="p">,</span>
                 <span class="ne">DeprecationWarning</span><span class="p">,</span>
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
             <span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AbstractWriter&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager entry point.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'AbstractWriter'</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Context manager entry point.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
@@ -296,13 +297,13 @@
 <span class="sd">        Examples:</span>
 <span class="sd">        ---------</span>
 <span class="sd">        &gt;&gt;&gt; with SomeWriter(dataset) as writer:</span>
-<span class="sd">        ...     writer.write(&#39;output.nc&#39;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Entering writer context for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="sd">        ...     writer.write('output.nc')</span>
+<span class="sd">        """</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Entering writer context for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager exit - releases resources.</span>
+<span class="w">        </span><span class="sd">"""Context manager exit - releases resources.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -312,25 +313,25 @@
 <span class="sd">            Exception value if an exception was raised.</span>
 <span class="sd">        exc_tb : TracebackType</span>
 <span class="sd">            Traceback if an exception was raised.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exiting writer context for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Exiting writer context for </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of the writer.</span>
+<span class="w">        </span><span class="sd">"""String representation of the writer.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
 <span class="sd">            Human-readable string showing class name and format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(format=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(format='</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">()</span><span class="si">}</span><span class="s2">')"</span>
 
 <div class="viewcode-block" id="AbstractWriter.write">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.base.AbstractWriter.write">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the xarray Dataset to a file.</span>
+<span class="w">        </span><span class="sd">"""Write the xarray Dataset to a file.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -338,8 +339,8 @@
 <span class="sd">            The name of the output file where the data will be saved.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Additional keyword arguments specific to the writer implementation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Subclasses must implement the write method&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Subclasses must implement the write method"</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

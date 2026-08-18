@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.nortek_ascii_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for reading Nortek ASCII data files into xarray Datasets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -105,50 +106,50 @@
 
 
 <span class="n">_VELOCITY_COLUMN_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;^Velocity \(Beam(?P&lt;beam&gt;\d+)\|(?P&lt;axis&gt;[XYZ])\|(?P&lt;enu&gt;East|North|Up)\)$&quot;</span>
+    <span class="sa">r</span><span class="s2">"^Velocity \(Beam(?P&lt;beam&gt;\d+)\|(?P&lt;axis&gt;[XYZ])\|(?P&lt;enu&gt;East|North|Up)\)$"</span>
 <span class="p">)</span>
-<span class="n">_AMPLITUDE_COLUMN_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^Amplitude \(Beam(?P&lt;beam&gt;\d+)\)$&quot;</span><span class="p">)</span>
+<span class="n">_AMPLITUDE_COLUMN_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^Amplitude \(Beam(?P&lt;beam&gt;\d+)\)$"</span><span class="p">)</span>
 
 
 <span class="n">_VELOCITY_AXIS_NAMES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="s2">&quot;x_velocity&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="s2">&quot;y_velocity&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="s2">&quot;z_velocity&quot;</span><span class="p">,</span>
+    <span class="s2">"X"</span><span class="p">:</span> <span class="s2">"x_velocity"</span><span class="p">,</span>
+    <span class="s2">"Y"</span><span class="p">:</span> <span class="s2">"y_velocity"</span><span class="p">,</span>
+    <span class="s2">"Z"</span><span class="p">:</span> <span class="s2">"z_velocity"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">_VELOCITY_ENU_NAMES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;East&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">EAST_VELOCITY</span><span class="p">,</span>
-    <span class="s2">&quot;North&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">NORTH_VELOCITY</span><span class="p">,</span>
-    <span class="s2">&quot;Up&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">UP_VELOCITY</span><span class="p">,</span>
+    <span class="s2">"East"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">EAST_VELOCITY</span><span class="p">,</span>
+    <span class="s2">"North"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">NORTH_VELOCITY</span><span class="p">,</span>
+    <span class="s2">"Up"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">UP_VELOCITY</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">_NORTEK_COLUMN_NAMES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;Month&quot;</span><span class="p">:</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Day&quot;</span><span class="p">:</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Year&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Hour&quot;</span><span class="p">:</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Minute&quot;</span><span class="p">:</span> <span class="s2">&quot;minute&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Second&quot;</span><span class="p">:</span> <span class="s2">&quot;second&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Error code&quot;</span><span class="p">:</span> <span class="s2">&quot;error_code&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Status code&quot;</span><span class="p">:</span> <span class="s2">&quot;status_code&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Battery voltage&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">BATTERY_VOLTAGE</span><span class="p">,</span>
-    <span class="s2">&quot;Soundspeed&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">SPEED_OF_SOUND</span><span class="p">,</span>
-    <span class="s2">&quot;Soundspeed used&quot;</span><span class="p">:</span> <span class="s2">&quot;speed_of_sound_used&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Heading&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">HEADING</span><span class="p">,</span>
-    <span class="s2">&quot;Pitch&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">PITCH</span><span class="p">,</span>
-    <span class="s2">&quot;Roll&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">ROLL</span><span class="p">,</span>
-    <span class="s2">&quot;Temperature&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">,</span>
-    <span class="s2">&quot;Analog input 1&quot;</span><span class="p">:</span> <span class="s2">&quot;analog_input_1&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Analog input 2&quot;</span><span class="p">:</span> <span class="s2">&quot;analog_input_2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Speed&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">MAGNITUDE</span><span class="p">,</span>
-    <span class="s2">&quot;Direction&quot;</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">DIRECTION</span><span class="p">,</span>
+    <span class="s2">"Month"</span><span class="p">:</span> <span class="s2">"month"</span><span class="p">,</span>
+    <span class="s2">"Day"</span><span class="p">:</span> <span class="s2">"day"</span><span class="p">,</span>
+    <span class="s2">"Year"</span><span class="p">:</span> <span class="s2">"year"</span><span class="p">,</span>
+    <span class="s2">"Hour"</span><span class="p">:</span> <span class="s2">"hour"</span><span class="p">,</span>
+    <span class="s2">"Minute"</span><span class="p">:</span> <span class="s2">"minute"</span><span class="p">,</span>
+    <span class="s2">"Second"</span><span class="p">:</span> <span class="s2">"second"</span><span class="p">,</span>
+    <span class="s2">"Error code"</span><span class="p">:</span> <span class="s2">"error_code"</span><span class="p">,</span>
+    <span class="s2">"Status code"</span><span class="p">:</span> <span class="s2">"status_code"</span><span class="p">,</span>
+    <span class="s2">"Battery voltage"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">BATTERY_VOLTAGE</span><span class="p">,</span>
+    <span class="s2">"Soundspeed"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">SPEED_OF_SOUND</span><span class="p">,</span>
+    <span class="s2">"Soundspeed used"</span><span class="p">:</span> <span class="s2">"speed_of_sound_used"</span><span class="p">,</span>
+    <span class="s2">"Heading"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">HEADING</span><span class="p">,</span>
+    <span class="s2">"Pitch"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">PITCH</span><span class="p">,</span>
+    <span class="s2">"Roll"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">ROLL</span><span class="p">,</span>
+    <span class="s2">"Temperature"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">,</span>
+    <span class="s2">"Analog input 1"</span><span class="p">:</span> <span class="s2">"analog_input_1"</span><span class="p">,</span>
+    <span class="s2">"Analog input 2"</span><span class="p">:</span> <span class="s2">"analog_input_2"</span><span class="p">,</span>
+    <span class="s2">"Speed"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">MAGNITUDE</span><span class="p">,</span>
+    <span class="s2">"Direction"</span><span class="p">:</span> <span class="n">params</span><span class="o">.</span><span class="n">DIRECTION</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="NortekAsciiReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.NortekAsciiReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NortekAsciiReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Reads Nortek ASCII data from a .dat file into a xarray Dataset. </span>
+<span class="w">    </span><span class="sd">""" Reads Nortek ASCII data from a .dat file into a xarray Dataset. </span>
 <span class="sd">    </span>
 <span class="sd">    This class reads Nortek ASCII data files, extracts column names and units from a .hdr file, </span>
 <span class="sd">    and organizes the data into an xarray Dataset. It handles duplicate column names by making </span>
@@ -178,8 +179,8 @@
 <span class="sd">        For backward compatibility, get_data() method is also available but deprecated.</span>
 <span class="sd">    </span>
 <span class="sd">    file_type : str</span>
-<span class="sd">        A string indicating the type of file being read, in this case, &#39;Nortek ASCII&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        A string indicating the type of file being read, in this case, 'Nortek ASCII'.</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">header_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -189,7 +190,7 @@
                  <span class="n">coordinate_transform_keep_source</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">coordinate_transform_overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize NortekAsciiReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize NortekAsciiReader.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -221,7 +222,7 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_target_coordinate_system</span> <span class="o">=</span> <span class="n">target_coordinate_system</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_coordinate_transform_pointing_down</span> <span class="o">=</span> <span class="n">pointing_down</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_coordinate_transform_keep_source</span> <span class="o">=</span> <span class="n">coordinate_transform_keep_source</span>
@@ -234,12 +235,12 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for Nortek ASCII data files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;.asc&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for Nortek ASCII data files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.dat'</span><span class="p">,</span> <span class="s1">'.txt'</span><span class="p">,</span> <span class="s1">'.asc'</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_extension_validation_strict</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;ASCII formats can have various extensions, so warn only.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""ASCII formats can have various extensions, so warn only."""</span>
         <span class="k">return</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="NortekAsciiReader.reader_args">
@@ -248,44 +249,44 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">reader_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_reader_arg</span><span class="p">(</span>
-                <span class="s2">&quot;target_coordinate_system&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                <span class="s2">"target_coordinate_system"</span><span class="p">,</span>
+                <span class="s2">"str"</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;Transform velocity variables to the requested coordinate system.&quot;</span><span class="p">,</span>
-                <span class="n">choices</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;BEAM&quot;</span><span class="p">,</span> <span class="s2">&quot;XYZ&quot;</span><span class="p">,</span> <span class="s2">&quot;ENU&quot;</span><span class="p">),</span>
+                <span class="s2">"Transform velocity variables to the requested coordinate system."</span><span class="p">,</span>
+                <span class="n">choices</span><span class="o">=</span><span class="p">(</span><span class="s2">"BEAM"</span><span class="p">,</span> <span class="s2">"XYZ"</span><span class="p">,</span> <span class="s2">"ENU"</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_reader_arg</span><span class="p">(</span>
-                <span class="s2">&quot;pointing_down&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;bool | str&quot;</span><span class="p">,</span>
+                <span class="s2">"pointing_down"</span><span class="p">,</span>
+                <span class="s2">"bool | str"</span><span class="p">,</span>
                 <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;Instrument orientation for BEAM transformations; omit to infer from status data.&quot;</span><span class="p">,</span>
+                <span class="s2">"Instrument orientation for BEAM transformations; omit to infer from status data."</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_reader_arg</span><span class="p">(</span>
-                <span class="s2">&quot;coordinate_transform_keep_source&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+                <span class="s2">"coordinate_transform_keep_source"</span><span class="p">,</span>
+                <span class="s2">"bool"</span><span class="p">,</span>
                 <span class="kc">False</span><span class="p">,</span>
-                <span class="s2">&quot;Keep original velocity variables after adding transformed variables.&quot;</span><span class="p">,</span>
+                <span class="s2">"Keep original velocity variables after adding transformed variables."</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_reader_arg</span><span class="p">(</span>
-                <span class="s2">&quot;coordinate_transform_overwrite&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+                <span class="s2">"coordinate_transform_overwrite"</span><span class="p">,</span>
+                <span class="s2">"bool"</span><span class="p">,</span>
                 <span class="kc">False</span><span class="p">,</span>
-                <span class="s2">&quot;Allow transformed velocity variables to replace existing variables.&quot;</span><span class="p">,</span>
+                <span class="s2">"Allow transformed velocity variables to replace existing variables."</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">]</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_header_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hdr_file_path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads the .hdr file to extract instrument settings.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Reads the .hdr file to extract instrument settings."""</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">matrix_keys</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;transformation_matrix&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;magnetometer_calibration_matrix&quot;</span><span class="p">,</span>
+            <span class="s2">"transformation_matrix"</span><span class="p">,</span>
+            <span class="s2">"magnetometer_calibration_matrix"</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">current_matrix_key</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hdr_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hdr_file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Data file format&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"Data file format"</span><span class="p">:</span>
                     <span class="k">break</span>
 
                 <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -300,35 +301,35 @@
                     <span class="n">current_matrix_key</span> <span class="o">=</span> <span class="kc">None</span>
 
                 <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-                    <span class="sa">r</span><span class="s2">&quot;^(?P&lt;key&gt;[A-Za-z][A-Za-z0-9 /_-]*?)\s{2,}(?P&lt;value&gt;.*)$&quot;</span><span class="p">,</span>
+                    <span class="sa">r</span><span class="s2">"^(?P&lt;key&gt;[A-Za-z][A-Za-z0-9 /_-]*?)\s{2,}(?P&lt;value&gt;.*)$"</span><span class="p">,</span>
                     <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
                     <span class="k">continue</span>
 
                 <span class="n">current_matrix_key</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"key"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"value"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">matrix_keys</span><span class="p">:</span>
                     <span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_numeric_values</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
                     <span class="n">current_matrix_key</span> <span class="o">=</span> <span class="n">key</span>
-                <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">&quot;compass_hard_iron_calibration&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"compass_hard_iron_calibration"</span><span class="p">:</span>
                     <span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_numeric_values</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">settings</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">)</span>
+        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinate_system"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">coordinate_system</span><span class="p">:</span>
-            <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="n">settings</span><span class="p">[</span><span class="s2">"coordinate_system"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">settings</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_numeric_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a whitespace-separated row of numeric Nortek metadata.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Parse a whitespace-separated row of numeric Nortek metadata."""</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">in</span> <span class="n">item</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;.eE&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span> <span class="ow">in</span> <span class="n">item</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">".eE"</span><span class="p">):</span>
                     <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
@@ -337,7 +338,7 @@
         <span class="k">return</span> <span class="n">values</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_calibration_from_header_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract structured calibration metadata from parsed header settings.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Extract structured calibration metadata from parsed header settings."""</span>
         <span class="n">calibration</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_setting_keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
@@ -345,7 +346,7 @@
         <span class="k">return</span> <span class="n">calibration</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_header_attributes_for_raw_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return header attributes without duplicated calibration entries.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return header attributes without duplicated calibration entries."""</span>
         <span class="n">calibration_keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_calibration_setting_keys</span><span class="p">())</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
@@ -354,34 +355,34 @@
         <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_calibration_setting_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return parsed header-setting keys that belong to calibration.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return parsed header-setting keys that belong to calibration."""</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="s2">&quot;transformation_matrix&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;magnetometer_calibration_matrix&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;compass_hard_iron_calibration&quot;</span><span class="p">,</span>
+            <span class="s2">"transformation_matrix"</span><span class="p">,</span>
+            <span class="s2">"magnetometer_calibration_matrix"</span><span class="p">,</span>
+            <span class="s2">"compass_hard_iron_calibration"</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hdr_file_path</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads the .hdr file to extract data-file column names and units.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Reads the .hdr file to extract data-file column names and units."""</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">current_block</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hdr_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hdr_file_path</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">capture</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Data file format&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"Data file format"</span><span class="p">:</span>
                     <span class="n">capture</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">capture</span><span class="p">:</span>
                     <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">stripped</span> <span class="ow">or</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;---&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">stripped</span> <span class="ow">or</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'---'</span><span class="p">):</span>
                         <span class="k">continue</span>
 
-                    <span class="k">if</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'['</span><span class="p">)</span> <span class="ow">and</span> <span class="n">stripped</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">']'</span><span class="p">):</span>
                         <span class="n">current_block</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="n">stripped</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                            <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                            <span class="s2">"file_path"</span><span class="p">:</span> <span class="n">stripped</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="s2">"headers"</span><span class="p">:</span> <span class="p">[],</span>
                         <span class="p">}</span>
                         <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_block</span><span class="p">)</span>
                         <span class="k">continue</span>
@@ -391,32 +392,32 @@
 
                     <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_header_column_line</span><span class="p">(</span><span class="n">stripped</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">header</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">current_block</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+                        <span class="n">current_block</span><span class="p">[</span><span class="s2">"headers"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">blocks</span><span class="p">:</span>
             <span class="n">selected_block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_data_format_block</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="p">)</span>
-            <span class="n">headers</span> <span class="o">=</span> <span class="n">selected_block</span><span class="p">[</span><span class="s2">&quot;headers&quot;</span><span class="p">]</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="n">selected_block</span><span class="p">[</span><span class="s2">"headers"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">headers</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_header_column_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse one numbered Nortek data-format column line.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Parse one numbered Nortek data-format column line."""</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;^(?P&lt;number&gt;\d+)\s+(?P&lt;body&gt;.*?)(?:\s+\((?P&lt;unit&gt;[^()]*)\))?$&quot;</span><span class="p">,</span>
+            <span class="sa">r</span><span class="s2">"^(?P&lt;number&gt;\d+)\s+(?P&lt;body&gt;.*?)(?:\s+\((?P&lt;unit&gt;[^()]*)\))?$"</span><span class="p">,</span>
             <span class="n">line</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="n">col_number</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;number&quot;</span><span class="p">)</span>
-        <span class="n">col_name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">unit</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;unknown&quot;</span>
+        <span class="n">col_number</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"number"</span><span class="p">)</span>
+        <span class="n">col_name</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"body"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"unit"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"unknown"</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">col_number</span><span class="p">,</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">unit</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_select_data_format_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the header block that describes the requested data file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Select the header block that describes the requested data file."""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">blocks</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No data-file format block found in Nortek header.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No data-file format block found in Nortek header."</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">dat_file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -426,20 +427,20 @@
         <span class="n">data_suffix</span> <span class="o">=</span> <span class="n">data_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
-            <span class="n">block_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">&quot;file_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">block_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"file_path"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\\</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">block_name</span> <span class="o">==</span> <span class="n">data_name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">block</span>
 
         <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">:</span>
-            <span class="n">block_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">&quot;file_path&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">block_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"file_path"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\\</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">))</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">block_name</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">data_suffix</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">block</span>
 
         <span class="k">return</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_normalise_header_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build unique dataset column definitions from Nortek header columns.&quot;&quot;&quot;</span>
-        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">,</span> <span class="s2">&quot;BEAM&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Build unique dataset column definitions from Nortek header columns."""</span>
+        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinate_system"</span><span class="p">,</span> <span class="s2">"BEAM"</span><span class="p">)</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">column_number</span><span class="p">,</span> <span class="n">raw_name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">:</span>
@@ -450,125 +451,125 @@
             <span class="p">)</span>
             <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;column_number&quot;</span><span class="p">:</span> <span class="n">column_number</span><span class="p">,</span>
-                    <span class="s2">&quot;raw_name&quot;</span><span class="p">:</span> <span class="n">raw_name</span><span class="p">,</span>
-                    <span class="s2">&quot;variable_name&quot;</span><span class="p">:</span> <span class="n">variable_name</span><span class="p">,</span>
-                    <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">unit</span><span class="p">,</span>
+                    <span class="s2">"column_number"</span><span class="p">:</span> <span class="n">column_number</span><span class="p">,</span>
+                    <span class="s2">"raw_name"</span><span class="p">:</span> <span class="n">raw_name</span><span class="p">,</span>
+                    <span class="s2">"variable_name"</span><span class="p">:</span> <span class="n">variable_name</span><span class="p">,</span>
+                    <span class="s2">"unit"</span><span class="p">:</span> <span class="n">unit</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="p">)</span>
 
         <span class="n">seen</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">variable_name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;variable_name&quot;</span><span class="p">]</span>
+            <span class="n">variable_name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"variable_name"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                 <span class="n">seen</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">column</span><span class="p">[</span><span class="s2">&quot;variable_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">seen</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">column</span><span class="p">[</span><span class="s2">"variable_name"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">variable_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">seen</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">seen</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="n">columns</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_raw_variable_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build raw metadata for variables parsed from the Nortek header.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Build raw metadata for variables parsed from the Nortek header."""</span>
         <span class="n">variables</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">variable_name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;variable_name&quot;</span><span class="p">]</span>
+            <span class="n">variable_name</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"variable_name"</span><span class="p">]</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;column_number&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;column_number&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;original_name&quot;</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;raw_name&quot;</span><span class="p">],</span>
+                <span class="s2">"column_number"</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">"column_number"</span><span class="p">],</span>
+                <span class="s2">"original_name"</span><span class="p">:</span> <span class="n">column</span><span class="p">[</span><span class="s2">"raw_name"</span><span class="p">],</span>
             <span class="p">}</span>
-            <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;unknown&quot;</span><span class="p">:</span>
-                <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"unknown"</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span>
             <span class="n">variables</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
         <span class="k">return</span> <span class="n">variables</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_normalise_column_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_name</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map a Nortek header column to its coordinate-aware variable name.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Map a Nortek header column to its coordinate-aware variable name."""</span>
         <span class="n">velocity_match</span> <span class="o">=</span> <span class="n">_VELOCITY_COLUMN_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">raw_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">velocity_match</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">&quot;XYZ&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_VELOCITY_AXIS_NAMES</span><span class="p">[</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;axis&quot;</span><span class="p">)]</span>
-            <span class="k">if</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">&quot;ENU&quot;</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">_VELOCITY_ENU_NAMES</span><span class="p">[</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;enu&quot;</span><span class="p">)]</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;velocity_beam</span><span class="si">{</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;beam&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">"XYZ"</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_VELOCITY_AXIS_NAMES</span><span class="p">[</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"axis"</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">"ENU"</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_VELOCITY_ENU_NAMES</span><span class="p">[</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"enu"</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"velocity_beam</span><span class="si">{</span><span class="n">velocity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">'beam'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">amplitude_match</span> <span class="o">=</span> <span class="n">_AMPLITUDE_COLUMN_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">raw_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">amplitude_match</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;amplitude_beam</span><span class="si">{</span><span class="n">amplitude_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;beam&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"amplitude_beam</span><span class="si">{</span><span class="n">amplitude_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">'beam'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="k">if</span> <span class="n">raw_name</span> <span class="o">==</span> <span class="s2">&quot;Pressure&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">raw_name</span> <span class="o">==</span> <span class="s2">"Pressure"</span><span class="p">:</span>
             <span class="n">normalised_unit</span> <span class="o">=</span> <span class="n">unit</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">normalised_unit</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">,</span> <span class="s2">&quot;meters&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="n">normalised_unit</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"meter"</span><span class="p">,</span> <span class="s2">"meters"</span><span class="p">}:</span>
                 <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">DEPTH</span>
             <span class="k">return</span> <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span>
 
         <span class="k">if</span> <span class="n">raw_name</span> <span class="ow">in</span> <span class="n">_NORTEK_COLUMN_NAMES</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_NORTEK_COLUMN_NAMES</span><span class="p">[</span><span class="n">raw_name</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[^0-9A-Za-z]+&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">raw_name</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^0-9A-Za-z]+"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">,</span> <span class="n">raw_name</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the .dat file using headers information.&quot;&quot;&quot;</span>
-        <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span><span class="p">[</span><span class="s2">&quot;variable_name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+<span class="w">        </span><span class="sd">"""Parses the .dat file using headers information."""</span>
+        <span class="n">column_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">column</span><span class="p">[</span><span class="s2">"variable_name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_data_column_count</span><span class="p">(</span><span class="n">dat_file_path</span><span class="p">,</span> <span class="n">column_names</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">dat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">dat_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">'\s+'</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">column_names</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_data_column_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dat_file_path</span><span class="p">,</span> <span class="n">column_names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure the selected header block matches the data file columns.&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dat_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_file</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Ensure the selected header block matches the data file columns."""</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dat_file_path</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_file</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">line_number</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
                 <span class="n">fields</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">fields</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">column_names</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Nortek data line </span><span class="si">{</span><span class="n">line_number</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;columns, but the selected header block defines &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns.&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Nortek data line </span><span class="si">{</span><span class="n">line_number</span><span class="si">}</span><span class="s2"> has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                        <span class="sa">f</span><span class="s2">"columns, but the selected header block defines "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span><span class="si">}</span><span class="s2"> columns."</span>
                     <span class="p">)</span>
                 <span class="k">return</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_xarray_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts the DataFrame to an xarray Dataset, renaming columns and assigning units.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Converts the DataFrame to an xarray Dataset, renaming columns and assigning units."""</span>
         <span class="c1"># Convert columns to datetime</span>
-        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;minute&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;second&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;second&quot;</span><span class="p">],</span>
+                <span class="s2">"year"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"year"</span><span class="p">],</span>
+                <span class="s2">"month"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"month"</span><span class="p">],</span>
+                <span class="s2">"day"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"day"</span><span class="p">],</span>
+                <span class="s2">"hour"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"hour"</span><span class="p">],</span>
+                <span class="s2">"minute"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"minute"</span><span class="p">],</span>
+                <span class="s2">"second"</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"second"</span><span class="p">],</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
         <span class="c1"># Set datetime as the index</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'time'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Convert the DataFrame to an xarray Dataset</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">)</span>
+        <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinate_system"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">coordinate_system</span><span class="p">:</span>
-            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"coordinate_system"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
 
         <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="n">variable</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;variable_name&quot;</span><span class="p">]</span>
+            <span class="n">variable</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"variable_name"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">variable</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;raw_name&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;unknown&quot;</span><span class="p">:</span>
-                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"original_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"raw_name"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">column</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"unknown"</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">column</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">coordinate_system</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;velocity_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">variable</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_velocity&quot;</span><span class="p">)</span>
+                <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"velocity_"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">variable</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_velocity"</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"coordinate_system"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
 
-            <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;amplitude_beam&quot;</span><span class="p">):</span>
-                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;BEAM&quot;</span>
+            <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"amplitude_beam"</span><span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"coordinate_system"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"BEAM"</span>
 
         <span class="c1"># Assign meta information for all attributes of the xarray Dataset</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
@@ -577,23 +578,23 @@
         <span class="k">return</span> <span class="n">ds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the Nortek ASCII data and return an xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Load the Nortek ASCII data and return an xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The loaded dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_header_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_header_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nortek_header_settings</span> <span class="o">=</span> <span class="n">settings</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_header</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_header_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">)</span>
         <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise_header_columns</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_raw_metadata_blocks</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_header_attributes_for_raw_metadata</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+            <span class="s2">"attributes"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_header_attributes_for_raw_metadata</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
         <span class="p">}</span>
         <span class="n">calibration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calibration_from_header_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">calibration</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_raw_metadata_blocks</span><span class="p">[</span><span class="s2">&quot;calibration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calibration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_raw_metadata_blocks</span><span class="p">[</span><span class="s2">"calibration"</span><span class="p">]</span> <span class="o">=</span> <span class="n">calibration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_raw_metadata_variables</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_variable_metadata</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_xarray_dataset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
@@ -602,7 +603,7 @@
 <div class="viewcode-block" id="NortekAsciiReader.pipeline_transformations">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.NortekAsciiReader.pipeline_transformations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pipeline_transformations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return reader-provided transformations for the pipeline.</span>
+<span class="w">        </span><span class="sd">"""Return reader-provided transformations for the pipeline.</span>
 
 <span class="sd">        The base reader calls this hook after ``_load_data()`` and before the</span>
 <span class="sd">        transformation stage runs. By then the Nortek header has already been</span>
@@ -613,7 +614,7 @@
 
 <span class="sd">        If no target coordinate system was requested, no handler is returned and</span>
 <span class="sd">        the default read path remains unchanged.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_coordinate_system</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
@@ -634,7 +635,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_postprocess_after_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Restore the final Nortek coordinate-system attribute.</span>
+<span class="w">        </span><span class="sd">"""Restore the final Nortek coordinate-system attribute.</span>
 
 <span class="sd">        The finalization stage moves most reader/header-specific global</span>
 <span class="sd">        attributes into ``raw_metadata``. ``coordinate_system`` is kept as a</span>
@@ -644,7 +645,7 @@
 <span class="sd">        If the optional transformation ran, the processing metadata contains the</span>
 <span class="sd">        final target coordinate system. Otherwise the dataset should keep the</span>
 <span class="sd">        coordinate system declared in the Nortek header.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.pipeline.transformation.handlers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
             <span class="n">transformed_coordinate_system_from_metadata</span><span class="p">,</span>
         <span class="p">)</span>
@@ -656,24 +657,24 @@
         <span class="p">)</span>
         <span class="n">coordinate_system</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">coordinate_system</span>
-            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nortek_header_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nortek_header_settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"coordinate_system"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">coordinate_system</span><span class="p">:</span>
-            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;coordinate_system&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"coordinate_system"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinate_system</span>
         <span class="k">return</span> <span class="n">ds</span>
 
 <div class="viewcode-block" id="NortekAsciiReader.format_key">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.NortekAsciiReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;nortek-ascii&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'nortek-ascii'</span></div>
 
 
 <div class="viewcode-block" id="NortekAsciiReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.NortekAsciiReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;Nortek ASCII&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'Nortek ASCII'</span></div>
 
 
 <div class="viewcode-block" id="NortekAsciiReader.file_extension">
@@ -687,16 +688,16 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.NortekAsciiReader.format_mappings">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_mappings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Nortek ASCII format-specific variable name mappings.</span>
+<span class="w">        </span><span class="sd">"""Get Nortek ASCII format-specific variable name mappings.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary mapping canonical parameter names to Nortek-specific</span>
 <span class="sd">            variable name patterns commonly found in ASCII export files.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">SPEED_OF_SOUND</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Soundspeed&#39;</span><span class="p">,</span> <span class="s1">&#39;Speed of Sound&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Pressure&#39;</span><span class="p">],</span>
-            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">SPEED_OF_SOUND</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Soundspeed'</span><span class="p">,</span> <span class="s1">'Speed of Sound'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Pressure'</span><span class="p">],</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Temperature'</span><span class="p">],</span>
         <span class="p">}</span></div>
 </div>
 

@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,12 +92,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.processors.statistics_processor</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for calculating statistics and performing calculations on sensor data.</span>
 
 <span class="sd">This module provides the StatisticsProcessor class for computing various statistical</span>
 <span class="sd">metrics on CTD sensor data stored in xarray Datasets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
@@ -106,7 +107,7 @@
 <div class="viewcode-block" id="StatisticsProcessor">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StatisticsProcessor</span><span class="p">(</span><span class="n">AbstractProcessor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate statistical metrics on sensor data.</span>
+<span class="w">    </span><span class="sd">"""Calculate statistical metrics on sensor data.</span>
 <span class="sd">    </span>
 <span class="sd">    This class provides methods to calculate various statistical measures</span>
 <span class="sd">    like mean, median, standard deviation, etc. on specific parameters</span>
@@ -121,14 +122,14 @@
 <span class="sd">    </span>
 <span class="sd">    Example Usage:</span>
 <span class="sd">    --------------</span>
-<span class="sd">    stats_processor = StatisticsProcessor(dataset, &quot;temperature&quot;)</span>
+<span class="sd">    stats_processor = StatisticsProcessor(dataset, "temperature")</span>
 <span class="sd">    mean_temp = stats_processor.mean()</span>
 <span class="sd">    max_temp = stats_processor.max()</span>
 <span class="sd">    stats = stats_processor.get_all_statistics()</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the statistics processor with dataset and parameter.</span>
+<span class="w">        </span><span class="sd">"""Initialize the statistics processor with dataset and parameter.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -143,11 +144,11 @@
 <span class="sd">            If the provided data is not an xarray Dataset.</span>
 <span class="sd">        ValueError:</span>
 <span class="sd">            If the parameter is not found in the dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameter name must be a string&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Parameter name must be a string"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">validate_parameter</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parameter</span> <span class="o">=</span> <span class="n">parameter</span>
@@ -155,20 +156,20 @@
 <div class="viewcode-block" id="StatisticsProcessor.process">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.process">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Process the dataset to calculate all statistics.</span>
+<span class="w">        </span><span class="sd">"""Process the dataset to calculate all statistics.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        dict:</span>
 <span class="sd">            A dictionary containing all calculated statistics.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_statistics</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.max">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.max">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the maximum value.</span>
+<span class="w">        </span><span class="sd">"""Calculate the maximum value.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -180,18 +181,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        Any:</span>
 <span class="sd">            The maximum value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.min">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.min">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the minimum value.</span>
+<span class="w">        </span><span class="sd">"""Calculate the minimum value.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -203,18 +204,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The minimum value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.mean">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.mean">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the arithmetic mean.</span>
+<span class="w">        </span><span class="sd">"""Calculate the arithmetic mean.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -226,18 +227,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The mean value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.median">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.median">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the median value.</span>
+<span class="w">        </span><span class="sd">"""Calculate the median value.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -249,18 +250,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The median value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.std">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.std">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the standard deviation.</span>
+<span class="w">        </span><span class="sd">"""Calculate the standard deviation.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -272,18 +273,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The standard deviation value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.var">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.var">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the variance.</span>
+<span class="w">        </span><span class="sd">"""Calculate the variance.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -295,18 +296,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The variance value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.quantile">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.quantile">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">quantile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate quantiles.</span>
+<span class="w">        </span><span class="sd">"""Calculate quantiles.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -320,18 +321,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        float or xr.DataArray:</span>
 <span class="sd">            The quantile value(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.count_valid">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.count_valid">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">count_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count valid (non-NaN) values.</span>
+<span class="w">        </span><span class="sd">"""Count valid (non-NaN) values.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -343,18 +344,18 @@
 <span class="sd">        --------</span>
 <span class="sd">        int or xr.DataArray:</span>
 <span class="sd">            The count of valid values.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dim</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">values</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s1">'values'</span><span class="p">)</span> <span class="k">else</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="StatisticsProcessor.get_all_statistics">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.processors.StatisticsProcessor.get_all_statistics">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_all_statistics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate all available statistics.</span>
+<span class="w">        </span><span class="sd">"""Calculate all available statistics.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -366,17 +367,17 @@
 <span class="sd">        --------</span>
 <span class="sd">        dict:</span>
 <span class="sd">            A dictionary containing all calculated statistics.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;median&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;count_valid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_valid</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;q25&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
-            <span class="s1">&#39;q75&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+            <span class="s1">'min'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'max'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'mean'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'median'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'std'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'var'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'count_valid'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">count_valid</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'q25'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">dim</span><span class="p">),</span>
+            <span class="s1">'q75'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
         <span class="p">}</span></div>
 </div>
 

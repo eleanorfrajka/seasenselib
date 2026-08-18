@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,14 +92,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.plotters.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for abstract base class for plotting sensor data from xarray Datasets.</span>
 
 <span class="sd">This module defines the `AbstractPlotter` class, which serves as a base class for</span>
 <span class="sd">all plotter implementations in the SeaSenseLib package. Concrete plotter classes should</span>
 <span class="sd">inherit from this class and implement the `plot` method to handle the specifics of</span>
 <span class="sd">creating different types of visualizations.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -111,7 +112,7 @@
 <div class="viewcode-block" id="AbstractPlotter">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.plotters.base.AbstractPlotter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AbstractPlotter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for plotting sensor data from xarray Datasets.</span>
+<span class="w">    </span><span class="sd">"""Abstract base class for plotting sensor data from xarray Datasets.</span>
 <span class="sd">    </span>
 <span class="sd">    This class provides a common interface for all plotter implementations.</span>
 <span class="sd">    All concrete plotter classes should inherit from this class and implement</span>
@@ -153,20 +154,20 @@
 <span class="sd">        If the provided data is not an xarray Dataset.</span>
 <span class="sd">    ValueError:</span>
 <span class="sd">        If required variables are missing from the dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the plotter with the provided xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Initialize the plotter with the provided xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
 <span class="sd">        data : xr.Dataset</span>
 <span class="sd">            The xarray Dataset containing the sensor data to be plotted.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Validate that data is an xarray Dataset or None</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data must be an xarray Dataset.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Data must be an xarray Dataset."</span><span class="p">)</span>
 
         <span class="c1"># Set the data attribute</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
@@ -174,18 +175,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the xarray Dataset containing the sensor data (read-only).</span>
+<span class="w">        </span><span class="sd">"""Get the xarray Dataset containing the sensor data (read-only).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        xr.Dataset | None</span>
 <span class="sd">            The xarray Dataset containing the sensor data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the xarray Dataset with validation (deprecated).</span>
+<span class="w">        </span><span class="sd">"""Set the xarray Dataset with validation (deprecated).</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 1.5</span>
 <span class="sd">            Setting data after construction is deprecated and will be</span>
@@ -200,23 +201,23 @@
 <span class="sd">        -------</span>
 <span class="sd">        TypeError:</span>
 <span class="sd">            If the provided data is not an xarray Dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Data must be an xarray Dataset.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Data must be an xarray Dataset."</span><span class="p">)</span>
 
         <span class="c1"># Warn if trying to set after initialization</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_initialized&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'_initialized'</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Setting data after construction is deprecated and will be &quot;</span>
-                <span class="s2">&quot;removed in version 2.0. Create a new plotter instance instead.&quot;</span><span class="p">,</span>
+                <span class="s2">"Setting data after construction is deprecated and will be "</span>
+                <span class="s2">"removed in version 2.0. Create a new plotter instance instead."</span><span class="p">,</span>
                 <span class="ne">DeprecationWarning</span><span class="p">,</span>
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AbstractPlotter&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager entry point.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'AbstractPlotter'</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Context manager entry point.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
@@ -228,11 +229,11 @@
 <span class="sd">        &gt;&gt;&gt; with SomePlotter(dataset) as plotter:</span>
 <span class="sd">        ...     plotter.plot()</span>
 <span class="sd">        &gt;&gt;&gt; # figures automatically closed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager exit - closes matplotlib figures and releases resources.</span>
+<span class="w">        </span><span class="sd">"""Context manager exit - closes matplotlib figures and releases resources.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -242,26 +243,26 @@
 <span class="sd">            Exception value if an exception was raised.</span>
 <span class="sd">        exc_tb : TracebackType</span>
 <span class="sd">            Traceback if an exception was raised.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">plt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_plt</span><span class="p">()</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>  <span class="c1"># Close all matplotlib figures</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s1">'all'</span><span class="p">)</span>  <span class="c1"># Close all matplotlib figures</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of the plotter.</span>
+<span class="w">        </span><span class="sd">"""String representation of the plotter.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
 <span class="sd">            Human-readable string showing class name and key.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(key=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(key='</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="si">}</span><span class="s2">')"</span>
 
 <div class="viewcode-block" id="AbstractPlotter.plot">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.plotters.base.AbstractPlotter.plot">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the plot.</span>
+<span class="w">        </span><span class="sd">"""Create the plot.</span>
 <span class="sd">        </span>
 <span class="sd">        This method must be implemented by all subclasses to define</span>
 <span class="sd">        how the specific type of plot should be created.</span>
@@ -277,7 +278,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">pass</span></div>
 
 
@@ -286,21 +287,21 @@
     <span class="nd">@staticmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the name for this plotter.</span>
+<span class="w">        </span><span class="sd">"""Get the name for this plotter.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The name (e.g., &#39;Time Series&#39;, &#39;T-S Diagram&#39;, &#39;Vertical Profile&#39;).</span>
+<span class="sd">            The name (e.g., 'Time Series', 'T-S Diagram', 'Vertical Profile').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a format name&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a format name"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractPlotter.key">
@@ -308,50 +309,50 @@
     <span class="nd">@staticmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">key</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the unique key for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the unique key for this writer.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The key value (e.g., &#39;time-series&#39;, &#39;ts-diagram&#39;, &#39;depth-profile&#39;).</span>
+<span class="sd">            The key value (e.g., 'time-series', 'ts-diagram', 'depth-profile').</span>
 <span class="sd">        </span>
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a key&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a key"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractPlotter.add_cli_arguments">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.plotters.base.AbstractPlotter.add_cli_arguments">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_cli_arguments</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parser</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Optional hook for plotters to add their CLI arguments.</span>
+<span class="w">        </span><span class="sd">"""Optional hook for plotters to add their CLI arguments.</span>
 
 <span class="sd">        Plugins can override this method to register argparse options</span>
 <span class="sd">        specific to the plotter. The parser passed in will already contain</span>
 <span class="sd">        the common options (input, output, title, etc.). Implementations</span>
 <span class="sd">        should only add arguments and not parse them.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Default: no extra arguments</span>
         <span class="k">return</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_dataset_without_nan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns dataset with NaN values removed from time dimension.</span>
+<span class="w">        </span><span class="sd">"""Returns dataset with NaN values removed from time dimension.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The dataset with NaN values dropped along the time dimension.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_required_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">required_vars</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates that required variables exist in the dataset.</span>
+<span class="w">        </span><span class="sd">"""Validates that required variables exist in the dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -362,7 +363,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        ValueError:</span>
 <span class="sd">            If any required variable is missing from the dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">missing_vars</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">required_vars</span><span class="p">:</span>
@@ -370,17 +371,17 @@
                 <span class="n">missing_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">missing_vars</span><span class="p">:</span>
-            <span class="n">missing_str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_vars</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Required variable(s) missing from dataset: </span><span class="si">{</span><span class="n">missing_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">missing_str</span> <span class="o">=</span> <span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_vars</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Required variable(s) missing from dataset: </span><span class="si">{</span><span class="n">missing_str</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_save_or_show_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method to either save plot to file or display it.</span>
+<span class="w">        </span><span class="sd">"""Helper method to either save plot to file or display it.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
 <span class="sd">        output_file : str, optional</span>
 <span class="sd">            Path to save the plot. If None, the plot is displayed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">plt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_plt</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">output_file</span><span class="p">:</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
@@ -389,7 +390,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_plt</span><span class="p">():</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lazy import for matplotlib.pyplot to avoid heavy import at module load.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Lazy import for matplotlib.pyplot to avoid heavy import at module load."""</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
         <span class="k">return</span> <span class="n">plt</span></div>
 

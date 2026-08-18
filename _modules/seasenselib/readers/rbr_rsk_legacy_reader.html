@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.rbr_rsk_legacy_reader</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for reading RBR legacy .rsk files into xarray Datasets.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
@@ -105,7 +106,7 @@
 <div class="viewcode-block" id="RbrRskLegacyReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskLegacyReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">RbrRskLegacyReader</span><span class="p">(</span><span class="n">AbstractReader</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Reads sensor data from a RBR .rsk file (legacy format) into a xarray Dataset.</span>
 
 <span class="sd">    This class is specifically designed to read RBR legacy files that are stored </span>
@@ -120,12 +121,12 @@
 <span class="sd">        The path to the input file containing the RBR legacy data.</span>
 <span class="sd">    mapping : dict, optional</span>
 <span class="sd">        A dictionary mapping names used in the input file to standard names.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">mapping</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize RbrRskLegacyReader.</span>
+<span class="w">        </span><span class="sd">"""Initialize RbrRskLegacyReader.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -146,17 +147,17 @@
 <span class="sd">                Whether to assign CF-compliant metadata.</span>
 <span class="sd">            - sort_variables : bool, default=True</span>
 <span class="sd">                Whether to sort variables alphabetically.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_file</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for RSK files.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;.rsk&#39;</span><span class="p">,)</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for RSK files."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">'.rsk'</span><span class="p">,)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_instrument_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">con</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reads instrument data from the RSK file. </span>
+<span class="w">        </span><span class="sd">""" Reads instrument data from the RSK file. </span>
 <span class="sd">        </span>
 <span class="sd">        This method retrieves the instrument information from the database </span>
 <span class="sd">        and returns it as a dictionary.</span>
@@ -172,15 +173,15 @@
 <span class="sd">            A dictionary containing instrument information such as instrumentID, </span>
 <span class="sd">            serialID, model, firmwareVersion, firmwareType, and partNumber. If no </span>
 <span class="sd">            instrument data is found, an empty dictionary is returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM instruments&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT * FROM instruments"</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_database_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">con</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reads database information from the RSK file. </span>
+<span class="w">        </span><span class="sd">""" Reads database information from the RSK file. </span>
 <span class="sd">        </span>
 <span class="sd">        This method retrieves the database information from the database </span>
 <span class="sd">        and returns it as a dictionary.</span>
@@ -195,15 +196,15 @@
 <span class="sd">        dict</span>
 <span class="sd">            A dictionary containing database information such as version and type. </span>
 <span class="sd">            If no database information is found, an empty dictionary is returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT version, type FROM dbInfo&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT version, type FROM dbInfo"</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_channel_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">con</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reads channel data from the RSK file. </span>
+<span class="w">        </span><span class="sd">""" Reads channel data from the RSK file. </span>
 <span class="sd">        </span>
 <span class="sd">        This method retrieves channel information from the database and returns it as a DataFrame.</span>
 
@@ -217,14 +218,14 @@
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            A DataFrame containing channel information with columns: channelID, shortName, longName,</span>
 <span class="sd">            longNamePlainText, and units. The DataFrame is ordered by channelID.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT channelID, shortName, longName, longNamePlainText, units &quot;</span> \
-            <span class="s2">&quot;FROM  channels &quot;</span> \
-            <span class="s2">&quot;ORDER BY channelID&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT channelID, shortName, longName, longNamePlainText, units "</span> \
+            <span class="s2">"FROM  channels "</span> \
+            <span class="s2">"ORDER BY channelID"</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_measurement_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">con</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Reads measurement data from the RSK file. </span>
+<span class="w">        </span><span class="sd">""" Reads measurement data from the RSK file. </span>
 <span class="sd">        </span>
 <span class="sd">        This method retrieves measurement data from the database and returns it as a DataFrame.</span>
 
@@ -237,47 +238,47 @@
 <span class="sd">        -------</span>
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            A DataFrame containing measurement data with columns: tstamp and channelXX </span>
-<span class="sd">            for each channel. The DataFrame contains all measurement data from the &#39;data&#39; </span>
+<span class="sd">            for each channel. The DataFrame contains all measurement data from the 'data' </span>
 <span class="sd">            table in the RSK file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM data&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"SELECT * FROM data"</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from RSK file (legacy format) and return an xarray Dataset. </span>
+<span class="w">        </span><span class="sd">"""Load data from RSK file (legacy format) and return an xarray Dataset. </span>
 <span class="sd">        </span>
 <span class="sd">        This method connects to the SQLite database within the RSK file, retrieves</span>
 <span class="sd">        channel information and measurement data, processes the timestamps, and</span>
 <span class="sd">        organizes the data into a xarray Dataset. It also assigns long names and</span>
 <span class="sd">        units as attributes to the dataset variables.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Connect to the SQLite database in the RSK file</span>
         <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span> <span class="p">)</span>
         <span class="k">if</span> <span class="n">con</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not open RSK file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="si">}</span><span class="s2">. &quot;</span> \
-                             <span class="s2">&quot;Ensure it is a valid RSK file.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not open RSK file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="si">}</span><span class="s2">. "</span> \
+                             <span class="s2">"Ensure it is a valid RSK file."</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Load channel information</span>
             <span class="n">channels_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_channel_data</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">channels_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No channel data found in the RSK file.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No channel data found in the RSK file."</span><span class="p">)</span>
 
             <span class="c1"># Create list with channel column names</span>
-            <span class="n">chan_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;channel</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">channels_df</span><span class="p">[</span><span class="s1">&#39;channelID&#39;</span><span class="p">]]</span>
+            <span class="n">chan_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"channel</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">channels_df</span><span class="p">[</span><span class="s1">'channelID'</span><span class="p">]]</span>
 
             <span class="c1"># Load all measurement data</span>
             <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_measurement_data</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No measurement data found in the RSK file.&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No measurement data found in the RSK file."</span><span class="p">)</span>
 
             <span class="c1"># Convert timestamp to datetime and set as index</span>
-            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;tstamp&#39;</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;ms&#39;</span><span class="p">)</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;tstamp&#39;</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'tstamp'</span><span class="p">],</span> <span class="n">unit</span><span class="o">=</span><span class="s1">'ms'</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">'time'</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'tstamp'</span><span class="p">])</span>
 
-            <span class="c1"># Replace the columns with the &quot;channelXX&quot; names with the short names</span>
-            <span class="n">chan_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;channel</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">channels_df</span><span class="p">[</span><span class="s1">&#39;channelID&#39;</span><span class="p">]]</span>
+            <span class="c1"># Replace the columns with the "channelXX" names with the short names</span>
+            <span class="n">chan_cols</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"channel</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">cid</span><span class="p">)</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">channels_df</span><span class="p">[</span><span class="s1">'channelID'</span><span class="p">]]</span>
             <span class="n">used_names</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">rename_map</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">attribute_map</span> <span class="o">=</span> <span class="p">{}</span>
@@ -285,27 +286,27 @@
             <span class="c1"># Iterate over the channel columns and rename them according to the mapping</span>
             <span class="k">for</span> <span class="n">chan_col</span><span class="p">,</span> <span class="n">short_name</span><span class="p">,</span> <span class="n">long_name</span><span class="p">,</span> <span class="n">units</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
                     <span class="n">chan_cols</span><span class="p">,</span>
-                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">&#39;shortName&#39;</span><span class="p">],</span>
-                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">&#39;longNamePlainText&#39;</span><span class="p">],</span>
-                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]):</span>
+                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">'shortName'</span><span class="p">],</span>
+                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">'longNamePlainText'</span><span class="p">],</span>
+                    <span class="n">channels_df</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">chan_col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                     <span class="n">base_name</span> <span class="o">=</span> <span class="n">long_name</span>
                     <span class="n">count</span> <span class="o">=</span> <span class="n">used_names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="n">new_name</span> <span class="o">=</span> <span class="n">base_name</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
                     <span class="k">while</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="n">rename_map</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="ow">or</span> <span class="n">new_name</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                         <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                        <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">rename_map</span><span class="p">[</span><span class="n">chan_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_name</span>
                     <span class="n">used_names</span><span class="p">[</span><span class="n">base_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">1</span>
 
                     <span class="c1"># Hier das attribute_map befüllen:</span>
                     <span class="n">attribute_map</span><span class="p">[</span><span class="n">new_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">&quot;shortName&quot;</span><span class="p">:</span> <span class="n">short_name</span><span class="p">,</span>
-                        <span class="s2">&quot;longName&quot;</span><span class="p">:</span> <span class="n">long_name</span><span class="p">,</span>
-                        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span>
+                        <span class="s2">"shortName"</span><span class="p">:</span> <span class="n">short_name</span><span class="p">,</span>
+                        <span class="s2">"longName"</span><span class="p">:</span> <span class="n">long_name</span><span class="p">,</span>
+                        <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span>
                     <span class="p">}</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">rename_map</span><span class="p">)</span>
 
@@ -315,25 +316,25 @@
             <span class="c1"># Add long names and units as attributes</span>
             <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="n">attribute_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">var_name</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
-                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;longName&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;short_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;shortName&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'long_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'longName'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'units'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var_name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'short_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'shortName'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
 
             <span class="c1"># Add instrument information as global attributes</span>
             <span class="n">instrument_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_instrument_data</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">instrument_info</span><span class="p">:</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_serial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;serialID&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_firmware_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;firmwareVersion&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_firmware_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;firmwareType&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s1">&#39;partNumber&#39;</span> <span class="ow">in</span> <span class="n">instrument_info</span><span class="p">:</span>
-                    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;instrument_part_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;partNumber&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_model'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'model'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_serial'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'serialID'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_firmware_version'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'firmwareVersion'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_firmware_type'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'firmwareType'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s1">'partNumber'</span> <span class="ow">in</span> <span class="n">instrument_info</span><span class="p">:</span>
+                    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'instrument_part_number'</span><span class="p">]</span> <span class="o">=</span> <span class="n">instrument_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'partNumber'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
 
             <span class="c1"># Add database information as global attributes</span>
             <span class="n">db_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_database_information</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">db_info</span><span class="p">:</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rsk_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;rsk_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'rsk_version'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'version'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+                <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'rsk_type'</span><span class="p">]</span> <span class="o">=</span> <span class="n">db_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'type'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">ds</span>
         <span class="k">finally</span><span class="p">:</span>
@@ -344,14 +345,14 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskLegacyReader.format_key">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;rbr-rsk-legacy&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'rbr-rsk-legacy'</span></div>
 
 
 <div class="viewcode-block" id="RbrRskLegacyReader.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.RbrRskLegacyReader.format_name">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;RBR RSK Legacy&#39;</span></div>
+        <span class="k">return</span> <span class="s1">'RBR RSK Legacy'</span></div>
 
 
 <div class="viewcode-block" id="RbrRskLegacyReader.file_extension">

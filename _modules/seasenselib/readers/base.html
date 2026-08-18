@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,14 +92,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.readers.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for abstract base class for reading sensor data from various file formats.</span>
 
 <span class="sd">This module defines the `AbstractReader` class, which serves as a base class for</span>
 <span class="sd">all reader implementations in the SeaSenseLib package. Concrete reader classes should</span>
 <span class="sd">inherit from this class and implement the methods for reading and processing data</span>
 <span class="sd">from specific file formats (e.g., CNV, TOB, NetCDF, CSV, RBR, Nortek).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
@@ -114,20 +115,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.readers.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeConverter</span><span class="p">,</span> <span class="n">DatasetProcessor</span><span class="p">,</span> <span class="n">DatasetBuilder</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.pipeline.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_user_metadata</span><span class="p">,</span> <span class="n">normalize_user_metadata</span>
 
-<span class="n">MODULE_NAME</span> <span class="o">=</span> <span class="s1">&#39;seasenselib&#39;</span>
+<span class="n">MODULE_NAME</span> <span class="o">=</span> <span class="s1">'seasenselib'</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="AbstractReader">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AbstractReader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Abstract super class for reading sensor data. </span>
+<span class="w">    </span><span class="sd">""" Abstract super class for reading sensor data. </span>
 
 <span class="sd">    Must be subclassed to implement specific file format readers.</span>
 <span class="sd">    </span>
 <span class="sd">    This class supports the context manager protocol for automatic resource cleanup:</span>
 <span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; with SomeReader(&#39;data.cnv&#39;) as reader:</span>
+<span class="sd">    &gt;&gt;&gt; with SomeReader('data.cnv') as reader:</span>
 <span class="sd">    ...     ds = reader.data</span>
 <span class="sd">    ...     # process data</span>
 <span class="sd">    &gt;&gt;&gt; # data automatically released</span>
@@ -173,75 +174,75 @@
 <span class="sd">            Performs default post-processing on the xarray Dataset.</span>
 <span class="sd">    get_data() -&gt; xr.Dataset | None</span>
 <span class="sd">            Returns the processed data as an xarray Dataset (deprecated, use `data` property).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_READER_ARG_EXCLUDE</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span>
-        <span class="s2">&quot;self&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;input_file&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;dat_file_path&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;mapping&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;input_header_file&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;header_file_path&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;perform_default_postprocessing&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;rename_variables&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;assign_metadata&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;sort_variables&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;use_steps&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pipeline_config&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;user_metadata&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;kwargs&quot;</span><span class="p">,</span>
+        <span class="s2">"self"</span><span class="p">,</span>
+        <span class="s2">"input_file"</span><span class="p">,</span>
+        <span class="s2">"dat_file_path"</span><span class="p">,</span>
+        <span class="s2">"mapping"</span><span class="p">,</span>
+        <span class="s2">"input_header_file"</span><span class="p">,</span>
+        <span class="s2">"header_file_path"</span><span class="p">,</span>
+        <span class="s2">"perform_default_postprocessing"</span><span class="p">,</span>
+        <span class="s2">"rename_variables"</span><span class="p">,</span>
+        <span class="s2">"assign_metadata"</span><span class="p">,</span>
+        <span class="s2">"sort_variables"</span><span class="p">,</span>
+        <span class="s2">"use_steps"</span><span class="p">,</span>
+        <span class="s2">"pipeline_config"</span><span class="p">,</span>
+        <span class="s2">"user_metadata"</span><span class="p">,</span>
+        <span class="s2">"kwargs"</span><span class="p">,</span>
     <span class="p">})</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_reader_arg</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">choices</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">required</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">cli_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;declared&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"declared"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a structured reader argument description for CLI discovery.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Build a structured reader argument description for CLI discovery."""</span>
         <span class="n">spec</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-            <span class="s2">&quot;cli_name&quot;</span><span class="p">:</span> <span class="n">cli_name</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
-            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="n">default</span><span class="p">,</span>
-            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">required</span><span class="p">),</span>
-            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="s2">"cli_name"</span><span class="p">:</span> <span class="n">cli_name</span> <span class="ow">or</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">),</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="n">type_name</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="n">default</span><span class="p">,</span>
+            <span class="s2">"required"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">required</span><span class="p">),</span>
+            <span class="s2">"description"</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">"source"</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">choices</span><span class="p">:</span>
-            <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;choices&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+            <span class="n">spec</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">spec</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_reader_arg_annotation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">annotation</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a compact type label for an introspected reader argument.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return a compact type label for an introspected reader argument."""</span>
         <span class="k">if</span> <span class="n">annotation</span> <span class="ow">is</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Signature</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="s2">""</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">annotation</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;typing.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">annotation</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"typing."</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">"__name__"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">name</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;typing.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"typing."</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
 <div class="viewcode-block" id="AbstractReader.reader_args">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.reader_args">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reader_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return CLI-discoverable reader-specific arguments.</span>
 
 <span class="sd">        Reader subclasses should override this when they can provide concise,</span>
 <span class="sd">        user-facing descriptions. The fallback introspects explicit constructor</span>
 <span class="sd">        parameters, which keeps plugin readers discoverable even without a custom</span>
 <span class="sd">        metadata hook.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
@@ -265,8 +266,8 @@
                     <span class="n">type_name</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_format_reader_arg_annotation</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">annotation</span><span class="p">),</span>
                     <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span>
                     <span class="n">required</span><span class="o">=</span><span class="n">required</span><span class="p">,</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reader constructor argument inferred from the reader signature.&quot;</span><span class="p">,</span>
-                    <span class="n">source</span><span class="o">=</span><span class="s2">&quot;signature&quot;</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">"Reader constructor argument inferred from the reader signature."</span><span class="p">,</span>
+                    <span class="n">source</span><span class="o">=</span><span class="s2">"signature"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
@@ -280,7 +281,7 @@
                  <span class="n">use_steps</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">pipeline_config</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">user_metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the AbstractReader with the input file and optional mapping.</span>
+<span class="w">        </span><span class="sd">"""Initializes the AbstractReader with the input file and optional mapping.</span>
 
 <span class="sd">        This constructor sets the input file, initializes the data attribute to None,</span>
 <span class="sd">        and sets the mapping for variable names. It also allows for configuration of</span>
@@ -309,12 +310,12 @@
 <span class="sd">        pipeline_config : PipelineConfig, optional</span>
 <span class="sd">            Custom pipeline configuration. If None, uses default pipeline.</span>
 <span class="sd">        user_metadata : dict, optional</span>
-<span class="sd">            Optional metadata overrides with sections {&quot;global&quot;: {...}, &quot;variables&quot;: {...}}.</span>
+<span class="sd">            Optional metadata overrides with sections {"global": {...}, "variables": {...}}.</span>
 <span class="sd">        **kwargs</span>
 <span class="sd">            Additional reader-specific parameters. These are accepted but not used</span>
 <span class="sd">            by the base class, allowing subclasses to define their own parameters</span>
 <span class="sd">            without modifying the base class signature.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span> <span class="o">=</span> <span class="n">input_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_header_file</span> <span class="o">=</span> <span class="n">input_header_file</span>
@@ -331,7 +332,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span> <span class="o">=</span> <span class="n">normalize_user_metadata</span><span class="p">(</span><span class="n">user_metadata</span><span class="p">)</span> <span class="k">if</span> <span class="n">user_metadata</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="c1"># **kwargs is intentionally not stored - subclasses handle their own parameters</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Initialized reader </span><span class="si">%s</span><span class="s2"> for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+            <span class="s2">"Initialized reader </span><span class="si">%s</span><span class="s2"> for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span>
         <span class="p">)</span>
@@ -341,7 +342,7 @@
     <span class="c1"># =========================================================================</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the input file before reading.</span>
+<span class="w">        </span><span class="sd">"""Validate the input file before reading.</span>
 <span class="sd">        </span>
 <span class="sd">        This method performs basic file validation (existence, not empty).</span>
 <span class="sd">        Subclasses can override to add format-specific validation such as</span>
@@ -359,7 +360,7 @@
 <span class="sd">        ----</span>
 <span class="sd">        This method is called automatically by subclasses that implement</span>
 <span class="sd">        the modern reader pattern. For backward compatibility with existing</span>
-<span class="sd">        readers that don&#39;t call this method, validation failures won&#39;t break</span>
+<span class="sd">        readers that don't call this method, validation failures won't break</span>
 <span class="sd">        the instantiation process unless explicitly called.</span>
 <span class="sd">        </span>
 <span class="sd">        Extension validation behavior depends on `_is_extension_validation_strict()`:</span>
@@ -372,25 +373,25 @@
 <span class="sd">        ...     def __init__(self, input_file, **kwargs):</span>
 <span class="sd">        ...         super().__init__(input_file, **kwargs)</span>
 <span class="sd">        ...         self._validate_file()  # Validate before data is accessed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path is not a file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Path is not a file: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File is empty: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File is empty: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         
         <span class="c1"># Check extension if subclass specifies valid extensions</span>
         <span class="n">valid_ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_valid_extensions</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">valid_ext</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_ext</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unexpected file extension &#39;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&#39; for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Expected one of: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_ext</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Unexpected file extension '</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="si">}</span><span class="s2">' for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. "</span>
+                    <span class="sa">f</span><span class="s2">"Expected one of: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_ext</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_extension_validation_strict</span><span class="p">():</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -400,7 +401,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return valid file extensions for this reader.</span>
+<span class="w">        </span><span class="sd">"""Return valid file extensions for this reader.</span>
 <span class="sd">        </span>
 <span class="sd">        Subclasses should override this method to specify which file extensions</span>
 <span class="sd">        are valid for their format. Return None to skip extension validation.</span>
@@ -408,7 +409,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        tuple[str, ...] | None</span>
-<span class="sd">            Tuple of valid extensions (e.g., (&#39;.cnv&#39;, &#39;.CNV&#39;)) or None to skip validation.</span>
+<span class="sd">            Tuple of valid extensions (e.g., ('.cnv', '.CNV')) or None to skip validation.</span>
 <span class="sd">            Extensions should include the leading dot and be lowercase.</span>
 <span class="sd">            </span>
 <span class="sd">        Examples</span>
@@ -416,13 +417,13 @@
 <span class="sd">        &gt;&gt;&gt; class MyReader(AbstractReader):</span>
 <span class="sd">        ...     @classmethod</span>
 <span class="sd">        ...     def _get_valid_extensions(cls) -&gt; tuple[str, ...]:</span>
-<span class="sd">        ...         return (&#39;.myformat&#39;, &#39;.myf&#39;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        ...         return ('.myformat', '.myf')</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># Default: no extension validation</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_is_extension_validation_strict</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return whether extension validation should raise an error or just warn.</span>
+<span class="w">        </span><span class="sd">"""Return whether extension validation should raise an error or just warn.</span>
 <span class="sd">        </span>
 <span class="sd">        Override this method in subclasses to control validation behavior:</span>
 <span class="sd">        - Return True (default): Invalid extension raises ValueError</span>
@@ -443,7 +444,7 @@
 <span class="sd">        ...     @classmethod</span>
 <span class="sd">        ...     def _is_extension_validation_strict(cls) -&gt; bool:</span>
 <span class="sd">        ...         return False  # Warn only for ASCII formats</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># Default: strict validation</span>
 
     <span class="c1"># =========================================================================</span>
@@ -451,7 +452,7 @@
     <span class="c1"># =========================================================================</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from the input file.</span>
+<span class="w">        </span><span class="sd">"""Load data from the input file.</span>
 <span class="sd">        </span>
 <span class="sd">        Subclasses SHOULD override this method to implement format-specific</span>
 <span class="sd">        data loading logic. This method is called by the `data` property</span>
@@ -485,10 +486,10 @@
 <span class="sd">        ...         # Read file and return raw Dataset</span>
 <span class="sd">        ...         ds = xr.open_dataset(self.input_file)</span>
 <span class="sd">        ...         return ds</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> must implement _load_data() method. &quot;</span>
-            <span class="s2">&quot;See AbstractReader documentation for the expected interface.&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> must implement _load_data() method. "</span>
+            <span class="s2">"See AbstractReader documentation for the expected interface."</span>
         <span class="p">)</span>
 
     <span class="c1"># =========================================================================</span>
@@ -497,40 +498,40 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">input_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input file path (read-only).</span>
+<span class="w">        </span><span class="sd">"""Get the input file path (read-only).</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            Path to the input data file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">input_header_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the input header file path (read-only).</span>
+<span class="w">        </span><span class="sd">"""Get the input header file path (read-only).</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str | None</span>
 <span class="sd">            Path to the separate header file, or None if not applicable</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_header_file</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the variable name mapping (read-only).</span>
+<span class="w">        </span><span class="sd">"""Get the variable name mapping (read-only).</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
 <span class="sd">            Dictionary mapping custom variable names to standard names</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_loaded</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if data has been loaded from file.</span>
+<span class="w">        </span><span class="sd">"""Check if data has been loaded from file.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -539,14 +540,14 @@
 <span class="sd">            </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; reader = SomeReader(&#39;data.cnv&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; reader = SomeReader('data.cnv')</span>
 <span class="sd">        &gt;&gt;&gt; print(reader.is_loaded)  # False until data property is accessed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get file-level metadata without loading data.</span>
+<span class="w">        </span><span class="sd">"""Get file-level metadata without loading data.</span>
 <span class="sd">        </span>
 <span class="sd">        This property provides access to file-level metadata such as</span>
 <span class="sd">        file size and modification time without requiring the full</span>
@@ -562,50 +563,50 @@
 <span class="sd">            - file_path: Absolute path to the file</span>
 <span class="sd">            - file_name: Base name of the file</span>
 <span class="sd">            - file_size: Size in bytes</span>
-<span class="sd">            - file_size_human: Human-readable size (e.g., &quot;1.5 MB&quot;)</span>
+<span class="sd">            - file_size_human: Human-readable size (e.g., "1.5 MB")</span>
 <span class="sd">            - modified_time: Last modification timestamp (ISO format)</span>
 <span class="sd">            - format_key: Reader format key</span>
 <span class="sd">            - format_name: Reader format name</span>
 <span class="sd">            </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; reader = SomeReader(&#39;data.cnv&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; print(f&quot;File: {reader.metadata[&#39;file_name&#39;]}&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; print(f&quot;Size: {reader.metadata[&#39;file_size_human&#39;]}&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; print(f&quot;Format: {reader.metadata[&#39;format_name&#39;]}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; reader = SomeReader('data.cnv')</span>
+<span class="sd">        &gt;&gt;&gt; print(f"File: {reader.metadata['file_name']}")</span>
+<span class="sd">        &gt;&gt;&gt; print(f"Size: {reader.metadata['file_size_human']}")</span>
+<span class="sd">        &gt;&gt;&gt; print(f"Format: {reader.metadata['format_name']}")</span>
 <span class="sd">        &gt;&gt;&gt; </span>
 <span class="sd">        &gt;&gt;&gt; # For dataset info, use reader.data:</span>
 <span class="sd">        &gt;&gt;&gt; ds = reader.data</span>
-<span class="sd">        &gt;&gt;&gt; print(f&quot;Variables: {list(ds.data_vars)}&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; print(f&quot;Dimensions: {dict(ds.dims)}&quot;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; print(f"Variables: {list(ds.data_vars)}")</span>
+<span class="sd">        &gt;&gt;&gt; print(f"Dimensions: {dict(ds.dims)}")</span>
+<span class="sd">        """</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
         <span class="n">stat</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
         
         <span class="c1"># Human-readable file size</span>
         <span class="n">size_bytes</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_size</span>
-        <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;KB&#39;</span><span class="p">,</span> <span class="s1">&#39;MB&#39;</span><span class="p">,</span> <span class="s1">&#39;GB&#39;</span><span class="p">,</span> <span class="s1">&#39;TB&#39;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'B'</span><span class="p">,</span> <span class="s1">'KB'</span><span class="p">,</span> <span class="s1">'MB'</span><span class="p">,</span> <span class="s1">'GB'</span><span class="p">,</span> <span class="s1">'TB'</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">size_bytes</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">:</span>
-                <span class="n">size_human</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size_bytes</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">size_human</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">size_bytes</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">"</span>
                 <span class="k">break</span>
             <span class="n">size_bytes</span> <span class="o">/=</span> <span class="mi">1024</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">size_human</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">size_bytes</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> PB&quot;</span>
+            <span class="n">size_human</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">size_bytes</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> PB"</span>
         
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s1">&#39;file_path&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()),</span>
-            <span class="s1">&#39;file_name&#39;</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;file_size&#39;</span><span class="p">:</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span>
-            <span class="s1">&#39;file_size_human&#39;</span><span class="p">:</span> <span class="n">size_human</span><span class="p">,</span>
-            <span class="s1">&#39;modified_time&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
-            <span class="s1">&#39;format_key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">(),</span>
-            <span class="s1">&#39;format_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_name</span><span class="p">(),</span>
+            <span class="s1">'file_path'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()),</span>
+            <span class="s1">'file_name'</span><span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">'file_size'</span><span class="p">:</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span>
+            <span class="s1">'file_size_human'</span><span class="p">:</span> <span class="n">size_human</span><span class="p">,</span>
+            <span class="s1">'modified_time'</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="s1">'format_key'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">(),</span>
+            <span class="s1">'format_name'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_name</span><span class="p">(),</span>
         <span class="p">}</span>
 
 <div class="viewcode-block" id="AbstractReader.reload">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.reload">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AbstractReader&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Force reload data from file.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'AbstractReader'</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Force reload data from file.</span>
 <span class="sd">        </span>
 <span class="sd">        Clears any cached data and re-reads from the file.</span>
 <span class="sd">        This is useful when the underlying file has been modified</span>
@@ -624,21 +625,21 @@
 <span class="sd">        </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; reader = SomeReader(&#39;data.cnv&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; reader = SomeReader('data.cnv')</span>
 <span class="sd">        &gt;&gt;&gt; reader.reload()  # Clear cached data</span>
 <span class="sd">        &gt;&gt;&gt; ds = reader.data  # Re-read from file (lazy loading)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_processing_metadata</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_postprocessed</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reload requested for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Reload requested for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.__enter__">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.__enter__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AbstractReader&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager entry point.</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">'AbstractReader'</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Context manager entry point.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -647,19 +648,19 @@
 <span class="sd">            </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; with SomeReader(&#39;data.cnv&#39;) as reader:</span>
+<span class="sd">        &gt;&gt;&gt; with SomeReader('data.cnv') as reader:</span>
 <span class="sd">        ...     ds = reader.data</span>
 <span class="sd">        ...     # process data</span>
 <span class="sd">        &gt;&gt;&gt; # data automatically released</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Entering reader context for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Entering reader context for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.__exit__">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.__exit__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager exit - releases data from memory.</span>
+<span class="w">        </span><span class="sd">"""Context manager exit - releases data from memory.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -669,85 +670,85 @@
 <span class="sd">            Exception value if an exception was raised.</span>
 <span class="sd">        exc_tb : TracebackType</span>
 <span class="sd">            Traceback if an exception was raised.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Exiting reader context for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Exiting reader context for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;String representation of the reader.</span>
+<span class="w">        </span><span class="sd">"""String representation of the reader.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            Human-readable string showing class name, file, and load status.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">loaded_str</span> <span class="o">=</span> <span class="s2">&quot;loaded&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loaded</span> <span class="k">else</span> <span class="s2">&quot;not loaded&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">&#39;, </span><span class="si">{</span><span class="n">loaded_str</span><span class="si">}</span><span class="s2">)&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">loaded_str</span> <span class="o">=</span> <span class="s2">"loaded"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_loaded</span> <span class="k">else</span> <span class="s2">"not loaded"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">('</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">', </span><span class="si">{</span><span class="n">loaded_str</span><span class="si">}</span><span class="s2">)"</span>
 
     <span class="c1"># =========================================================================</span>
     <span class="c1"># Time Conversion Methods (deprecated - use TimeConverter directly)</span>
     <span class="c1"># =========================================================================</span>
     
     <span class="k">def</span><span class="w"> </span><span class="nf">_julian_to_gregorian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">julian_days</span><span class="p">,</span> <span class="n">start_date</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert Julian days to Gregorian datetime.</span>
+<span class="w">        </span><span class="sd">"""Convert Julian days to Gregorian datetime.</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 0.4.0</span>
 <span class="sd">            Use :meth:`TimeConverter.julian_to_gregorian` directly instead.</span>
 <span class="sd">            This wrapper will be removed in version 1.0.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;AbstractReader._julian_to_gregorian() is deprecated. &quot;</span>
-            <span class="s2">&quot;Use TimeConverter.julian_to_gregorian() directly instead. &quot;</span>
-            <span class="s2">&quot;This method will be removed in version 1.0.0.&quot;</span><span class="p">,</span>
+            <span class="s2">"AbstractReader._julian_to_gregorian() is deprecated. "</span>
+            <span class="s2">"Use TimeConverter.julian_to_gregorian() directly instead. "</span>
+            <span class="s2">"This method will be removed in version 1.0.0."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">TimeConverter</span><span class="o">.</span><span class="n">julian_to_gregorian</span><span class="p">(</span><span class="n">julian_days</span><span class="p">,</span> <span class="n">start_date</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_elapsed_seconds_since_jan_1970_to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elapsed_seconds</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert elapsed seconds since Jan 1970 to datetime.</span>
+<span class="w">        </span><span class="sd">"""Convert elapsed seconds since Jan 1970 to datetime.</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 0.4.0</span>
 <span class="sd">            Use :meth:`TimeConverter.elapsed_seconds_since_jan_1970_to_datetime` directly.</span>
 <span class="sd">            This wrapper will be removed in version 1.0.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;AbstractReader._elapsed_seconds_since_jan_1970_to_datetime() is deprecated. &quot;</span>
-            <span class="s2">&quot;Use TimeConverter.elapsed_seconds_since_jan_1970_to_datetime() directly instead. &quot;</span>
-            <span class="s2">&quot;This method will be removed in version 1.0.0.&quot;</span><span class="p">,</span>
+            <span class="s2">"AbstractReader._elapsed_seconds_since_jan_1970_to_datetime() is deprecated. "</span>
+            <span class="s2">"Use TimeConverter.elapsed_seconds_since_jan_1970_to_datetime() directly instead. "</span>
+            <span class="s2">"This method will be removed in version 1.0.0."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">TimeConverter</span><span class="o">.</span><span class="n">elapsed_seconds_since_jan_1970_to_datetime</span><span class="p">(</span><span class="n">elapsed_seconds</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_elapsed_seconds_since_jan_2000_to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elapsed_seconds</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert elapsed seconds since Jan 2000 to datetime.</span>
+<span class="w">        </span><span class="sd">"""Convert elapsed seconds since Jan 2000 to datetime.</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 0.4.0</span>
 <span class="sd">            Use :meth:`TimeConverter.elapsed_seconds_since_jan_2000_to_datetime` directly.</span>
 <span class="sd">            This wrapper will be removed in version 1.0.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;AbstractReader._elapsed_seconds_since_jan_2000_to_datetime() is deprecated. &quot;</span>
-            <span class="s2">&quot;Use TimeConverter.elapsed_seconds_since_jan_2000_to_datetime() directly instead. &quot;</span>
-            <span class="s2">&quot;This method will be removed in version 1.0.0.&quot;</span><span class="p">,</span>
+            <span class="s2">"AbstractReader._elapsed_seconds_since_jan_2000_to_datetime() is deprecated. "</span>
+            <span class="s2">"Use TimeConverter.elapsed_seconds_since_jan_2000_to_datetime() directly instead. "</span>
+            <span class="s2">"This method will be removed in version 1.0.0."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">TimeConverter</span><span class="o">.</span><span class="n">elapsed_seconds_since_jan_2000_to_datetime</span><span class="p">(</span><span class="n">elapsed_seconds</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_elapsed_seconds_since_offset_to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elapsed_seconds</span><span class="p">,</span> <span class="n">offset_datetime</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert elapsed seconds since offset to datetime.</span>
+<span class="w">        </span><span class="sd">"""Convert elapsed seconds since offset to datetime.</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 0.4.0</span>
 <span class="sd">            Use :meth:`TimeConverter.elapsed_seconds_since_offset_to_datetime` directly.</span>
 <span class="sd">            This wrapper will be removed in version 1.0.0.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;AbstractReader._elapsed_seconds_since_offset_to_datetime() is deprecated. &quot;</span>
-            <span class="s2">&quot;Use TimeConverter.elapsed_seconds_since_offset_to_datetime() directly instead. &quot;</span>
-            <span class="s2">&quot;This method will be removed in version 1.0.0.&quot;</span><span class="p">,</span>
+            <span class="s2">"AbstractReader._elapsed_seconds_since_offset_to_datetime() is deprecated. "</span>
+            <span class="s2">"Use TimeConverter.elapsed_seconds_since_offset_to_datetime() directly instead. "</span>
+            <span class="s2">"This method will be removed in version 1.0.0."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
@@ -756,9 +757,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_necessary_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">entity</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME_J</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME_Q</span> \
                 <span class="ow">and</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">TIME_N</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter &#39;</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="si">}</span><span class="s2">&#39; is missing in </span><span class="si">{</span><span class="n">entity</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter '</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="si">}</span><span class="s2">' is missing in </span><span class="si">{</span><span class="n">entity</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">params</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter &#39;</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="si">}</span><span class="s2">&#39; is missing in </span><span class="si">{</span><span class="n">entity</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter '</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">PRESSURE</span><span class="si">}</span><span class="s2">' is missing in </span><span class="si">{</span><span class="n">entity</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="c1"># =========================================================================</span>
     <span class="c1"># Dataset Building Methods (thin wrappers for backward compatibility)</span>
@@ -766,7 +767,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_xarray_dataset_template</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_array</span><span class="p">,</span> <span class="n">depth_array</span><span class="p">,</span> 
                 <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">depth_name</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">DEPTH</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an xarray Dataset template with coordinates.</span>
+<span class="w">        </span><span class="sd">"""Create an xarray Dataset template with coordinates.</span>
 <span class="sd">        </span>
 <span class="sd">        This is a thin wrapper around :meth:`DatasetBuilder.create_template`</span>
 <span class="sd">        for backward compatibility with subclasses.</span>
@@ -788,13 +789,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            Empty xarray Dataset with coordinates set up.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">DatasetBuilder</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span>
             <span class="n">time_array</span><span class="p">,</span> <span class="n">depth_array</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">depth_name</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_assign_data_for_key_to_xarray_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign a data array to the dataset.</span>
+<span class="w">        </span><span class="sd">"""Assign a data array to the dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        This is a thin wrapper around :meth:`DatasetBuilder.assign_data`</span>
 <span class="sd">        for backward compatibility with subclasses.</span>
@@ -807,7 +808,7 @@
 <span class="sd">            The variable name for the data.</span>
 <span class="sd">        data : array-like</span>
 <span class="sd">            The data values to assign.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">DatasetBuilder</span><span class="o">.</span><span class="n">assign_data</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_assign_metadata_for_key_to_xarray_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
@@ -816,7 +817,7 @@
             <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># Check for numbered standard names (e.g., temperature_1, temperature_2)</span>
         <span class="n">base_key</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^([a-zA-Z0-9_]+?)(?:_\d{1,2})?$&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^([a-zA-Z0-9_]+?)(?:_\d{1,2})?$"</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
             <span class="n">base_key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># Use metadata for base_key if available</span>
@@ -825,18 +826,18 @@
                 <span class="k">if</span> <span class="n">attribute</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
                     <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
-            <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="n">unit</span>
         <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">unit</span><span class="p">:</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="c1"># Remove unit from label</span>
-            <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="c1"># Remove unit from label</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">'long_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
 
     <span class="c1"># =========================================================================</span>
     <span class="c1"># Dataset Processing Methods (delegates to DatasetProcessor)</span>
     <span class="c1"># =========================================================================</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_derive_oceanographic_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Derive oceanographic parameters from temperature, pressure, and salinity.</span>
+<span class="w">        </span><span class="sd">"""Derive oceanographic parameters from temperature, pressure, and salinity.</span>
 <span class="sd">        </span>
 <span class="sd">        This method calculates derived parameters like density and potential temperature</span>
 <span class="sd">        using the Gibbs SeaWater (GSW) oceanographic toolbox when temperature, pressure,</span>
@@ -854,7 +855,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The xarray Dataset with derived parameters added.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Create callback for metadata assignment if enabled</span>
         <span class="n">metadata_callback</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_assign_metadata</span><span class="p">:</span>
@@ -863,7 +864,7 @@
         <span class="k">return</span> <span class="n">DatasetProcessor</span><span class="o">.</span><span class="n">derive_oceanographic_parameters</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_callback</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_sort_xarray_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sort variables in an xarray Dataset alphabetically by name.</span>
+<span class="w">        </span><span class="sd">"""Sort variables in an xarray Dataset alphabetically by name.</span>
 <span class="sd">        </span>
 <span class="sd">        Variables with the same base name (e.g., temperature_1, temperature_2)</span>
 <span class="sd">        are grouped together due to alphabetical sorting.</span>
@@ -877,11 +878,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The xarray Dataset with variables sorted by their names.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">DatasetProcessor</span><span class="o">.</span><span class="n">sort_variables</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_rename_xarray_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename variables in an xarray Dataset according to standard mappings.</span>
+<span class="w">        </span><span class="sd">"""Rename variables in an xarray Dataset according to standard mappings.</span>
 <span class="sd">        </span>
 <span class="sd">        Handles aliases with or without trailing numbering and ensures unique </span>
 <span class="sd">        standard names with numbering. If a standard name only occurs once, </span>
@@ -896,11 +897,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The xarray Dataset with renamed variables.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">DatasetProcessor</span><span class="o">.</span><span class="n">rename_parameters</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_assign_default_global_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assign default global attributes to the xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Assign default global attributes to the xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        Sets CF-compliant global attributes including history, conventions,</span>
 <span class="sd">        and processor information.</span>
@@ -914,7 +915,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The xarray Dataset with global attributes assigned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">DatasetProcessor</span><span class="o">.</span><span class="n">assign_default_global_attributes</span><span class="p">(</span>
             <span class="n">ds</span><span class="p">,</span>
             <span class="n">input_file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">,</span>
@@ -925,7 +926,7 @@
 <div class="viewcode-block" id="AbstractReader._perform_default_postprocessing">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader._perform_default_postprocessing">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">_perform_default_postprocessing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Perform default post-processing on the xarray Dataset.</span>
 <span class="sd">        This includes renaming variables and assigning metadata.</span>
 
@@ -944,7 +945,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The processed xarray Dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># NEW: Use processing step pipeline if enabled (default)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_use_steps</span><span class="p">:</span>
@@ -953,65 +954,65 @@
                 
                 <span class="c1"># Build metadata context</span>
                 <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;source_file&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">,</span>
-                    <span class="s1">&#39;format_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_name</span><span class="p">(),</span>
-                    <span class="s1">&#39;reader_class&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-                    <span class="s1">&#39;reader_module&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
-                    <span class="s1">&#39;reader_mapping&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span><span class="p">,</span>  <span class="c1"># Pass reader mapping to stages</span>
-                    <span class="s1">&#39;format_key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">(),</span>  <span class="c1"># Pass format key for format-specific mapping</span>
+                    <span class="s1">'source_file'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">,</span>
+                    <span class="s1">'format_name'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_name</span><span class="p">(),</span>
+                    <span class="s1">'reader_class'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                    <span class="s1">'reader_module'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="p">,</span>
+                    <span class="s1">'reader_mapping'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span><span class="p">,</span>  <span class="c1"># Pass reader mapping to stages</span>
+                    <span class="s1">'format_key'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_key</span><span class="p">(),</span>  <span class="c1"># Pass format key for format-specific mapping</span>
                 <span class="p">}</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_header&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_header&quot;</span><span class="p">):</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;raw_header&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_header&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_blocks&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_blocks&quot;</span><span class="p">):</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;raw_metadata_blocks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_blocks&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_variables&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_variables&quot;</span><span class="p">):</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;raw_metadata_variables&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_raw_metadata_variables&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_header"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_header"</span><span class="p">):</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'raw_header'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_header"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_blocks"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_blocks"</span><span class="p">):</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'raw_metadata_blocks'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_blocks"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_variables"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_variables"</span><span class="p">):</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'raw_metadata_variables'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_raw_metadata_variables"</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="p">:</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;user_metadata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'user_metadata'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span>
                 <span class="n">reader_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_groups</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">reader_groups</span><span class="p">:</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;reader_groups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader_groups</span><span class="p">)</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'reader_groups'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader_groups</span><span class="p">)</span>
                 <span class="n">reader_transformations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline_transformations</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">reader_transformations</span><span class="p">:</span>
-                    <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;reader_transformations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader_transformations</span><span class="p">)</span>
+                    <span class="n">metadata</span><span class="p">[</span><span class="s1">'reader_transformations'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader_transformations</span><span class="p">)</span>
                 
                 <span class="c1"># Create pipeline (custom or default)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_default_latitude_configured&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">stage</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;derivation&quot;</span> <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span><span class="o">.</span><span class="n">pipeline</span><span class="p">):</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">&#39;derivation&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
-                                <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="p">{</span>
-                                    <span class="s1">&#39;use_default_latitude&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_use_default_latitude&quot;</span><span class="p">)),</span>
-                                    <span class="s1">&#39;default_latitude&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_default_latitude&quot;</span><span class="p">,</span> <span class="mf">45.0</span><span class="p">)),</span>
+                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_default_latitude_configured"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">stage</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"derivation"</span> <span class="k">for</span> <span class="n">stage</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span><span class="o">.</span><span class="n">pipeline</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">'derivation'</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+                                <span class="s1">'depth'</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s1">'use_default_latitude'</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_use_default_latitude"</span><span class="p">)),</span>
+                                    <span class="s1">'default_latitude'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_default_latitude"</span><span class="p">,</span> <span class="mf">45.0</span><span class="p">)),</span>
                                 <span class="p">}</span>
                             <span class="p">})</span>
                     <span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pipeline_config</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Create default pipeline profile with reader-specific config</span>
-                    <span class="n">config</span> <span class="o">=</span> <span class="n">PipelineConfig</span><span class="o">.</span><span class="n">from_resource</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+                    <span class="n">config</span> <span class="o">=</span> <span class="n">PipelineConfig</span><span class="o">.</span><span class="n">from_resource</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
                     
                     <span class="c1"># Get format-specific mappings from the reader class</span>
                     <span class="n">reader_mappings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_mappings</span><span class="p">()</span>
                     
                     <span class="c1"># Configure mapping stage with reader mapping</span>
-                    <span class="n">config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">&#39;mapping&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
-                        <span class="s1">&#39;custom_mappings&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span> <span class="k">else</span> <span class="p">{},</span>
-                        <span class="s1">&#39;reader_mappings&#39;</span><span class="p">:</span> <span class="n">reader_mappings</span> <span class="k">if</span> <span class="n">reader_mappings</span> <span class="k">else</span> <span class="p">{},</span>
-                        <span class="s1">&#39;preserve_original&#39;</span><span class="p">:</span> <span class="kc">True</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">'mapping'</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s1">'custom_mappings'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping</span> <span class="k">else</span> <span class="p">{},</span>
+                        <span class="s1">'reader_mappings'</span><span class="p">:</span> <span class="n">reader_mappings</span> <span class="k">if</span> <span class="n">reader_mappings</span> <span class="k">else</span> <span class="p">{},</span>
+                        <span class="s1">'preserve_original'</span><span class="p">:</span> <span class="kc">True</span>
                     <span class="p">})</span>
 
-                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_default_latitude_configured&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                        <span class="n">config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">&#39;derivation&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
-                            <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="p">{</span>
-                                <span class="s1">&#39;use_default_latitude&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_use_default_latitude&quot;</span><span class="p">)),</span>
-                                <span class="s1">&#39;default_latitude&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_default_latitude&quot;</span><span class="p">,</span> <span class="mf">45.0</span><span class="p">)),</span>
+                    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_default_latitude_configured"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="n">config</span><span class="o">.</span><span class="n">upsert_stage</span><span class="p">(</span><span class="s1">'derivation'</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span>
+                            <span class="s1">'depth'</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">'use_default_latitude'</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_use_default_latitude"</span><span class="p">)),</span>
+                                <span class="s1">'default_latitude'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_default_latitude"</span><span class="p">,</span> <span class="mf">45.0</span><span class="p">)),</span>
                             <span class="p">}</span>
                         <span class="p">})</span>
                     
                     <span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
                 
                 <span class="c1"># Track applied stages</span>
-                <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;stages_applied&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">get_stage_order</span><span class="p">()</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s1">'stages_applied'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">get_stage_order</span><span class="p">()</span>
                 
                 <span class="c1"># Execute pipeline</span>
                 <span class="n">ds</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
@@ -1019,22 +1020,22 @@
                 <span class="c1"># Store processing metadata for optional logging</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_processing_metadata</span> <span class="o">=</span> <span class="n">metadata</span>
 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_metadata_applied&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'user_metadata_applied'</span><span class="p">):</span>
                     <span class="n">warning</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="s2">&quot;User metadata was provided but not applied. &quot;</span>
-                        <span class="s2">&quot;Ensure the &#39;user_metadata&#39; handler is enabled in the metadata_enrichment stage.&quot;</span>
+                        <span class="s2">"User metadata was provided but not applied. "</span>
+                        <span class="s2">"Ensure the 'user_metadata' handler is enabled in the metadata_enrichment stage."</span>
                     <span class="p">)</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
-                    <span class="n">metadata</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;warnings&#39;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+                    <span class="n">metadata</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">'warnings'</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">ds</span>
                 
             <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># Stages not available, fall back to legacy</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Stage system not available (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">). &quot;</span>
-                    <span class="s2">&quot;Falling back to legacy postprocessing. &quot;</span>
-                    <span class="s2">&quot;This should not happen in normal operation.&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"Stage system not available (</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">). "</span>
+                    <span class="s2">"Falling back to legacy postprocessing. "</span>
+                    <span class="s2">"This should not happen in normal operation."</span><span class="p">,</span>
                     <span class="ne">RuntimeWarning</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">ds</span>
@@ -1045,25 +1046,25 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># Prevent user metadata from overriding RAW/provenance fields</span>
-                    <span class="n">reserved_prefixes</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;raw_&quot;</span><span class="p">,</span> <span class="s2">&quot;processor_&quot;</span><span class="p">)</span>
-                    <span class="n">filtered</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;global&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;variables&quot;</span><span class="p">:</span> <span class="p">{}}</span>
-                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;global&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">reserved_prefixes</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"raw_"</span><span class="p">,</span> <span class="s2">"processor_"</span><span class="p">)</span>
+                    <span class="n">filtered</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"global"</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">"variables"</span><span class="p">:</span> <span class="p">{}}</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"global"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">reserved_prefixes</span><span class="p">):</span>
                             <span class="k">continue</span>
-                        <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;global&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-                    <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;variables&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">filtered</span><span class="p">[</span><span class="s2">"global"</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">attrs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"variables"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">attrs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                             <span class="n">new_attrs</span> <span class="o">=</span> <span class="p">{</span>
                                 <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                                 <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">reserved_prefixes</span><span class="p">)</span>
                             <span class="p">}</span>
-                            <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_attrs</span>
+                            <span class="n">filtered</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_attrs</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="n">filtered</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applying user metadata in raw mode for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+                            <span class="n">filtered</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Applying user metadata in raw mode for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
                     <span class="n">ds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">apply_user_metadata</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">filtered</span><span class="p">,</span> <span class="n">warn_missing</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid user metadata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid user metadata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
             <span class="k">return</span> <span class="n">ds</span></div>
 
         
@@ -1080,23 +1081,23 @@
         <span class="c1"># If old behavior needed, set use_steps=True (default) and use the processing pipeline.</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_postprocess_after_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Optional hook for reader-specific adjustments after the pipeline ran.</span>
 
 <span class="sd">        Override in subclasses if you need to apply small, format-specific</span>
 <span class="sd">        tweaks after the standard pipeline completes. The default implementation</span>
 <span class="sd">        returns the dataset unchanged.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">ds</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">processing_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return processing metadata from the stage pipeline (if available).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return processing metadata from the stage pipeline (if available)."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processing_metadata</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the processed sensor data as an xarray Dataset (lazy loading).</span>
+<span class="w">        </span><span class="sd">"""Get the processed sensor data as an xarray Dataset (lazy loading).</span>
 <span class="sd">        </span>
 <span class="sd">        This property provides read-only access to the data. The data is loaded</span>
 <span class="sd">        lazily on first access - subsequent accesses return the cached dataset.</span>
@@ -1115,19 +1116,19 @@
 <span class="sd">            </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; reader = SomeReader(&#39;data.cnv&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; reader = SomeReader('data.cnv')</span>
 <span class="sd">        &gt;&gt;&gt; print(reader.is_loaded)  # False - not loaded yet</span>
 <span class="sd">        &gt;&gt;&gt; ds = reader.data  # Triggers lazy load</span>
 <span class="sd">        &gt;&gt;&gt; print(reader.is_loaded)  # True - now loaded</span>
 <span class="sd">        &gt;&gt;&gt; ds2 = reader.data  # Returns cached data</span>
 <span class="sd">        &gt;&gt;&gt; assert ds is ds2  # Same object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Loading data from &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Loading data from '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_data</span><span class="p">()</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;Loaded dataset from &#39;</span><span class="si">%s</span><span class="s2">&#39; with </span><span class="si">%d</span><span class="s2"> variables and </span><span class="si">%d</span><span class="s2"> coords&quot;</span><span class="p">,</span>
+                    <span class="s2">"Loaded dataset from '</span><span class="si">%s</span><span class="s2">' with </span><span class="si">%d</span><span class="s2"> variables and </span><span class="si">%d</span><span class="s2"> coords"</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">,</span>
                     <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">data_vars</span><span class="p">),</span>
                     <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
@@ -1137,24 +1138,24 @@
                 <span class="k">raise</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Failed to load data from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Failed to load data from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postprocessed</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_perform_postprocessing</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applying postprocessing pipeline for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Applying postprocessing pipeline for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perform_default_postprocessing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_processing_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postprocess_after_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_postprocessed</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Returning cached dataset for &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Returning cached dataset for '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
 <div class="viewcode-block" id="AbstractReader.get_data">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.get_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the processed data as an xarray Dataset.</span>
+<span class="w">        </span><span class="sd">"""Returns the processed data as an xarray Dataset.</span>
 <span class="sd">        </span>
 <span class="sd">        .. deprecated:: 0.4.0</span>
 <span class="sd">            Use the :attr:`data` property instead: ``reader.data``</span>
@@ -1164,11 +1165,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        xr.Dataset | None</span>
 <span class="sd">            The processed sensor data, or None if not yet read.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;get_data() is deprecated and will be removed in version 1.0.0. &quot;</span>
-            <span class="s2">&quot;Use the &#39;data&#39; property instead: reader.data&quot;</span><span class="p">,</span>
+            <span class="s2">"get_data() is deprecated and will be removed in version 1.0.0. "</span>
+            <span class="s2">"Use the 'data' property instead: reader.data"</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
         <span class="p">)</span>
@@ -1180,21 +1181,21 @@
     <span class="nd">@classmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the format name for this reader.</span>
+<span class="w">        </span><span class="sd">"""Get the format name for this reader.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format (e.g., &#39;SeaBird CNV&#39;, &#39;Nortek ASCII&#39;, &#39;RBR RSK&#39;).</span>
+<span class="sd">            The format (e.g., 'SeaBird CNV', 'Nortek ASCII', 'RBR RSK').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Reader classes must define a format name&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Reader classes must define a format name"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.format_key">
@@ -1202,21 +1203,21 @@
     <span class="nd">@classmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the format key for this reader.</span>
+<span class="w">        </span><span class="sd">"""Get the format key for this reader.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format key (e.g., &#39;sbe-cnv&#39;, &#39;nortek-ascii&#39;, &#39;rbr-rsk&#39;).</span>
+<span class="sd">            The format key (e.g., 'sbe-cnv', 'nortek-ascii', 'rbr-rsk').</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Writer classes must define a format key&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Writer classes must define a format key"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.file_extension">
@@ -1224,7 +1225,7 @@
     <span class="nd">@classmethod</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_extension</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the primary file extension for this reader.</span>
+<span class="w">        </span><span class="sd">"""Get the primary file extension for this reader.</span>
 
 <span class="sd">        This property must be implemented by all subclasses.</span>
 <span class="sd">        The primary extension must be unique over all registered readers.</span>
@@ -1234,22 +1235,22 @@
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str | None</span>
-<span class="sd">            The primary file extension (e.g., &#39;.cnv&#39;, &#39;.tob&#39;, &#39;.rsk&#39;), or</span>
+<span class="sd">            The primary file extension (e.g., '.cnv', '.tob', '.rsk'), or</span>
 <span class="sd">            None when there is no single primary extension (see :meth:`file_extensions`).</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">        -------</span>
 <span class="sd">        NotImplementedError:</span>
 <span class="sd">            If the subclass does not implement this property.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Reader classes must define a file extension&quot;</span><span class="p">)</span></div>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Reader classes must define a file extension"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.file_extensions">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.file_extensions">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_extensions</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get all extensions that can be auto-detected for this reader.</span>
+<span class="w">        </span><span class="sd">"""Get all extensions that can be auto-detected for this reader.</span>
 
 <span class="sd">        Subclasses with multiple unique file suffixes should override this</span>
 <span class="sd">        method. The default keeps backward compatibility by exposing only the</span>
@@ -1260,7 +1261,7 @@
 <span class="sd">        tuple[str, ...]</span>
 <span class="sd">            Supported auto-detect extensions. The first entry should match</span>
 <span class="sd">            :meth:`file_extension` when a primary extension exists.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">extension</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">file_extension</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">extension</span><span class="p">,)</span> <span class="k">if</span> <span class="n">extension</span> <span class="k">else</span> <span class="p">()</span></div>
 
@@ -1269,7 +1270,7 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.format_mappings">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_mappings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get format-specific variable name mappings for this reader.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns format-specific mappings that extend or override the default </span>
@@ -1292,9 +1293,9 @@
 <span class="sd">        ...     def format_mappings(cls):</span>
 <span class="sd">        ...         import seasenselib.parameters as params</span>
 <span class="sd">        ...         return {</span>
-<span class="sd">        ...             params.TEMPERATURE: [&#39;t090C&#39;, &#39;t068&#39;, &#39;tv290C&#39;],</span>
-<span class="sd">        ...             params.SALINITY: [&#39;sal00&#39;, &#39;sal11&#39;],</span>
-<span class="sd">        ...             params.CONDUCTIVITY: [&#39;c0mS/cm&#39;, &#39;c0S/m&#39;]</span>
+<span class="sd">        ...             params.TEMPERATURE: ['t090C', 't068', 'tv290C'],</span>
+<span class="sd">        ...             params.SALINITY: ['sal00', 'sal11'],</span>
+<span class="sd">        ...             params.CONDUCTIVITY: ['c0mS/cm', 'c0S/m']</span>
 <span class="sd">        ...         }</span>
 <span class="sd">        </span>
 <span class="sd">        Notes:</span>
@@ -1303,7 +1304,7 @@
 <span class="sd">        - Default implementation returns empty dict (no format-specific mappings)</span>
 <span class="sd">        - Keeps format-specific knowledge with the reader, not in stages</span>
 <span class="sd">        - Supports flexible, extensible architecture</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{}</span>  <span class="c1"># Default: no format-specific mappings</span></div>
 
 
@@ -1311,33 +1312,33 @@
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.reader_groups">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reader_groups</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return optional reader-group identifiers for pipeline controls.</span>
+<span class="w">        </span><span class="sd">"""Return optional reader-group identifiers for pipeline controls.</span>
 
 <span class="sd">        Reader groups allow pipeline stages to enable/disable behavior for</span>
 <span class="sd">        related formats such as ``nortek-ascii`` and ``nortek-csv`` without</span>
 <span class="sd">        coupling the stage to concrete reader classes. The default derives the</span>
 <span class="sd">        group from the format key prefix before the first hyphen.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">format_key</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">format_key</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">format_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;-&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">format_key</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">format_key</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"-"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">format_key</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">()</span>
-        <span class="n">group</span> <span class="o">=</span> <span class="n">format_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">format_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">group</span><span class="p">,)</span> <span class="k">if</span> <span class="n">group</span> <span class="k">else</span> <span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="AbstractReader.pipeline_transformations">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.readers.base.AbstractReader.pipeline_transformations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">pipeline_transformations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return optional transformation handlers for this concrete dataset.</span>
+<span class="w">        </span><span class="sd">"""Return optional transformation handlers for this concrete dataset.</span>
 
 <span class="sd">        Readers can override this hook when a transformation depends on data,</span>
 <span class="sd">        header metadata, or reader state. The transformation stage accepts</span>
 <span class="sd">        objects implementing ``ITransformation``. The default performs no</span>
 <span class="sd">        transformations.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">[]</span></div>
 </div>
 

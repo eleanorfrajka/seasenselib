@@ -49,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -126,7 +127,7 @@ for conductivity pressure correction:</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-    <span class="s2">&quot;microcat.hex&quot;</span><span class="p">,</span>
+    <span class="s2">"microcat.hex"</span><span class="p">,</span>
     <span class="n">create_pressure_from_reference_pressure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -143,7 +144,7 @@ Steinhart-Hart form used by the original standalone decoder.</p>
 <p>RBR HEX files use the same <code class="docutils literal notranslate"><span class="pre">.hex</span></code> suffix as SeaBird SBE37 HEX files.
 SeaSenseLib therefore keeps automatic <code class="docutils literal notranslate"><span class="pre">.hex</span></code> detection assigned to
 <code class="docutils literal notranslate"><span class="pre">sbe-hex</span></code> and requires explicit selection for RBR HEX data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rbr_logger.hex&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">&quot;rbr-hex&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"rbr_logger.hex"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s2">"rbr-hex"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>seasenselib<span class="w"> </span>convert<span class="w"> </span>-f<span class="w"> </span>rbr-hex<span class="w"> </span>-i<span class="w"> </span>rbr_logger.hex<span class="w"> </span>-o<span class="w"> </span>rbr_logger.nc

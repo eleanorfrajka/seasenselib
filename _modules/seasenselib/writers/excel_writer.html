@@ -46,6 +46,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -91,9 +92,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for seasenselib.writers.excel_writer</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Module for writing sensor data to Excel files.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">seasenselib.writers.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractWriter</span>
@@ -104,14 +105,14 @@
 <div class="viewcode-block" id="ExcelWriter">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.ExcelWriter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ExcelWriter</span><span class="p">(</span><span class="n">AbstractWriter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Writes sensor data from a xarray Dataset to an Excel file. </span>
+<span class="w">    </span><span class="sd">""" Writes sensor data from a xarray Dataset to an Excel file. </span>
 <span class="sd">    </span>
 <span class="sd">    This class is used to save sensor data in an Excel format, which is commonly used for</span>
 <span class="sd">    tabular data. The provided data is expected to be in an xarray Dataset format.</span>
 
 <span class="sd">    Example usage:</span>
 <span class="sd">        writer = ExcelWriter(data)</span>
-<span class="sd">        writer.write(&quot;output_file.xlsx&quot;)</span>
+<span class="sd">        writer.write("output_file.xlsx")</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">    ------------</span>
@@ -126,13 +127,13 @@
 <span class="sd">        Writes the xarray Dataset to an Excel file with the specified file name and coordinate.</span>
 <span class="sd">        The coordinate parameter specifies which coordinate to use for selecting the data.</span>
 <span class="sd">    file_extension: str</span>
-<span class="sd">        The default file extension for this writer, which is &#39;.xlsx&#39;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        The default file extension for this writer, which is '.xlsx'.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="ExcelWriter.write">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.ExcelWriter.write">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">coordinate</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">TIME</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Writes the xarray Dataset to an Excel file with the specified file name and coordinate.</span>
+<span class="w">        </span><span class="sd">""" Writes the xarray Dataset to an Excel file with the specified file name and coordinate.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">        -----------</span>
@@ -148,11 +149,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        ValueError:</span>
 <span class="sd">            If the provided coordinate is not found in the dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Check if the provided coordinate is valid</span>
         <span class="k">if</span> <span class="n">coordinate</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coordinate &#39;</span><span class="si">{</span><span class="n">coordinate</span><span class="si">}</span><span class="s2">&#39; not found in the dataset.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Coordinate '</span><span class="si">{</span><span class="n">coordinate</span><span class="si">}</span><span class="s2">' not found in the dataset."</span><span class="p">)</span>
 
         <span class="c1"># Select the data corresponding to the specified coordinate</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sel</span><span class="p">({</span><span class="n">coordinate</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">coordinate</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
@@ -161,51 +162,51 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 
         <span class="c1"># Write the dataframe to the Excel file</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing Excel file to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Wrote Excel file to &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Writing Excel file to '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">'openpyxl'</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Wrote Excel file to '</span><span class="si">%s</span><span class="s2">'"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ExcelWriter.file_extension">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.ExcelWriter.file_extension">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">file_extension</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the default file extension for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the default file extension for this writer.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The file extension for Excel files, which is &#39;.xlsx&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;.xlsx&#39;</span></div>
+<span class="sd">            The file extension for Excel files, which is '.xlsx'.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s1">'.xlsx'</span></div>
 
 
 <div class="viewcode-block" id="ExcelWriter.format_key">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.ExcelWriter.format_key">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_key</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the format key for this writer.</span>
+<span class="w">        </span><span class="sd">"""Get the format key for this writer.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format key &#39;excel&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;excel&#39;</span></div>
+<span class="sd">            The format key 'excel'.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s1">'excel'</span></div>
 
 
 <div class="viewcode-block" id="ExcelWriter.format_name">
 <a class="viewcode-back" href="../../../api_reference.html#seasenselib.writers.ExcelWriter.format_name">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the human-readable format name.</span>
+<span class="w">        </span><span class="sd">"""Get the human-readable format name.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">        --------</span>
 <span class="sd">        str</span>
-<span class="sd">            The format name &#39;Excel&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;Excel&#39;</span></div>
+<span class="sd">            The format name 'Excel'.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s1">'Excel'</span></div>
 </div>
 
 </pre></div>

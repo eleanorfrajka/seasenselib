@@ -49,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About SeaSenseLib</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">SeaSenseLib Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
@@ -118,14 +119,14 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Read any supported format</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;your_data_file.cnv&quot;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"your_data_file.cnv"</span><span class="p">)</span>
 
 <span class="c1"># Create plots</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;T-S Diagram&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Profile&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"T-S Diagram"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CTD Profile"</span><span class="p">)</span>
 
 <span class="c1"># Export data</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;output.nc&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'output.nc'</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -135,14 +136,14 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seasenselib</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssl</span>
 
 <span class="c1"># Automatic format detection</span>
-<span class="n">ctd_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;profile.cnv&quot;</span><span class="p">)</span>           <span class="c1"># SeaBird CTD</span>
-<span class="n">rbr_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;logger.rsk&quot;</span><span class="p">)</span>            <span class="c1"># RBR instruments</span>
-<span class="n">netcdf_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;data.nc&quot;</span><span class="p">)</span>            <span class="c1"># NetCDF files</span>
+<span class="n">ctd_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"profile.cnv"</span><span class="p">)</span>           <span class="c1"># SeaBird CTD</span>
+<span class="n">rbr_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"logger.rsk"</span><span class="p">)</span>            <span class="c1"># RBR instruments</span>
+<span class="n">netcdf_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"data.nc"</span><span class="p">)</span>            <span class="c1"># NetCDF files</span>
 
 <span class="c1"># Explicit format specification (when needed)</span>
-<span class="n">nortek_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;current.dat&quot;</span><span class="p">,</span>
-                      <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;nortek-ascii&#39;</span><span class="p">,</span>
-                      <span class="n">header_file</span><span class="o">=</span><span class="s2">&quot;current.hdr&quot;</span><span class="p">)</span>
+<span class="n">nortek_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"current.dat"</span><span class="p">,</span>
+                      <span class="n">file_format</span><span class="o">=</span><span class="s1">'nortek-ascii'</span><span class="p">,</span>
+                      <span class="n">header_file</span><span class="o">=</span><span class="s2">"current.hdr"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Supported Formats:</strong></p>
@@ -160,22 +161,22 @@
 <h2>Creating Plots<a class="headerlink" href="#creating-plots" title="Link to this heading"></a></h2>
 <p>Generate standard oceanographic visualizations with simple commands:</p>
 <p><strong>Temperature-Salinity Diagrams:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Station T-S Diagram&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;ts_plot.png&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Station T-S Diagram"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"ts_plot.png"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Vertical Profiles:</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CTD Cast&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"CTD Cast"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Time Series:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single parameter</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">])</span>
 
 <span class="c1"># Multiple parameters</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
-         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">],</span>
-         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mooring Data&quot;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span>
+         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">],</span>
+         <span class="n">title</span><span class="o">=</span><span class="s2">"Mooring Data"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -183,13 +184,13 @@
 <h2>Exporting Data<a class="headerlink" href="#exporting-data" title="Link to this heading"></a></h2>
 <p>Save processed data in various formats:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NetCDF (recommended for oceanographic data)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;processed_data.nc&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'processed_data.nc'</span><span class="p">)</span>
 
 <span class="c1"># CSV for spreadsheets</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;data_export.csv&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'data_export.csv'</span><span class="p">)</span>
 
 <span class="c1"># Excel format</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;report.xlsx&#39;</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'report.xlsx'</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -200,12 +201,12 @@
 
 <span class="c1"># Extract data subsets</span>
 <span class="n">subset</span> <span class="o">=</span> <span class="n">SubsetProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-<span class="n">shallow_data</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">set_parameter_name</span><span class="p">(</span><span class="s1">&#39;pressure&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_parameter_value_max</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">get_subset</span><span class="p">()</span>
+<span class="n">shallow_data</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">set_parameter_name</span><span class="p">(</span><span class="s1">'pressure'</span><span class="p">)</span><span class="o">.</span><span class="n">set_parameter_value_max</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">get_subset</span><span class="p">()</span>
 
 <span class="c1"># Calculate statistics</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">StatisticsProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">StatisticsProcessor</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="s1">'temperature'</span><span class="p">)</span>
 <span class="n">temperature_stats</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">get_all_statistics</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean temperature: </span><span class="si">{</span><span class="n">temperature_stats</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°C&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean temperature: </span><span class="si">{</span><span class="n">temperature_stats</span><span class="p">[</span><span class="s1">'mean'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">°C"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -232,35 +233,35 @@ seasenselib<span class="w"> </span>list<span class="w"> </span>readers
 <h2>Working with Different Instruments<a class="headerlink" href="#working-with-different-instruments" title="Link to this heading"></a></h2>
 <p><strong>CTD Profile Data (SeaBird):</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read vertical cast data</span>
-<span class="n">ctd_cast</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;station001.cnv&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;depth-profile&#39;</span><span class="p">,</span> <span class="n">ctd_cast</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Station 001&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;ts-diagram&#39;</span><span class="p">,</span> <span class="n">ctd_cast</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Water Mass Analysis&quot;</span><span class="p">)</span>
+<span class="n">ctd_cast</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"station001.cnv"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'depth-profile'</span><span class="p">,</span> <span class="n">ctd_cast</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Station 001"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'ts-diagram'</span><span class="p">,</span> <span class="n">ctd_cast</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">"Water Mass Analysis"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Moored Time Series (SeaBird MicroCAT):</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read mooring data</span>
-<span class="n">mooring</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;microcat_series.cnv&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">mooring</span><span class="p">,</span>
-         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;salinity&#39;</span><span class="p">],</span>
-         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mooring Time Series&quot;</span><span class="p">)</span>
+<span class="n">mooring</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"microcat_series.cnv"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">mooring</span><span class="p">,</span>
+         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">,</span> <span class="s1">'salinity'</span><span class="p">],</span>
+         <span class="n">title</span><span class="o">=</span><span class="s2">"Mooring Time Series"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>RBR Temperature Loggers:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Native RSK format</span>
-<span class="n">rbr_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;solo_logger.rsk&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">rbr_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">])</span>
+<span class="n">rbr_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"solo_logger.rsk"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">rbr_data</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'temperature'</span><span class="p">])</span>
 
 <span class="c1"># MATLAB export</span>
-<span class="n">rbr_matlab</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;rbr_export.mat&quot;</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;rbr-matlab&#39;</span><span class="p">)</span>
+<span class="n">rbr_matlab</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"rbr_export.mat"</span><span class="p">,</span> <span class="n">file_format</span><span class="o">=</span><span class="s1">'rbr-matlab'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Current Meter Data (Nortek):</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Requires both data and header files</span>
-<span class="n">current_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;aquadopp.dat&quot;</span><span class="p">,</span>
-                       <span class="n">file_format</span><span class="o">=</span><span class="s1">&#39;nortek-ascii&#39;</span><span class="p">,</span>
-                       <span class="n">header_file</span><span class="o">=</span><span class="s2">&quot;aquadopp.hdr&quot;</span><span class="p">)</span>
-<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;time-series&#39;</span><span class="p">,</span> <span class="n">current_data</span><span class="p">,</span>
-         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;east_velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;north_velocity&#39;</span><span class="p">])</span>
+<span class="n">current_data</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"aquadopp.dat"</span><span class="p">,</span>
+                       <span class="n">file_format</span><span class="o">=</span><span class="s1">'nortek-ascii'</span><span class="p">,</span>
+                       <span class="n">header_file</span><span class="o">=</span><span class="s2">"aquadopp.hdr"</span><span class="p">)</span>
+<span class="n">ssl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'time-series'</span><span class="p">,</span> <span class="n">current_data</span><span class="p">,</span>
+         <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s1">'east_velocity'</span><span class="p">,</span> <span class="s1">'north_velocity'</span><span class="p">])</span>
 </pre></div>
 </div>
 </section>
